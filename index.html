@@ -60,7 +60,7 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 <div class="sr" id="pb"></div></div>
 </div>
 <div id="shop"><div id="shdr">Lv<span id="sl">1</span> -> Lv<span id="nl">2</span> $<span id="lc">5</span></div><div id="si"></div></div>
-<div id="act"><button id="br">刷新($1)</button><button id="bl">升级</button><button id="bf">开打</button><span id="aii"></span></div>
+<div id="act"><button id="br">刷新($1)</button><button id="bl">升级</button><button id="bf">开打</button><span id="aii"></span><span id="anim-step" style="color:#fdcb6e;font-size:11px;margin-left:4px"></span></div>
 <div id="log">[日志]</div>
 </div>
 <script>
@@ -255,41 +255,24 @@ async function fight() {
   log("战斗:" + bt + "轮 玩家剩" + pr + " AI剩" + er);
   if (pr > 0 && er === 0) for (var i = 0; i < pa.length; i++) if (pa[i]) seq.push({ a: pa[i].id, t: "ahi", tp: "h" });
   if (er > 0 && pr === 0) for (var i = 0; i < ea.length; i++) if (ea[i]) seq.push({ a: ea[i].id, t: "phi", tp: "h" });
-  // 播放动画序列
-  try{
-  log("动画序列开始,共"+seq.length+"步");
-  if(seq.length>0)await delay(300);
+    // 播放动画序列(极简版)
+  log("!动画! 序列开始 共"+seq.length+"步");
+  if(seq.length>0)await delay(200);
   for(var si=0;si<seq.length;si++){
     var s=seq[si];
-    if(s.tp==="m"){
-      log("攻击:"+s.a+"->"+s.t);
+    if(s.tp==="m"||s.tp==="h"){
       var ae=document.querySelector('[data-mid="'+s.a+'"]');
-      var te=document.querySelector('[data-mid="'+s.t+'"]');
-      if(ae){ae.style.transform="scale(1.15) translateY(-6px)";setTimeout(function(){if(ae)ae.style.transform=""},250)}
-      if(ae&&te){await new Promise(function(res){drawArrow(ae,te,function(){if(te){te.style.borderColor="#ff4444";te.style.boxShadow="0 0 16px rgba(255,68,68,.7)";setTimeout(function(){if(te){te.style.borderColor="";te.style.boxShadow=""}res()},400)}})})}else await delay(200);
+      var te=s.tp==="h"?document.getElementById(s.t):document.querySelector('[data-mid="'+s.t+'"]');
+      if(ae){ae.style.outline="3px solid #fff";setTimeout(function(){if(ae)ae.style.outline=""},200)}
+      if(te){te.style.outline="3px solid red";te.style.boxShadow="0 0 20px rgba(255,0,0,.8)";setTimeout(function(){if(te){te.style.outline="";te.style.boxShadow=""}},400)}
+      await delay(500);
     }else if(s.d){
       var de=document.querySelector('[data-mid="'+s.d+'"]');
-      if(de){de.style.opacity="0";de.style.transform="scale(0.3)";await delay(350)}else await delay(200);
-    }else if(s.tp==="h"){
-      log("打脸:"+s.a+"->"+s.t);
-      var ae=document.querySelector('[data-mid="'+s.a+'"]');
-      var te=$(s.t);
-      if(ae){ae.style.transform="scale(1.15) translateY(-6px)";setTimeout(function(){if(ae)ae.style.transform=""},250)}
-      if(ae&&te){await new Promise(function(res){drawArrow(ae,te,function(){if(te){te.style.borderColor="#ff4444";te.style.boxShadow="0 0 16px rgba(255,68,68,.7)";setTimeout(function(){if(te){te.style.borderColor="";te.style.boxShadow=""}res()},400)}})})}else await delay(200);
+      if(de){de.style.opacity="0.2";await delay(300)}else await delay(100);
     }else await delay(100);
   }
-  }catch(e){log("动画错误:"+e.message);console.error(e);}
-  // 结算
-  ST.b = makeBoard(pa); EN.b = makeBoard(ea);
-  ST.t++;
-  var ed = EN.b.filter(function(x){return x}).length, pd = ST.b.filter(function(x){return x}).length;
-  if (ed > 0) ST.hp -= ed; if (pd > 0) EN.hp -= pd;
-  var ga = Math.min(ST.t + 2, 10);
-  ST.g += ga; ST.aig += ga;
-  log("回合" + ST.t + " HP:" + ST.hp + "/" + EN.hp + " +" + ga + "金");
-  if (ST.hp <= 0 || EN.hp <= 0) { showGO(ST.hp <= 0); return; }
-  ST.sh = genShop(ST.l); for (var i = 0; i < ST.sh.length; i++) ST.sh[i].b = 0;
-  await aiTurn();
+  log("!动画! 结束");
+await aiTurn();
 }
 
 function showGO(l) { $("go").classList.add("show"); $("rt").textContent = l ? "你被淘汰了" : "你赢了!"; $("rtt").textContent = "存活回合:" + ST.t; $("rtg").textContent = "Lv" + ST.l + " 金" + ST.g; }
