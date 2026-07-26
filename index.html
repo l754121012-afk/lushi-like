@@ -257,25 +257,26 @@ async function fight() {
   if (pr > 0 && er === 0) for (var i = 0; i < pa.length; i++) if (pa[i]) seq.push({ a: pa[i].id, t: "ahi", tp: "h" });
   if (er > 0 && pr === 0) for (var i = 0; i < ea.length; i++) if (ea[i]) seq.push({ a: ea[i].id, t: "phi", tp: "h" });
   // 播放动画序列
+  log("动画序列开始,共"+seq.length+"步");
   if(seq.length>0)await delay(300);
-  for (var si = 0; si < seq.length; si++) {
-    var s = seq[si];
-    if (s.tp === "m") { // 随从互殴
-      var ae = document.querySelector('[data-mid="' + s.a + '"]');
-      var te = document.querySelector('[data-mid="' + s.t + '"]');
-      if (ae) ae.classList.add("lunge");
-      if (ae && te) await new Promise(function(r) { drawArrow(ae, te, function() { animateHit(te); setTimeout(r, 300); }); });
-      else await delay(200);
-    } else if (s.d) { // 死亡
-      var de = document.querySelector('[data-mid="' + s.d + '"]');
-      if (de) { de.classList.add("dead"); await delay(350); } else await delay(200);
-    } else if (s.tp === "h") { // 打脸
-      var ae = document.querySelector('[data-mid="' + s.a + '"]');
-      var te = $(s.t);
-      if (ae) ae.classList.add("lunge");
-      if (ae && te) await new Promise(function(r) { drawArrow(ae, te, function() { animateHit(te); setTimeout(r, 300); }); });
-      else await delay(200);
-    } else await delay(100);
+  for(var si=0;si<seq.length;si++){
+    var s=seq[si];
+    if(s.tp==="m"){
+      log("攻击:"+s.a+"->"+s.t);
+      var ae=document.querySelector('[data-mid="'+s.a+'"]');
+      var te=document.querySelector('[data-mid="'+s.t+'"]');
+      if(ae){ae.style.transform="scale(1.15) translateY(-6px)";setTimeout(function(){if(ae)ae.style.transform=""},250)}
+      if(ae&&te){await new Promise(function(res){drawArrow(ae,te,function(){if(te){te.style.borderColor="#ff4444";te.style.boxShadow="0 0 16px rgba(255,68,68,.7)";setTimeout(function(){if(te){te.style.borderColor="";te.style.boxShadow=""}res()},400)}})})}else await delay(200);
+    }else if(s.d){
+      var de=document.querySelector('[data-mid="'+s.d+'"]');
+      if(de){de.style.opacity="0";de.style.transform="scale(0.3)";await delay(350)}else await delay(200);
+    }else if(s.tp==="h"){
+      log("打脸:"+s.a+"->"+s.t);
+      var ae=document.querySelector('[data-mid="'+s.a+'"]');
+      var te=$(s.t);
+      if(ae){ae.style.transform="scale(1.15) translateY(-6px)";setTimeout(function(){if(ae)ae.style.transform=""},250)}
+      if(ae&&te){await new Promise(function(res){drawArrow(ae,te,function(){if(te){te.style.borderColor="#ff4444";te.style.boxShadow="0 0 16px rgba(255,68,68,.7)";setTimeout(function(){if(te){te.style.borderColor="";te.style.boxShadow=""}res()},400)}})})}else await delay(200);
+    }else await delay(100);
   }
   // 结算
   ST.b = makeBoard(pa); EN.b = makeBoard(ea);
