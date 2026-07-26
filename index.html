@@ -256,6 +256,7 @@ async function fight() {
   if (pr > 0 && er === 0) for (var i = 0; i < pa.length; i++) if (pa[i]) seq.push({ a: pa[i].id, t: "ahi", tp: "h" });
   if (er > 0 && pr === 0) for (var i = 0; i < ea.length; i++) if (ea[i]) seq.push({ a: ea[i].id, t: "phi", tp: "h" });
     // 播放动画序列(极简版)
+  log("[DEBUG] seq.length="+seq.length+" pa.length="+pa.length+" ea.length="+ea.length);
   log("!动画! 序列开始 共"+seq.length+"步");
   if(seq.length>0)await delay(200);
   for(var si=0;si<seq.length;si++){
