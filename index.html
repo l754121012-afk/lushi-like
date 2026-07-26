@@ -10,9 +10,9 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 .side{flex:1;background:#16213e;border-radius:4px;padding:4px;display:flex;flex-direction:column;position:relative}
 .side .hdr{font-size:11px;color:#636e72;margin-bottom:2px}
 .hero-row{display:flex;align-items:center;gap:6px;padding:2px 4px;flex-shrink:0}
-.hero-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid;flex-shrink:0;transition:all .2s;z-index:2}
+.hero-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid;flex-shrink:0;transition:all .2s;z-index:5}
 .ahi{background:#5c2e2e;border-color:#8b4513}.phi{background:#2d4a2d;border-color:#4caf50}
-.hero-icon.hit{animation:shake .4s ease-out;border-color:#ff4444!important;box-shadow:0 0 16px rgba(255,68,68,.7)!important}
+.hero-icon.hit{animation:shake .4s ease-out;border-color:#ff4444!important;box-shadow:0 0 16px rgba(255,68,68,.7)!important}.hero-icon.lunge{animation:lunge .25s ease-out}
 @keyframes shake{0%{transform:translateX(0)}15%{transform:translateX(-5px)}30%{transform:translateX(4px)}45%{transform:translateX(-3px)}60%{transform:translateX(3px)}75%{transform:translateX(-1px)}90%{transform:translateX(1px)}100%{transform:translateX(0)}}
 .sr{display:flex;gap:2px;flex-wrap:wrap;padding:2px;flex:1;align-content:flex-start}
 .sl{width:66px;height:72px;background:#0f0f1a;border:1px dashed #2d3047;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;position:relative;transition:all .2s}
@@ -44,7 +44,7 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 #cs button:hover{border-color:#fdcb6e}
 #go{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;flex-direction:column;align-items:center;justify-content:center}
 #go.show{display:flex}#go h1{font-size:32px}#go .b{background:#fdcb6e;color:#1a1a2e;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;margin-top:10px}
-#acv{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50}
+#acv{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50;display:block}
 </style></head><body>
 <canvas id="acv"></canvas>
 <div id="cs"><h1>炉石旅人</h1><div style="color:#636e72">酒馆战棋 · 自动战斗</div><button id="btn-start">开始游戏</button></div>
@@ -53,10 +53,10 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 <div id="bar"><span class="hp">HP <span id="bh">30</span></span><span class="go">$ <span id="bg">3</span></span><span class="lv">Lv <span id="blv">1</span></span><span style="color:#b2bec3">AI Lv <span id="ail">1</span> $ <span id="aig">3</span></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span></div>
 <div id="brd">
 <div class="side"><div class="hdr">AI <span id="ac">0</span>只</div>
-<div class="hero-row"><div class="hero-icon ahi" id="ahi">AI</div>HP:<span id="ehp">30</span></div>
+<div class="hero-row"><div class="hero-icon ahi" id="ahi">&#x1f916;</div>HP:<span id="ehp">30</span></div>
 <div class="sr" id="eb"></div></div>
 <div class="side"><div class="hdr">我 <span id="pc">0</span>只</div>
-<div class="hero-row"><div class="hero-icon phi" id="phi">ME</div>HP:<span id="php">30</span></div>
+<div class="hero-row"><div class="hero-icon phi" id="phi">&#x1f464;</div>HP:<span id="php">30</span></div>
 <div class="sr" id="pb"></div></div>
 </div>
 <div id="shop"><div id="shdr">Lv<span id="sl">1</span> -> Lv<span id="nl">2</span> $<span id="lc">5</span></div><div id="si"></div></div>
@@ -161,7 +161,7 @@ function checkMerge() {
 // ===== 箭头动画引擎 =====
 function drawArrow(from, to, callback) {
   var canvas = $("acv"), ctx = canvas.getContext("2d");
-  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight; if(!canvas.width||!canvas.height)return;
   if (!from || !to) { if (callback) callback(); return; }
   var fRect = from.getBoundingClientRect(), tRect = to.getBoundingClientRect();
   var sx = fRect.left + fRect.width / 2, sy = fRect.top + 5;
@@ -177,9 +177,9 @@ function drawArrow(from, to, callback) {
     if (progress < 1) {
       var cx = sx + dx * progress, cy = sy + dy * progress;
       ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(cx, cy);
-      ctx.strokeStyle = "rgba(253,203,110,.7)"; ctx.lineWidth = 3; ctx.stroke();
+      ctx.strokeStyle = "rgba(253,203,110,.85)"; ctx.lineWidth = 3; ctx.stroke();
       ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2);
-      ctx.fillStyle = "#fdcb6e"; ctx.fill();
+      ctx.fillStyle = "#fdcb6e"; ctx.fill(); ctx.shadowBlur = 8; ctx.shadowColor = "#fdcb6e";
     }
     // 箭头头
     if (progress >= 0.85) {
@@ -257,6 +257,7 @@ async function fight() {
   if (pr > 0 && er === 0) for (var i = 0; i < pa.length; i++) if (pa[i]) seq.push({ a: pa[i].id, t: "ahi", tp: "h" });
   if (er > 0 && pr === 0) for (var i = 0; i < ea.length; i++) if (ea[i]) seq.push({ a: ea[i].id, t: "phi", tp: "h" });
   // 播放动画序列
+  if(seq.length>0)await delay(300);
   for (var si = 0; si < seq.length; si++) {
     var s = seq[si];
     if (s.tp === "m") { // 随从互殴
