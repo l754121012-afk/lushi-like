@@ -159,7 +159,7 @@ function checkMerge() {
 }
 
 // ===== 箭头动画引擎 =====
-function drawArrow(from, to, callback) {
+function drawArrow(from, to, callback) { try{
   var canvas = $("acv"), ctx = canvas.getContext("2d");
   canvas.width = window.innerWidth; canvas.height = window.innerHeight; if(!canvas.width||!canvas.height)return;
   if (!from || !to) { if (callback) callback(); return; }
@@ -194,8 +194,7 @@ function drawArrow(from, to, callback) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (callback) callback();
     }
-  }, 16);
-}
+  }, 16);}catch(e){if(callback)callback()}}
 
 function animateHit(targetEl) {
   if (!targetEl) return;
@@ -257,6 +256,7 @@ async function fight() {
   if (pr > 0 && er === 0) for (var i = 0; i < pa.length; i++) if (pa[i]) seq.push({ a: pa[i].id, t: "ahi", tp: "h" });
   if (er > 0 && pr === 0) for (var i = 0; i < ea.length; i++) if (ea[i]) seq.push({ a: ea[i].id, t: "phi", tp: "h" });
   // 播放动画序列
+  try{
   log("动画序列开始,共"+seq.length+"步");
   if(seq.length>0)await delay(300);
   for(var si=0;si<seq.length;si++){
@@ -278,6 +278,7 @@ async function fight() {
       if(ae&&te){await new Promise(function(res){drawArrow(ae,te,function(){if(te){te.style.borderColor="#ff4444";te.style.boxShadow="0 0 16px rgba(255,68,68,.7)";setTimeout(function(){if(te){te.style.borderColor="";te.style.boxShadow=""}res()},400)}})})}else await delay(200);
     }else await delay(100);
   }
+  }catch(e){log("动画错误:"+e.message);console.error(e);}
   // 结算
   ST.b = makeBoard(pa); EN.b = makeBoard(ea);
   ST.t++;
