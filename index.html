@@ -1,51 +1,70 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>炉石旅人</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"><title>炉石旅人 · 酒馆战棋</title>
 <style>
-body{margin:0;background:#1a1a2e;color:#eee;font-family:sans-serif;overflow:hidden;height:100vh}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidden;height:100vh}
 #app{display:none;flex-direction:column;height:100vh;max-width:900px;margin:auto;padding:4px}
-#bar{display:flex;gap:8px;background:#16213e;padding:4px 8px;border-radius:4px;margin-bottom:4px;flex-wrap:wrap;font-size:13px}
+#bar{display:flex;gap:8px;background:#16213e;padding:4px 8px;border-radius:4px;margin-bottom:4px;font-size:13px;flex-wrap:wrap}
 .hp{color:#ff6b6b;font-weight:700}.go{color:#fdcb6e;font-weight:700}.lv{color:#74b9ff}
 #brd{display:flex;gap:4px;flex:1;min-height:0}
-.side{flex:1;background:#16213e;border-radius:4px;padding:4px;display:flex;flex-direction:column}
+.side{flex:1;background:#16213e;border-radius:4px;padding:4px;display:flex;flex-direction:column;position:relative}
 .side .hdr{font-size:11px;color:#636e72;margin-bottom:2px}
-.sr{display:flex;gap:2px;flex-wrap:wrap;min-height:60px;padding:2px;flex:1;align-content:flex-start}
-.sl{width:70px;height:75px;background:#0f0f1a;border:1px dashed #2d3047;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;position:relative}
+.hero-row{display:flex;align-items:center;gap:6px;padding:2px 4px;flex-shrink:0}
+.hero-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:2px solid;flex-shrink:0;transition:all .2s;z-index:2}
+.ahi{background:#5c2e2e;border-color:#8b4513}.phi{background:#2d4a2d;border-color:#4caf50}
+.hero-icon.hit{animation:shake .4s ease-out;border-color:#ff4444!important;box-shadow:0 0 16px rgba(255,68,68,.7)!important}
+@keyframes shake{0%{transform:translateX(0)}15%{transform:translateX(-5px)}30%{transform:translateX(4px)}45%{transform:translateX(-3px)}60%{transform:translateX(3px)}75%{transform:translateX(-1px)}90%{transform:translateX(1px)}100%{transform:translateX(0)}}
+.sr{display:flex;gap:2px;flex-wrap:wrap;padding:2px;flex:1;align-content:flex-start}
+.sl{width:66px;height:72px;background:#0f0f1a;border:1px dashed #2d3047;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;position:relative;transition:all .2s}
 .sl.has{background:#2d3047;border:1px solid #4a4d6b}
 .sl.pl{border-color:#4caf50;cursor:pointer}
-.sl .nm{font-size:10px;color:#dfe6e9;text-align:center;padding:0 2px;overflow:hidden;text-overflow:ellipsis;max-width:66px}
-.sl .st{font-size:12px;font-weight:700}
+.sl .nm{font-size:9px;color:#dfe6e9;text-align:center;padding:0 2px;overflow:hidden;text-overflow:ellipsis;max-width:62px}
+.sl .st{font-size:11px;font-weight:700}
 .sl .a{color:#ff6b6b}.sl .h{color:#55efc4}
-.sl .ti{position:absolute;top:1px;right:3px;font-size:8px;color:#636e72}
+.sl .ti{position:absolute;top:1px;right:2px;font-size:7px;color:#636e72}
+/* 动画类 */
+.sl.lunge{animation:lunge .25s ease-out}
+@keyframes lunge{0%{transform:scale(1)}30%{transform:scale(1.12) translateY(-5px)}100%{transform:scale(1)}}
+.sl.hit{animation:shake .35s ease-out;border-color:#ff6666!important;box-shadow:0 0 12px rgba(255,68,68,.6)!important}
+.sl.dead{animation:fadeOut .35s ease-out forwards}
+@keyframes fadeOut{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.3)}}
 #shop{background:#16213e;border-radius:4px;padding:4px;margin-top:4px;flex-shrink:0}
 #shdr{font-size:12px;margin-bottom:4px}
 #si{display:flex;gap:4px;flex-wrap:wrap}
-.sc{width:68px;background:#2d3047;border:1px solid #4a4d6b;border-radius:4px;padding:3px;cursor:pointer;text-align:center;font-size:10px}
-.sc:hover{border-color:#fdcb6e}.sc.b{opacity:.3}
+.sc{width:66px;background:#2d3047;border:1px solid #4a4d6b;border-radius:4px;padding:3px;cursor:pointer;text-align:center;font-size:10px;transition:all .15s}
+.sc:hover{border-color:#fdcb6e;transform:translateY(-3px)}
+.sc.b{opacity:.3;cursor:default;transform:none!important}
 #act{display:flex;gap:4px;padding:4px 0;flex-shrink:0;align-items:center}
-#act button{padding:4px 10px;border-radius:4px;border:none;cursor:pointer;font-size:12px;color:#fff}
+#act button{padding:4px 10px;border-radius:4px;border:none;cursor:pointer;font-size:12px;color:#fff;transition:all .15s}
 #act button:disabled{opacity:.4}
 #br{background:#636e72}#bl{background:#74b9ff}#bf{background:#e17055}
-#log{max-height:50px;overflow:auto;background:#0f0f1a;border-radius:4px;padding:2px 6px;font-size:11px;color:#636e72;margin-top:2px;flex-shrink:0}
+#log{max-height:48px;overflow:auto;background:#0f0f1a;border-radius:4px;padding:2px 6px;font-size:11px;color:#636e72;margin-top:2px;flex-shrink:0}
 #cs{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;flex-direction:column;align-items:center;justify-content:center}
 #cs h1{color:#fdcb6e;font-size:28px}#cs button{width:180px;padding:14px;background:#2d3047;border:2px solid #4a4d6b;border-radius:8px;color:#fff;font-size:16px;cursor:pointer;margin-top:12px}
+#cs button:hover{border-color:#fdcb6e}
 #go{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;flex-direction:column;align-items:center;justify-content:center}
 #go.show{display:flex}#go h1{font-size:32px}#go .b{background:#fdcb6e;color:#1a1a2e;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;margin-top:10px}
+#acv{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50}
 </style></head><body>
+<canvas id="acv"></canvas>
 <div id="cs"><h1>炉石旅人</h1><div style="color:#636e72">酒馆战棋 · 自动战斗</div><button id="btn-start">开始游戏</button></div>
 <div id="go"><h1 id="rt"></h1><p id="rtt"></p><p id="rtg" style="color:#fdcb6e"></p><button class="b" onclick="location.reload()">再来一局</button></div>
 <div id="app">
 <div id="bar"><span class="hp">HP <span id="bh">30</span></span><span class="go">$ <span id="bg">3</span></span><span class="lv">Lv <span id="blv">1</span></span><span style="color:#b2bec3">AI Lv <span id="ail">1</span> $ <span id="aig">3</span></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span></div>
 <div id="brd">
-<div class="side"><div class="hdr">AI <span id="ac">0</span>只 HP:<span id="ehp">30</span></div><div class="sr" id="eb"></div></div>
-<div class="side"><div class="hdr">我 <span id="pc">0</span>只 HP:<span id="php">30</span></div><div class="sr" id="pb"></div></div>
+<div class="side"><div class="hdr">AI <span id="ac">0</span>只</div>
+<div class="hero-row"><div class="hero-icon ahi" id="ahi">AI</div>HP:<span id="ehp">30</span></div>
+<div class="sr" id="eb"></div></div>
+<div class="side"><div class="hdr">我 <span id="pc">0</span>只</div>
+<div class="hero-row"><div class="hero-icon phi" id="phi">ME</div>HP:<span id="php">30</span></div>
+<div class="sr" id="pb"></div></div>
 </div>
 <div id="shop"><div id="shdr">Lv<span id="sl">1</span> -> Lv<span id="nl">2</span> $<span id="lc">5</span></div><div id="si"></div></div>
 <div id="act"><button id="br">刷新($1)</button><button id="bl">升级</button><button id="bf">开打</button><span id="aii"></span></div>
 <div id="log">[日志]</div>
 </div>
 <script>
-// ===== 核心修复: 棋盘始终保持7格 =====
-// 用函数确保棋盘始终是7元素数组
+// ===== makeBoard: 确保棋盘永远是7格 =====
 function makeBoard(arr) {
   if (!arr) return new Array(7).fill(null);
   var survivors = arr.filter(function(x){return x});
@@ -54,7 +73,7 @@ function makeBoard(arr) {
   return board;
 }
 
-// ===== 卡牌数据(中文名) =====
+// ===== 卡牌数据 =====
 var C = [
   [{n:"护甲学徒",a:1,h:2},{n:"冲锋新兵",a:2,h:1,k:"c"},{n:"精灵射手",a:1,h:1,k:"b"},{n:"渔人猎潮者",a:2,h:1},{n:"石牙野猪",a:1,h:1}],
   [{n:"铁甲卫士",a:1,h:4,k:"t"},{n:"战地老兵",a:3,h:2},{n:"狗头人",a:2,h:2},{n:"血帆袭击者",a:2,h:3},{n:"虚空行者",a:1,h:3,k:"t"}],
@@ -65,15 +84,12 @@ var C = [
   [{n:"大螺丝",a:8,h:8},{n:"克苏恩",a:6,h:6},{n:"尤格萨隆",a:5,h:7},{n:"恩佐斯",a:5,h:7},{n:"亚煞极",a:10,h:10}]
 ];
 for (var i = 0; i < C.length; i++) for (var j = 0; j < C[i].length; j++) C[i][j].s = i + 1;
-
 var TO = [[],[1],[.67,.33],[.5,.33,.17],[.4,.27,.2,.13],[.33,.23,.18,.14,.12],[.28,.2,.16,.13,.12,.11],[.23,.17,.14,.12,.11,.13,.1]];
 var LC = [0,5,7,8,9,10,12,15];
-
 var PH = "i", ST = null, EN = null, ID = 0;
 function $(i){return document.getElementById(i)}
 function ni(){return "m"+(ID++)}
 function delay(ms){return new Promise(function(r){setTimeout(r,ms)})}
-
 function genShop(lv) {
   var odds = TO[lv], cards = [];
   for (var i = 0; i < 5; i++) {
@@ -84,8 +100,7 @@ function genShop(lv) {
   }
   return cards;
 }
-
-function log(m) { var el = $("log"); el.innerHTML += "<div>" + m + "</div>"; el.scrollTop = el.scrollHeight; }
+function log(m) { var el = $("log"); el.innerHTML += "<div>" + m + "</div>"; el.scrollTop = el.scrollHeight; console.log(m); }
 
 // ===== 渲染 =====
 function R() {
@@ -101,7 +116,6 @@ function R() {
   $("br").disabled = !isP; $("bl").disabled = !isP || ST.l >= 7 || ST.g < LC[ST.l]; $("bf").disabled = !isP;
   $("aii").textContent = PH === "a" ? "AI招募中..." : PH === "p" ? "到你! 买牌点开打" : "战斗中...";
 }
-
 function rB(id, board, isPlayer) {
   var el = $(id); el.innerHTML = "";
   for (var i = 0; i < 7; i++) {
@@ -110,13 +124,11 @@ function rB(id, board, isPlayer) {
     if (!m) { if (isPlayer && PH === "p") d.innerHTML = "+"; el.appendChild(d); continue; }
     d.classList.add("has"); d.dataset.mid = m.id;
     if (isPlayer) d.classList.add("pl");
-    var kw = ""; if (m.k && m.k.indexOf("t") >= 0) kw = "T"; else if (m.k && m.k.indexOf("c") >= 0) kw = "C";
-    d.innerHTML = "<div class=nm>" + m.n + "</div><div class=st><span class=a>" + m.a + "</span>/<span class=h>" + m.h + "</span></div><div class=ti>T" + m.s + "</div>";
+    d.innerHTML = "<div class=nm>" + m.n + "</div><div class=st><span class=a>" + m.a + "</span>/<span class=h>" + m.h + "</span></div><div class=ti>" + m.s + "</div>";
     if (isPlayer) (function(idx){d.onclick=function(){if(PH==="p"){ST.b[idx]=null;ST.g+=1;R()}}})(i);
     el.appendChild(d);
   }
 }
-
 function rS() {
   var el = $("si"); el.innerHTML = "";
   if (!ST.sh) return;
@@ -133,7 +145,6 @@ function rS() {
     el.appendChild(d);
   }
 }
-
 function checkMerge() {
   for (var i = 0; i < 7; i++) {
     var m = ST.b[i]; if (!m) continue;
@@ -145,6 +156,51 @@ function checkMerge() {
       R(); return;
     }
   }
+}
+
+// ===== 箭头动画引擎 =====
+function drawArrow(from, to, callback) {
+  var canvas = $("acv"), ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  if (!from || !to) { if (callback) callback(); return; }
+  var fRect = from.getBoundingClientRect(), tRect = to.getBoundingClientRect();
+  var sx = fRect.left + fRect.width / 2, sy = fRect.top + 5;
+  var ex = tRect.left + tRect.width / 2, ey = tRect.top + tRect.height / 2;
+  var dx = ex - sx, dy = ey - sy;
+  var steps = Math.max(12, Math.floor(Math.sqrt(dx * dx + dy * dy) / 8));
+  var step = 0;
+  if (window._anim) { clearInterval(window._anim); window._anim = null; }
+  window._anim = setInterval(function() {
+    step++; var progress = step / steps;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // 轨迹线
+    if (progress < 1) {
+      var cx = sx + dx * progress, cy = sy + dy * progress;
+      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(cx, cy);
+      ctx.strokeStyle = "rgba(253,203,110,.7)"; ctx.lineWidth = 3; ctx.stroke();
+      ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+      ctx.fillStyle = "#fdcb6e"; ctx.fill();
+    }
+    // 箭头头
+    if (progress >= 0.85) {
+      var angle = Math.atan2(dy, dx);
+      ctx.beginPath(); ctx.moveTo(ex, ey);
+      ctx.lineTo(ex - 10 * Math.cos(angle - 0.4), ey - 10 * Math.sin(angle - 0.4));
+      ctx.lineTo(ex - 10 * Math.cos(angle + 0.4), ey - 10 * Math.sin(angle + 0.4));
+      ctx.closePath(); ctx.fillStyle = "#fdcb6e"; ctx.fill();
+    }
+    if (step >= steps) {
+      clearInterval(window._anim); window._anim = null;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (callback) callback();
+    }
+  }, 16);
+}
+
+function animateHit(targetEl) {
+  if (!targetEl) return;
+  targetEl.classList.add("hit");
+  setTimeout(function() { targetEl.classList.remove("hit"); }, 450);
 }
 
 // ===== AI回合 =====
@@ -160,13 +216,11 @@ async function aiTurn() {
     g -= 3; n++; R(); await delay(200);
   }
   if (n > 0) log("AI买了" + n + "张 剩" + g + "金");
-  // 升级
   var u = 0;
   while (g >= 6 && ST.ail < 7 && g - LC[ST.ail] >= 3 && EN.b.filter(function(x){return x}).length >= 2) {
     g -= LC[ST.ail]; ST.ail++; u++; R(); await delay(200);
   }
   if (u > 0) log("AI升到Lv" + ST.ail + " 剩" + g + "金");
-  // 再买
   var n2 = 0;
   while (g >= 3) {
     var ei = EN.b.findIndex(function(x){return !x});
@@ -180,15 +234,11 @@ async function aiTurn() {
   log("到你!"); PH = "p"; R();
 }
 
-// ===== 战斗 =====
+// ===== 战斗(带动画) =====
 async function fight() {
   if (PH !== "p") return;
   PH = "c"; R(); log("=== 开打 ===");
-  var seq = [], pa = JSON.parse(JSON.stringify(EN.b)), ea = JSON.parse(JSON.stringify(ST.b)), bt = 0;
-  // 交换: pa是AI的兵(防守), ea是玩家的兵(进攻)
-  // 但为了日志正确,还是pa=玩家(进攻方),ea=AI(防守方)
-  pa = JSON.parse(JSON.stringify(ST.b));
-  ea = JSON.parse(JSON.stringify(EN.b));
+  var seq = [], pa = JSON.parse(JSON.stringify(ST.b)), ea = JSON.parse(JSON.stringify(EN.b)), bt = 0;
   while (pa.some(function(x){return x}) && ea.some(function(x){return x}) && bt < 50) {
     var pi = pa.findIndex(function(x){return x}), eii = ea.findIndex(function(x){return x});
     if (pi < 0 || eii < 0) break;
@@ -201,14 +251,33 @@ async function fight() {
     }
     bt++; pa = pa.filter(function(x){return x && x.h > 0}); ea = ea.filter(function(x){return x && x.h > 0});
   }
+  // 面伤
   var pr = pa.filter(function(x){return x}).length, er = ea.filter(function(x){return x}).length;
   log("战斗:" + bt + "轮 玩家剩" + pr + " AI剩" + er);
   if (pr > 0 && er === 0) for (var i = 0; i < pa.length; i++) if (pa[i]) seq.push({ a: pa[i].id, t: "ahi", tp: "h" });
   if (er > 0 && pr === 0) for (var i = 0; i < ea.length; i++) if (ea[i]) seq.push({ a: ea[i].id, t: "phi", tp: "h" });
-  await playSeq(seq);
-  // ===== 核心修复: makeBoard确保棋盘永远是7格 =====
-  ST.b = makeBoard(pa);
-  EN.b = makeBoard(ea);
+  // 播放动画序列
+  for (var si = 0; si < seq.length; si++) {
+    var s = seq[si];
+    if (s.tp === "m") { // 随从互殴
+      var ae = document.querySelector('[data-mid="' + s.a + '"]');
+      var te = document.querySelector('[data-mid="' + s.t + '"]');
+      if (ae) ae.classList.add("lunge");
+      if (ae && te) await new Promise(function(r) { drawArrow(ae, te, function() { animateHit(te); setTimeout(r, 300); }); });
+      else await delay(200);
+    } else if (s.d) { // 死亡
+      var de = document.querySelector('[data-mid="' + s.d + '"]');
+      if (de) { de.classList.add("dead"); await delay(350); } else await delay(200);
+    } else if (s.tp === "h") { // 打脸
+      var ae = document.querySelector('[data-mid="' + s.a + '"]');
+      var te = $(s.t);
+      if (ae) ae.classList.add("lunge");
+      if (ae && te) await new Promise(function(r) { drawArrow(ae, te, function() { animateHit(te); setTimeout(r, 300); }); });
+      else await delay(200);
+    } else await delay(100);
+  }
+  // 结算
+  ST.b = makeBoard(pa); EN.b = makeBoard(ea);
   ST.t++;
   var ed = EN.b.filter(function(x){return x}).length, pd = ST.b.filter(function(x){return x}).length;
   if (ed > 0) ST.hp -= ed; if (pd > 0) EN.hp -= pd;
@@ -220,56 +289,18 @@ async function fight() {
   await aiTurn();
 }
 
-function playSeq(sq) {
-  return new Promise(function(resolve) {
-    var i = 0;
-    function next() {
-      if (i >= sq.length) { resolve(); return; }
-      var s = sq[i]; i++;
-      if (s.tp === "m") {
-        var ae = document.querySelector('[data-mid="' + s.a + '"]'), te = document.querySelector('[data-mid="' + s.t + '"]');
-        if (ae) ae.classList.add("atk");
-        if (ae && te) arrow(ae, te, function() { if (te) { te.classList.add("hd"); } setTimeout(next, 300); }); else setTimeout(next, 200);
-      } else if (s.d) {
-        var de = document.querySelector('[data-mid="' + s.d + '"]');
-        if (de) { de.classList.add("dd"); setTimeout(next, 300); } else setTimeout(next, 200);
-      } else if (s.tp === "h") {
-        var ae = document.querySelector('[data-mid="' + s.a + '"]'), te = $(s.t);
-        if (ae) ae.classList.add("atk");
-        if (ae && te) arrow(ae, te, function() { te.classList.add("hitd"); setTimeout(function(){te.classList.remove("hitd");next()}, 300); }); else setTimeout(next, 200);
-      } else setTimeout(next, 100);
-    }
-    next();
-  });
-}
-
-function arrow(f, t, on) {
-  if (!f || !t) { if (on) on(); return; }
-  var fr = f.getBoundingClientRect(), tr = t.getBoundingClientRect();
-  var sx = fr.left + fr.width / 2, sy = fr.top + 5;
-  var ex = tr.left + tr.width / 2, ey = tr.top + tr.height / 2;
-  var dx = ex - sx, dy = ey - sy;
-  var steps = Math.max(12, Math.floor(Math.sqrt(dx * dx + dy * dy) / 8)), step = 0;
-  if (window._ar) clearInterval(window._ar);
-  window._ar = setInterval(function() {
-    step++; var p = step / steps;
-    if (step >= steps) { clearInterval(window._ar); window._ar = null; if (on) on(); return; }
-  }, 16);
-}
-
 function showGO(l) { $("go").classList.add("show"); $("rt").textContent = l ? "你被淘汰了" : "你赢了!"; $("rtt").textContent = "存活回合:" + ST.t; $("rtg").textContent = "Lv" + ST.l + " 金" + ST.g; }
 
-// ===== 绑定事件 =====
+// ===== 绑定 =====
 function startGame() {
   $("cs").style.display = "none"; $("app").style.display = "flex"; $("log").innerHTML = "";
   ID = 0; ST = { t: 1, g: 3, hp: 30, b: new Array(7).fill(null), l: 1, sh: [], aig: 3, ail: 1 };
   EN = { hp: 30, b: new Array(7).fill(null) }; ST.sh = genShop(1);
   log("游戏开始!"); aiTurn();
 }
-
 $("br").onclick = function() { if (ST && ST.g >= 1 && PH === "p") { ST.g -= 1; ST.sh = genShop(ST.l); R(); } };
 $("bl").onclick = function() { if (ST && ST.l < 7) { var c = LC[ST.l]; if (ST.g >= c && PH === "p") { ST.g -= c; ST.l++; ST.sh = genShop(ST.l); R(); } } };
 $("bf").onclick = fight;
 document.getElementById("btn-start").onclick = startGame;
-console.log("游戏加载完成");
+console.log("炉石旅人 加载完成");
 </script></body></html>
