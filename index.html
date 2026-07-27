@@ -53,7 +53,14 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 #gi{color:#74b9ff;font-size:10px;margin-left:auto}
 </style></head><body>
 <div id="ast"></div><div id="arr"></div>
-<div id="cs"><h1>炉石旅人</h1><div style="color:#636e72">酒馆战棋 &#xb7; 养大哥</div><button id="btn-start">&#x2694; 开始游戏</button></div>
+<div id="cs"><h1>炉石旅人</h1><div style="color:#636e72">酒馆战棋 &#xb7; 养大哥</div>
+  <div style="color:#b2bec3;font-size:14px;margin:12px 0 8px">AI难度</div>
+  <div style="display:flex;gap:8px">
+    <button id="diff-e" style="width:100px;padding:10px;background:#636e72;border:2px solid #4a4d6b;border-radius:6px;color:#fff;font-size:14px;cursor:pointer">简单</button>
+    <button id="diff-m" style="width:100px;padding:10px;background:#636e72;border:2px solid #fdcb6e;border-radius:6px;color:#fff;font-size:14px;cursor:pointer">中等</button>
+    <button id="diff-h" style="width:100px;padding:10px;background:#636e72;border:2px solid #e17055;border-radius:6px;color:#fff;font-size:14px;cursor:pointer">困难</button>
+  </div>
+  <button id="btn-start" style="margin-top:12px">&#x2694; 开始游戏</button></div>
 <div id="go"><h1 id="rt"></h1><p id="rtt"></p><p id="rtg" style="color:#fdcb6e"></p><button class="b" onclick="location.reload()">再来一局</button></div>
 <div id="dp"><h3 style="color:#fdcb6e">三连发现!</h3><p style="color:#b2bec3;margin-bottom:10px">选择一张高1星牌</p><div id="di"></div></div>
 <div id="app">
@@ -105,7 +112,7 @@ var rB=function(id,b,isP){var el=$(id);el.innerHTML="";
   if(!m){if(isP&&PH==="p")d.textContent="+";el.appendChild(d);continue}
   d.classList.add("has");d.dataset.mid=m.id;d.dataset.mhp=m.mh||m.h;d.dataset.chp=m.h;
   if(isP)d.classList.add("pl");if(m.g)d.classList.add("golden");
-  var ss=m.s?"<div class=ss>"+"&#x2b50;".repeat(Math.min(m.s,7))+"</div>":"";var hpPct=((m.h/(m.mh||m.h))*100)+"%";
+  var ss=m.s?"<div class=ss>"+"&#x2b50;".repeat(Math.min(m.s,7))+" <b>"+m.s+"</b></div>":"";var hpPct=((m.h/(m.mh||m.h))*100)+"%";
   d.innerHTML=ss+"<div class=nm>"+m.n+"</div><div class=ah><span class=a>&#x2694;"+m.a+"</span>/<span class=h>&#x2764;"+m.h+"</span></div><div class=hpbar style=width:"+hpPct+"></div>";
   if(isP)(function(idx,_m){d.onclick=function(){
     if(PH!=="p")return;
@@ -115,7 +122,7 @@ var rB=function(id,b,isP){var el=$(id);el.innerHTML="";
         lg(sp.n+"->"+_m.n);setTimeout(function(){if(_m){_m.style_borderColor="";_m.style_boxShadow=""}},600)
       }
     }hideLine();R();return}
-    ST.b[idx]=null;R()
+    ST.b[idx]=null;ST.g+=1;R()
   }})(i,m);el.appendChild(d)}};
 
 var rH=function(){var el=$("hc");el.innerHTML="";var h=ST.h||[];$("hcnt").textContent=h.length;
@@ -224,5 +231,8 @@ $("br").onclick=function(){if(ST&&ST.g>=1&&PH==="p"&&!ST.fz){ST.g-=1;ST.sh=gs(ST
 $("bz").onclick=function(){if(ST&&PH==="p"){ST.fz=ST.fz?0:1;R()}};
 $("bl").onclick=function(){if(ST&&ST.l<7){var c=LC[ST.l];if(ST.g>=c&&PH==="p"){ST.g-=c;ST.l++;ST.sh=gs(ST.l);ST.fz=0;R()}}};
 $("bf").onclick=ft;
+document.getElementById("diff-e").onclick=function(){AI_DIFF=1;sg()};
+document.getElementById("diff-m").onclick=function(){AI_DIFF=2;sg()};
+document.getElementById("diff-h").onclick=function(){AI_DIFF=3;sg()};
 document.getElementById("btn-start").onclick=sg;
 </script></body></html>
