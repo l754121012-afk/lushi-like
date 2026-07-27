@@ -313,7 +313,9 @@ $("br").onclick=function(){if(ST&&ST.g>=1&&PH==="p"&&!ST.fz){ST.g-=1;ST.sh=gs(ST
 $("bz").onclick=function(){if(ST&&PH==="p"){ST.fz=ST.fz?0:1;if(ST.fz){$("fzi").textContent="[冻结]"}R()}};
 $("bl").onclick=function(){if(ST&&ST.l<7){var c=LC[ST.l];if(ST.g>=c&&PH==="p"){ST.g-=c;ST.l++;ST.sh=gs(ST.l,ST.fz);if(!ST.fz)for(var i=0;i<ST.sh.length;i++)ST.sh[i].b=0;R()}}};
 $("bf").onclick=ft;
-document.getElementById("diff-e").onclick=function(){AI_DIFF=1;var btns=[$("diff-e"),$("diff-m"),$("diff-h")];btns.forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
+$("diff-e").onclick=function(){AI_DIFF=1;[$("diff-e"),$("diff-m"),$("diff-h")].forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
+$("diff-m").onclick=function(){AI_DIFF=2;[$("diff-e"),$("diff-m"),$("diff-h")].forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
+$("diff-h").onclick=function(){AI_DIFF=3;[$("diff-e"),$("diff-m"),$("diff-h")].forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
 
 
 document.getElementById("btn-start").onclick=sg;
