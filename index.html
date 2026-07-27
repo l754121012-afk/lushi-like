@@ -64,7 +64,7 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 <div id="go"><h1 id="rt"></h1><p id="rtt"></p><p id="rtg" style="color:#fdcb6e"></p><button class="b" onclick="location.reload()">再来一局</button></div>
 <div id="dp"><h3 style="color:#fdcb6e">三连发现!</h3><p style="color:#b2bec3;margin-bottom:10px">选择一张高1星牌</p><div id="di"></div></div>
 <div id="app">
-<div id="bar"><span class="hp">HP <span id="bh">30</span></span><span class="go">$ <span id="bg">3</span></span><span class="lv">Lv <span id="blv">1</span></span><span style="color:#b2bec3">AI Lv <span id="ail">1</span> $ <span id="aig">3</span></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span id="gi"></span></div>
+<div id="bar"><span class="hp">HP <span id="bh">30</span></span><span class="go">$ <span id="bg">3</span></span><span class="lv">Lv <span id="blv">1</span></span><span style="color:#b2bec3">AI Lv <span id="ail">1</span> $<span id="aig">3</span> &#x2b50;<span id="ai-s">0</span></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span id="gi"></span></div>
 <div id="brd">
 <div class="side"><div class="hdr">AI <span id="ac">0</span>只</div><div class="hr"><div class="hi ahi" id="ahi">AI</div>HP:<span id="ehp">30</span></div><div class="sr" id="eb"></div></div>
 <div class="side"><div class="hdr">我 <span id="pc">0</span>只</div><div class="hr"><div class="hi phi" id="phi">ME</div>HP:<span id="php">30</span></div><div class="sr" id="pb"></div></div>
@@ -93,7 +93,7 @@ var lg=function(m){var e=$("log");e.innerHTML+="<div>"+m+"</div>";e.scrollTop=e.
 
 var R=function(){if(!ST)return;
   $("bh").textContent=ST.hp;$("bg").textContent=ST.g;$("blv").textContent=ST.l;
-  $("ail").textContent=ST.ail;$("aig").textContent=ST.aig;$("bt").textContent=ST.t;
+  $("ail").textContent=ST.ail;$("aig").textContent=ST.aig;$("ai-s").textContent=ST.ail;$("bt").textContent=ST.t;
   $("sl").textContent=ST.l;$("nl").textContent=Math.min(ST.l+1,7);$("lc").textContent=ST.l<7?LC[ST.l]:"MAX";
   $("ehp").textContent=EN.hp;$("php").textContent=ST.hp;
   $("ac").textContent=EN.b.filter(function(x){return x}).length;
@@ -164,17 +164,64 @@ var sd=function(t){var pool=C[t-1]||C[6],opts=[],used={};
   d.innerHTML="<div>"+card.n+"</div><div>"+card.a+"/"+card.h+"</div><div style=color:#fdcb6e>"+"&#x2b50;".repeat(card.s)+"</div>";
   d.onclick=function(){if(!ST.h)ST.h=[];ST.h.push({n:card.n,a:card.a,h:card.h,s:card.s,k:card.k||"",t:"m",mh:card.h});$("dp").classList.remove("show");R()};el.appendChild(d)})(opts[i])}$("dp").classList.add("show")};
 
-async function aT(){PH="a";R();lg("AI回合 金"+ST.aig+" Lv"+ST.ail);await dl(500);var g=ST.aig,n=0;
-  while(g>=3){var ei=EN.b.findIndex(function(x){return!x});if(ei<0||ei>=7)break;var sh=gs(ST.ail);if(!sh.length)break;var c=sh[0];if(c.t==="s"){g-=1;continue}
-  EN.b[ei]={n:c.n,a:c.a,h:c.h,s:c.s,k:c.k||"",t:"m",mh:c.h,id:ni()};g-=3;n++;R();await dl(200)}
-  if(n>0)lg("AI买"+n+"张 剩"+g+"金");
-  var u=0;while(g>=6&&ST.ail<7&&g-LC[ST.ail]>=3&&EN.b.filter(function(x){return x}).length>=2){g-=LC[ST.ail];ST.ail++;u++;R();await dl(200)}
-  if(u>0)lg("AI升Lv"+ST.ail+" 剩"+g+"金");n=0;
-  while(g>=3){var ei=EN.b.findIndex(function(x){return!x});if(ei<0||ei>=7)break;var sh=gs(ST.ail);if(!sh.length)break;var c=sh[0];if(c.t==="s"){g-=1;continue}
-  EN.b[ei]={n:c.n,a:c.a,h:c.h,s:c.s,k:c.k||"",t:"m",mh:c.h,id:ni()};g-=3;n++;R();await dl(200)}
-  if(n>0)lg("AI又买"+n+"张");ST.aig=g;lg("到你!");PH="p";R()}
+var AI_DIFF=2;
 
-async function ft(){
+async function aT(){PH="a";R();lg("AI回合(Lv"+AI_DIFF+") 金"+ST.aig+" Lv"+ST.ail);await dl(500);
+  var g=ST.aig,d=AI_DIFF;
+  
+  // Phase 1: 卖垃圾腾位置(中等以上)
+  if(d>=2){
+    var bcnt=EN.b.filter(function(x){return x}).length;
+    while(g>=3&&bcnt>=5){
+      var worst={idx:-1,val:999};
+      for(var wi=0;wi<7;wi++){var wm=EN.b[wi];if(wm&&wm.s<worst.val){worst={idx:wi,val:wm.s}}}
+      if(worst.idx>=0&&worst.val<=2){EN.b[worst.idx]=null;g+=1;bcnt--;R();await dl(100)}else break;
+    }
+  }
+  
+  // Phase 2: 升级酒馆
+  if(d>=3){// Hard: 有钱就升(至少留3金买一张)
+    while(ST.ail<7&&g-LC[ST.ail]>=3){if(g>=LC[ST.ail]){g-=LC[ST.ail];ST.ail++;R();await dl(200)}else break}
+  }else if(d>=2){// Medium: 场上>=2只且钱够升级就升(不留余钱)
+    var mc=EN.b.filter(function(x){return x}).length;
+    while(mc>=2&&ST.ail<7&&g>=LC[ST.ail]&&g>=5){g-=LC[ST.ail];ST.ail++;mc=EN.b.filter(function(x){return x}).length;R();await dl(200)}
+  }// Easy: 不升级
+  
+  // Phase 3: 买牌
+  var n=0;
+  while(g>=3){
+    var ei=EN.b.findIndex(function(x){return!x});
+    if(ei<0||ei>=7)break;
+    var sh=gs(ST.ail);
+    if(!sh||!sh.length)break;
+    var picks=sh.filter(function(x){return x.t==="m"&&!x.b});
+    if(!picks.length)break;
+    var pick;
+    if(d>=3)pick=picks.sort(function(a,b){return b.s-a.s||(b.a+b.h)-(a.a+a.h)})[0];
+    else if(d>=2)pick=picks.sort(function(a,b){return(b.a+b.h)-(a.a+a.h)||b.s-a.s})[0];
+    else pick=picks[Math.floor(Math.random()*picks.length)];
+    if(!pick)break;
+    EN.b[ei]={n:pick.n,a:pick.a,h:pick.h,s:pick.s,k:pick.k||"",t:"m",mh:pick.h,id:ni()};g-=3;n++;R();await dl(200);
+    // Hard: 买法术并施法
+    if(d>=3&&g>=1){
+      var sps=sh.filter(function(x){return x.t==="s"&&!x.b});
+      if(sps.length>0){var sp=sps[0];sp.b=1;var targets=EN.b.filter(function(x){return x});if(targets.length>0){var best=targets.sort(function(a,b){return(b.a+b.h)-(a.a+a.h)})[0];if(sp.e){best.a+=sp.e.a||0;best.h+=sp.e.h||0;if(best.mh)best.mh+=sp.e.h||0;lg("AI使用"+sp.n)}g-=1;R();await dl(200)}}
+    }
+  }
+  if(n>0)lg("AI买"+n+"张 剩"+g+"金 Lv"+ST.ail);
+  
+  // Phase 4: 部署手牌
+  if(d>=2&&ST.h){
+    for(var hi=ST.h.length-1;hi>=0;hi--){
+      var hc=ST.h[hi];if(!hc||hc.t==="s")continue;
+      var ei2=EN.b.findIndex(function(x){return!x});
+      if(ei2<0||ei2>=7)break;
+      EN.b[ei2]={n:hc.n,a:hc.a,h:hc.h,s:hc.s,k:hc.k||"",t:"m",mh:hc.h,id:ni()};
+      ST.h.splice(hi,1);R();await dl(150);
+    }
+  }
+  
+  ST.aig=g;lg("到你!");PH="p";R()}async function ft(){
   if(PH!=="p")return;PH="c";R();lg("===开打===");
   var seq=[],pa=JSON.parse(JSON.stringify(ST.b)),ea=JSON.parse(JSON.stringify(EN.b)),bt=0;
   while(pa.some(function(x){return x})&&ea.some(function(x){return x})&&bt<50){
