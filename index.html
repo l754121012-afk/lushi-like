@@ -64,7 +64,7 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 <div id="go"><h1 id="rt"></h1><p id="rtt"></p><p id="rtg" style="color:#fdcb6e"></p><button class="b" onclick="location.reload()">再来一局</button></div>
 <div id="dp"><h3 style="color:#fdcb6e">三连发现!</h3><p style="color:#b2bec3;margin-bottom:10px">选择一张高1星牌</p><div id="di"></div></div>
 <div id="app">
-<div id="bar"><span class=hp>HP<span id="bh">30</span></span><span class=go>$<span id="bg">3</span></span><span class=lv>&#x2b50;<span id="pl-s">1</span></span><span id="gi" style="color:#fdcb6e;font-size:11px"></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span style="color:#b2bec3;margin-left:6px">AI Lv<span id="ail">1</span> $<span id="aig">3</span> &#x2b50;<span id="ai-s">1</span></span></div>
+<div id="bar"><span class=hp>HP<span id="bh">30</span></span><span class=go>$<span id="bg">3</span></span><span class=lv>&#x2b50;<span id="pl-s">1</span></span><span id="gi" style="color:#74b9ff;font-size:11px"></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span style="color:#b2bec3;margin-left:6px">AI HP<span id="ail">30</span> $<span id="aig">3</span> &#x2b50;<span id="ai-s">1</span></span></div>
 <div id="brd">
 <div class="side"><div class="hdr">我 <span id="pc">0</span>只</div><div class="hr"><div class="hi phi" id="phi">ME</div>HP:<span id="php">30</span></div><div class="sr" id="pb"></div></div>
 <div class="side"><div class="hdr">AI <span id="ac">0</span>只</div><div class="hr"><div class="hi ahi" id="ahi">AI</div>HP:<span id="ehp">30</span></div><div class="sr" id="eb"></div></div>
@@ -84,7 +84,7 @@ var T8=[{n:"光明使者",a:10,h:10,k:"t"},{n:"暗影主宰",a:12,h:8},{n:"生�
 T8.forEach(function(c){c.s=8;c.t="m";c.mh=c.h});
 var TO=[[],[1],[.67,.33],[.5,.33,.17],[.4,.27,.2,.13],[.33,.23,.18,.14,.12],[.28,.2,.16,.13,.12,.11],[.23,.17,.14,.12,.11,.13,.1]];
 var LC=[0,5,7,8,9,10,12,15];
-var PH="i",ST=null,EN=null,ID=0,SI=null;
+var PH="i",ST=null,EN=null,ID=0,SI=null,_drag=null;
 var $=function(i){return document.getElementById(i)};
 var ni=function(){return"m"+(ID++)};
 var dl=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
@@ -101,7 +101,7 @@ var R=function(){if(!ST)return;
   $("ac").textContent=EN.b.filter(function(x){return x}).length;
   $("pc").textContent=ST.b.filter(function(x){return x}).length;
   // 金币预告:下回合+R.t+2金,总共ST.g+min(ST.t+2,10)金
-  var nxt=Math.min(ST.t+2,10);$("gi").textContent=" +"+nxt+"$="+(ST.g+nxt);$("pl-s").textContent=ST.l;
+  var nxt=Math.min(ST.t+2,10);$("gi").textContent=nxt+"$="+(ST.g+nxt);$("pl-s").textContent=ST.l;$("ail").textContent=EN.hp;
   rB("eb",EN.b,0);rB("pb",ST.b,1);rH();rS();
   var iP=PH==="p";
   $("br").disabled=!iP;$("bz").disabled=!iP;
@@ -302,6 +302,7 @@ function sGO(l){$("go").classList.add("show");$("rt").textContent=l?"你被淘�
 
 function hideLine(){var e=$("arr");e.style.display="none"}
 function showLine(fromX,fromY,toX,toY){var e=$("arr");var dx=toX-fromX,dy=toY-fromY;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=fromX+"px";e.style.top=fromY+"px";e.style.width=len+"px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.style.borderTop="1px dashed rgba(253,203,110,.6)";e.innerHTML=""}
+document.addEventListener("mouseup",function(){if(_drag){_drag.el.style.opacity="";_drag=null}});
 document.addEventListener("mousemove",function(e){
   var arr=$("arr");if(SI!==null&&SI<=(ST.h||[]).length-1&&ST.h[SI]&&ST.h[SI].t==="s"){
     var hc=document.querySelector(".hc.sel");if(hc){var r=hc.getBoundingClientRect();showLine(r.left+r.width/2,r.top+5,e.clientX,e.clientY)}
