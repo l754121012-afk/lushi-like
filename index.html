@@ -95,7 +95,7 @@ var lg=function(m){var e=$("log");e.innerHTML+="<div>"+m+"</div>";e.scrollTop=e.
 
 var R=function(){if(!ST)return;
   $("bh").textContent=ST.hp;$("bg").textContent=ST.g;$("pl-s").textContent=ST.l;
-  $("ail").textContent=ST.ail;$("aig").textContent=ST.aig;$("ai-s").textContent=ST.ail;$("bt").textContent=ST.t;
+  $("ail").textContent=ST.ail;$("aig").textContent=ST.aig;$("bt").textContent=ST.t;$("ehp").textContent=EN.hp;var nxt=Math.min(ST.t+2,10);$("gi").textContent="+"+nxt+"$="+(ST.g+nxt);
   $("sl").textContent=ST.l;$("nl").textContent=Math.min(ST.l+1,7);$("lc").textContent=ST.l<7?LC[ST.l]:"MAX";
   $("ehp").textContent=EN.hp;$("php").textContent=ST.hp;
   $("ac").textContent=EN.b.filter(function(x){return x}).length;
@@ -317,10 +317,10 @@ $("br").onclick=function(){if(ST&&ST.g>=1&&PH==="p"&&!ST.fz){ST.g-=1;ST.sh=gs(ST
 $("bz").onclick=function(){if(ST&&PH==="p"){ST.fz=ST.fz?0:1;if(ST.fz){$("fzi").textContent="[冻结]"}R()}};
 $("bl").onclick=function(){if(ST&&ST.l<7){var c=LC[ST.l];if(ST.g>=c&&PH==="p"){ST.g-=c;ST.l++;ST.sh=gs(ST.l,ST.fz);if(!ST.fz)for(var i=0;i<ST.sh.length;i++)ST.sh[i].b=0;R()}}};
 $("bf").onclick=ft;
-$("diff-e").onclick=function(){AI_DIFF=1;[$("diff-e"),$("diff-m"),$("diff-h")].forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
-$("diff-m").onclick=function(){AI_DIFF=2;[$("diff-e"),$("diff-m"),$("diff-h")].forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
-$("diff-h").onclick=function(){AI_DIFF=3;[$("diff-e"),$("diff-m"),$("diff-h")].forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
 
 
-document.getElementById("btn-start").onclick=sg;
+
+
+
+var DB=document.getElementById;var D1=DB("diff-e"),D2=DB("diff-m"),D3=DB("diff-h"),DA=[D1,D2,D3];D1.onclick=function(){AI_DIFF=1;DA.forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};D2.onclick=function(){AI_DIFF=2;DA.forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};D3.onclick=function(){AI_DIFF=3;DA.forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};DB("btn-start").onclick=sg;
 </script></body></html>
