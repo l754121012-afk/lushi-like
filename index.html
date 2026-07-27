@@ -4,7 +4,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidden;height:100vh}
 #app{display:none;flex-direction:column;height:100vh;max-width:900px;margin:auto;padding:4px}
-#bar{display:flex;gap:8px;background:#16213e;padding:4px 8px;border-radius:4px;margin-bottom:4px;font-size:13px}
+#bar{display:flex;gap:8px;background:#16213e;padding:4px 8px;border-radius:4px;margin-bottom:4px;font-size:13px;flex-wrap:wrap}
 .hp{color:#ff6b6b;font-weight:700}.go{color:#fdcb6e;font-weight:700}.lv{color:#74b9ff}
 #brd{display:flex;gap:4px;flex:1;min-height:0}
 .side{flex:1;background:#16213e;border-radius:4px;padding:4px;display:flex;flex-direction:column}
@@ -18,33 +18,52 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 .sl .nm{font-size:9px;color:#dfe6e9;text-align:center;max-width:62px;overflow:hidden}
 .sl .st{font-size:11px;font-weight:700}.sl .a{color:#ff6b6b}.sl .h{color:#55efc4}
 .sl .ti{position:absolute;top:1px;right:2px;font-size:7px;color:#636e72}
-#shop{background:#16213e;border-radius:4px;padding:4px;margin-top:4px;flex-shrink:0}
-#shdr{font-size:12px;margin-bottom:4px}
+.sl .st{position:absolute;bottom:1px;left:2px;font-size:9px;color:#fdcb6e}
+#hand{flex-shrink:0;background:#16213e;border-radius:4px;padding:4px;margin-top:2px;min-height:40px}
+#hand .hdr{font-size:11px;color:#636e72;margin-bottom:2px}
+#hc{display:flex;gap:4px;flex-wrap:wrap}
+.hc{width:60px;background:#2d3047;border:1px solid #4a4d6b;border-radius:4px;padding:2px;cursor:pointer;text-align:center;font-size:9px;position:relative;transition:all .15s}
+.hc:hover{border-color:#fdcb6e;transform:translateY(-4px)}
+.hc .st{font-size:10px;font-weight:700}
+.hc .st .a{color:#ff6b6b}.hc .st .h{color:#55efc4}
+#shop{background:#16213e;border-radius:4px;padding:4px;margin-top:2px;flex-shrink:0}
+#shdr{font-size:12px;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+#shdr .fz{color:#74b9ff;font-size:10px}
 #si{display:flex;gap:4px;flex-wrap:wrap}
-.sc{width:66px;background:#2d3047;border:1px solid #4a4d6b;border-radius:4px;padding:3px;cursor:pointer;text-align:center;font-size:10px}
-.sc:hover{border-color:#fdcb6e}.sc.b{opacity:.3;cursor:default}
+.sc{width:66px;background:#2d3047;border:1px solid #4a4d6b;border-radius:4px;padding:3px;cursor:pointer;text-align:center;font-size:10px;transition:all .15s}
+.sc:hover{border-color:#fdcb6e;transform:translateY(-3px)}.sc.b{opacity:.3;cursor:default}
+.sc.frozen{border-color:#74b9ff;box-shadow:0 0 6px rgba(116,185,255,.4)}
 #act{display:flex;gap:4px;padding:4px 0;flex-shrink:0;align-items:center;flex-wrap:wrap}
-#act button{padding:4px 10px;border-radius:4px;border:none;cursor:pointer;font-size:12px;color:#fff;transition:all .15s}
+#act button{padding:4px 8px;border-radius:4px;border:none;cursor:pointer;font-size:12px;color:#fff;transition:all .15s}
 #act button:disabled{opacity:.4}
-#br{background:#636e72}#bl{background:#74b9ff}#bf{background:#e17055}
+#br{background:#636e72}#bl{background:#74b9ff}#bf{background:#e17055}#bz{background:#0984e3}
 #log{max-height:48px;overflow:auto;background:#0f0f1a;border-radius:4px;padding:2px 6px;font-size:11px;color:#636e72;margin-top:2px;flex-shrink:0}
 #cs{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;flex-direction:column;align-items:center;justify-content:center}
 #cs h1{color:#fdcb6e;font-size:28px}#cs button{width:180px;padding:14px;background:#2d3047;border:2px solid #4a4d6b;border-radius:8px;color:#fff;font-size:16px;cursor:pointer;margin-top:12px}
 #go{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;flex-direction:column;align-items:center;justify-content:center}
 #go.show{display:flex}#go h1{font-size:32px}#go .b{background:#fdcb6e;color:#1a1a2e;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;margin-top:10px}
 #ast{position:fixed;top:6px;left:50%;transform:translateX(-50%);background:#fdcb6e;color:#1a1a2e;padding:4px 16px;border-radius:4px;font-size:13px;font-weight:700;z-index:60;display:none}
+#arr{position:fixed;pointer-events:none;z-index:55}
+#dp{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:80}
+#dp.show{display:flex}#dp h3{color:#fdcb6e;font-size:18px;margin-bottom:10px}
+#di{display:flex;gap:10px}
+.dc{width:100px;background:#2d3047;border:2px solid #fdcb6e;border-radius:6px;padding:8px;cursor:pointer;text-align:center}
+.dc:hover{transform:scale(1.08);border-color:#ffeaa7}
 </style></head><body>
 <div id="ast"></div>
+<div id="arr"></div>
 <div id="cs"><h1>炉石旅人</h1><div style="color:#636e72">酒馆战棋</div><button id="btn-start">开始游戏</button></div>
 <div id="go"><h1 id="rt"></h1><p id="rtt"></p><p id="rtg" style="color:#fdcb6e"></p><button class="b" onclick="location.reload()">再来一局</button></div>
+<div id="dp"><h3 style="color:#fdcb6e">三连发现!</h3><p style="color:#b2bec3;margin-bottom:10px">选择一张高1星的牌加入手牌</p><div id="di"></div></div>
 <div id="app">
 <div id="bar"><span class="hp">HP <span id="bh">30</span></span><span class="go">$ <span id="bg">3</span></span><span class="lv">Lv <span id="blv">1</span></span><span style="color:#b2bec3">AI Lv <span id="ail">1</span> $ <span id="aig">3</span></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span></div>
 <div id="brd">
 <div class="side"><div class="hdr">AI <span id="ac">0</span>只</div><div class="hr"><div class="hi ahi" id="ahi">AI</div>HP:<span id="ehp">30</span></div><div class="sr" id="eb"></div></div>
 <div class="side"><div class="hdr">我 <span id="pc">0</span>只</div><div class="hr"><div class="hi phi" id="phi">ME</div>HP:<span id="php">30</span></div><div class="sr" id="pb"></div></div>
 </div>
-<div id="shop"><div id="shdr">Lv<span id="sl">1</span> -> Lv<span id="nl">2</span> $<span id="lc">5</span></div><div id="si"></div></div>
-<div id="act"><button id="br">刷新($1)</button><button id="bl">升级</button><button id="bf">开打</button><span id="aii"></span></div>
+<div id="hand"><div class="hdr">手牌 <span id="hand-cnt">0</span>/10</div><div id="hc"></div></div>
+<div id="shop"><div id="shdr"><span>Lv<span id="sl">1</span> -> Lv<span id="nl">2</span> $<span id="lc">5</span></span><span class="fz" id="fz-indicator"></span></div><div id="si"></div></div>
+<div id="act"><button id="br">刷新($1)</button><button id="bz">冻结</button><button id="bl">升级</button><button id="bf">开打</button><span id="aii"></span></div>
 <div id="log">[日志]</div>
 </div>
 <script>
@@ -57,12 +76,20 @@ var PH="i",ST=null,EN=null,ID=0;
 function $(i){return document.getElementById(i)}
 function ni(){return"m"+(ID++)}
 function delay(ms){return new Promise(function(r){setTimeout(r,ms)})}
-function genShop(lv){var odds=TO[lv],cards=[];for(var i=0;i<5;i++){var r=Math.random(),acc=0,tier=1;for(var j=0;j<odds.length;j++){acc+=odds[j];if(r<acc){tier=j+1;break}}var src=C[tier-1][Math.floor(Math.random()*C[tier-1].length)];cards.push({n:src.n,a:src.a,h:src.h,s:src.s,k:src.k||"",id:ni()})}return cards}
+function genShop(lv,frozen){if(frozen)return ST.sh;var odds=TO[lv],cards=[];for(var i=0;i<5;i++){var r=Math.random(),acc=0,tier=1;for(var j=0;j<odds.length;j++){acc+=odds[j];if(r<acc){tier=j+1;break}}var src=C[tier-1][Math.floor(Math.random()*C[tier-1].length)];cards.push({n:src.n,a:src.a,h:src.h,s:src.s,k:src.k||"",id:ni()})}return cards}
 function log(m){var el=$("log");el.innerHTML+="<div>"+m+"</div>";el.scrollTop=el.scrollHeight;console.log(m)}
-function R(){if(!ST)return;$("bh").textContent=ST.hp;$("bg").textContent=ST.g;$("blv").textContent=ST.l;$("ail").textContent=ST.ail;$("aig").textContent=ST.aig;$("bt").textContent=ST.t;$("sl").textContent=ST.l;$("nl").textContent=Math.min(ST.l+1,7);$("lc").textContent=ST.l<7?LC[ST.l]:"MAX";$("ehp").textContent=EN.hp;$("php").textContent=ST.hp;$("ac").textContent=EN.b.filter(function(x){return x}).length;$("pc").textContent=ST.b.filter(function(x){return x}).length;rB("eb",EN.b);rB("pb",ST.b,1);rS();var iP=PH==="p";$("br").disabled=!iP;$("bl").disabled=!iP||ST.l>=7||ST.g<LC[ST.l];$("bf").disabled=!iP;$("aii").textContent=PH==="a"?"AI招募...":PH==="p"?"到你!":PH==="c"?"战斗中...":""}
-function rB(id,board,isPlayer){var el=$(id);el.innerHTML="";for(var i=0;i<7;i++){var m=board[i];var d=document.createElement("div");d.className="sl";if(!m){if(isPlayer&&PH==="p")d.innerHTML="+";el.appendChild(d);continue}d.classList.add("has");d.dataset.mid=m.id;if(isPlayer)d.classList.add("pl");d.innerHTML="<div class=nm>"+m.n+"</div><div class=st><span class=a>"+m.a+"</span>/<span class=h>"+m.h+"</span></div><div class=ti>"+m.s+"</div>";if(isPlayer)(function(idx){d.onclick=function(){if(PH==="p"){ST.b[idx]=null;ST.g+=1;R()}}})(i);el.appendChild(d)}}
-function rS(){var el=$("si");el.innerHTML="";if(!ST.sh)return;for(var i=0;i<ST.sh.length;i++){var c=ST.sh[i];if(!c)continue;var d=document.createElement("div");d.className="sc";if(c.b)d.classList.add("b");d.innerHTML="<b>"+c.n+"</b> "+c.a+"/"+c.h+" $3";if(!c.b)(function(card){d.onclick=function(){if(ST.g>=3&&PH==="p"){var ei=ST.b.findIndex(function(x){return!x});if(ei>=0){ST.g-=3;card.b=1;ST.b[ei]={n:card.n,a:card.a,h:card.h,s:card.s,k:card.k,id:ni()};R();cm()}}}})(c);el.appendChild(d)}}
-function cm(){for(var i=0;i<7;i++){var m=ST.b[i];if(!m)continue;var same=[i];for(var j=i+1;j<7;j++)if(ST.b[j]&&ST.b[j].n===m.n)same.push(j);if(same.length>=3){for(var x=0;x<3;x++)ST.b[same[x]]=null;var ei=ST.b.findIndex(function(x){return!x});if(ei>=0)ST.b[ei]={n:m.n,a:m.a*2,h:m.h*2,s:Math.min(m.s+1,7),k:m.k,id:ni(),g:1};R();return}}}
+
+function R(){if(!ST)return;$("bh").textContent=ST.hp;$("bg").textContent=ST.g;$("blv").textContent=ST.l;$("ail").textContent=ST.ail;$("aig").textContent=ST.aig;$("bt").textContent=ST.t;$("sl").textContent=ST.l;$("nl").textContent=Math.min(ST.l+1,7);$("lc").textContent=ST.l<7?LC[ST.l]:"MAX";$("ehp").textContent=EN.hp;$("php").textContent=ST.hp;$("ac").textContent=EN.b.filter(function(x){return x}).length;$("pc").textContent=ST.b.filter(function(x){return x}).length;rB("eb",EN.b);rB("pb",ST.b,1);rH();rS();var iP=PH==="p";$("br").disabled=!iP;$("bz").disabled=!iP;$("bl").disabled=!iP||ST.l>=7||ST.g<LC[ST.l];$("bf").disabled=!iP;$("aii").textContent=PH==="a"?"AI招募...":PH==="p"?"到你!":PH==="c"?"战斗中...":""}
+
+function rB(id,board,isPlayer){var el=$(id);el.innerHTML="";for(var i=0;i<7;i++){var m=board[i];var d=document.createElement("div");d.className="sl";if(!m){if(isPlayer&&PH==="p")d.innerHTML="+";el.appendChild(d);continue}d.classList.add("has");d.dataset.mid=m.id;if(isPlayer)d.classList.add("pl");var s2=m.s?"<div class=st>"+"&#x2b50;".repeat(Math.min(m.s,3))+(m.s>3?"+":"")+"</div>":"";d.innerHTML="<div class=nm>"+m.n+"</div><div class=st><span class=a>"+m.a+"</span>/<span class=h>"+m.h+"</span></div>"+s2;if(isPlayer)(function(idx){d.onclick=function(){if(PH==="p"){ST.b[idx]=null;ST.g+=1;R()}}})(i);el.appendChild(d)}}
+
+function rH(){var el=$("hc");el.innerHTML="";var hand=ST.h||[];$("hand-cnt").textContent=hand.length;for(var i=0;i<hand.length;i++){var c=hand[i];var d=document.createElement("div");d.className="hc";var canPlay=PH==="p"&&ST.b.filter(function(x){return x}).length<7;if(!canPlay)d.style.opacity="0.5";d.innerHTML="<div>"+c.n+"</div><div class=st><span class=a>"+c.a+"</span>/<span class=h>"+c.h+"</span></div>";if(canPlay)(function(idx){d.onclick=function(){var ei=ST.b.findIndex(function(x){return!x});if(ei>=0){ST.h.splice(idx,1);ST.b[ei]={n:c.n,a:c.a,h:c.h,s:c.s,k:c.k||"",id:ni()};R();cm()}}})(i);el.appendChild(d)}}
+
+function rS(){var el=$("si");el.innerHTML="";$("fz-indicator").textContent=ST.fz?"[已冻结]":"";if(!ST.sh)return;for(var i=0;i<ST.sh.length;i++){var c=ST.sh[i];if(!c)continue;var d=document.createElement("div");d.className="sc"+(c.b?" b":"")+(ST.fz?" frozen":"");d.innerHTML="<b>"+c.n+"</b> "+c.a+"/"+c.h+" $3";if(!ST.fz&&!c.b)(function(card){d.onclick=function(){if(ST.g>=3&&PH==="p"){ST.g-=3;card.b=1;if(!ST.h)ST.h=[];ST.h.push({n:card.n,a:card.a,h:card.h,s:card.s,k:card.k||""});R()}}})(c);el.appendChild(d)}}
+
+function cm(){for(var i=0;i<7;i++){var m=ST.b[i];if(!m)continue;var same=[i];for(var j=i+1;j<7;j++)if(ST.b[j]&&ST.b[j].n===m.n)same.push(j);if(same.length>=3){for(var x=0;x<3;x++)ST.b[same[x]]=null;var ei=ST.b.findIndex(function(x){return!x});if(ei>=0)ST.b[ei]={n:m.n,a:m.a*2,h:m.h*2,s:Math.min(m.s+1,7),k:m.k,id:ni(),g:1};if(m.s<7){sd(m.s+1)}R();return}}}
+
+function sd(t){var pool=C[t-1]||C[6],opts=[],used={};for(var i=0;i<3;i++){var c;do{c=pool[Math.floor(Math.random()*pool.length)]}while(used[c.n]);used[c.n]=1;opts.push({n:c.n,a:c.a,h:c.h,s:c.s,k:c.k||""})}var el=$("di");el.innerHTML="";for(var i=0;i<opts.length;i++){(function(card){var d=document.createElement("div");d.className="dc";d.innerHTML="<div>"+card.n+"</div><div>"+card.a+"/"+card.h+"</div><div style=color:#fdcb6e>"+"&#x2b50;".repeat(card.s)+"</div>";d.onclick=function(){if(!ST.h)ST.h=[];ST.h.push({n:card.n,a:card.a,h:card.h,s:card.s,k:card.k||""});$("dp").classList.remove("show");R()};el.appendChild(d)})(opts[i])}$("dp").classList.add("show")}
 
 async function aiTurn(){PH="a";R();log("AI回合 金"+ST.aig+" Lv"+ST.ail);await delay(500);var g=ST.aig,n=0;while(g>=3){var ei=EN.b.findIndex(function(x){return!x});if(ei<0||ei>=7)break;var sh=genShop(ST.ail);if(!sh.length)break;EN.b[ei]={n:sh[0].n,a:sh[0].a,h:sh[0].h,s:sh[0].s,k:sh[0].k,id:ni()};g-=3;n++;R();await delay(200)}if(n>0)log("AI买了"+n+"张 剩"+g+"金");var u=0;while(g>=6&&ST.ail<7&&g-LC[ST.ail]>=3&&EN.b.filter(function(x){return x}).length>=2){g-=LC[ST.ail];ST.ail++;u++;R();await delay(200)}if(u>0)log("AI升到Lv"+ST.ail+" 剩"+g+"金");n=0;while(g>=3){var ei=EN.b.findIndex(function(x){return!x});if(ei<0||ei>=7)break;var sh=genShop(ST.ail);if(!sh.length)break;EN.b[ei]={n:sh[0].n,a:sh[0].a,h:sh[0].h,s:sh[0].s,k:sh[0].k,id:ni()};g-=3;n++;R();await delay(200)}if(n>0)log("AI又买"+n+"张");ST.aig=g;log("到你!");PH="p";R()}
 
@@ -87,41 +114,47 @@ async function fight(){
   log("战斗:"+bt+"轮 你剩"+pr+" AI剩"+er);
   if(pr>0&&er===0)for(var i=0;i<pa.length;i++)if(pa[i])seq.push({a:pa[i].id,t:"ahi",tp:"h"});
   if(er>0&&pr===0)for(var i=0;i<ea.length;i++)if(ea[i])seq.push({a:ea[i].id,t:"phi",tp:"h"});
-  
-  // === 动画播放(极简版,直接DOM操作,0依赖) ===
+
+  // === 动画: 箭头 + 闪烁 ===
   var ast=$("ast");
-  if(seq.length>0){ast.style.display="block";ast.textContent="战斗动画 "+seq.length+"步";await delay(200);}
+  if(seq.length>0){ast.style.display="block";ast.textContent="战斗 "+seq.length+"步";await delay(200);}
   for(var si=0;si<seq.length;si++){
     var s=seq[si];
-    ast.textContent="第"+(si+1)+"/"+seq.length+"步"+(s.tp==="h"?"打脸":"交锋");
+    ast.textContent="第"+(si+1)+"/"+seq.length+"步";
     if(s.tp==="m"||s.tp==="h"){
       var ae=s.tp==="m"?document.querySelector('[data-mid="'+s.a+'"]'):document.querySelector('[data-mid="'+s.a+'"]');
       var te=s.tp==="h"?document.getElementById(s.t):document.querySelector('[data-mid="'+s.t+'"]');
-      // 攻击者发白光
+      // 箭头
+      if(ae&&te){showArrow(ae,te);await delay(300);}
+      // 攻击者闪白
       if(ae){var ob=ae.style.background;ae.style.background="#666";setTimeout(function(){ae.style.background=ob},200)}
       // 目标闪红
-      if(te){var ob2=te.style.background;var ob3=te.style.borderColor;te.style.background="#6b2020";te.style.borderColor="#f00";setTimeout(function(){te.style.background=ob2;te.style.borderColor=ob3},500)}
-      await delay(550);
+      if(te){var ob2=te.style.background;te.style.background="#6b2020";te.style.borderColor="#f00";setTimeout(function(){te.style.background=ob2;te.style.borderColor=""},400)}
+      await delay(500);
+      hideArrow();
     }else if(s.d){
       var de=document.querySelector('[data-mid="'+s.d+'"]');
       if(de){de.style.opacity="0.2";await delay(300);de.style.opacity="1"}else await delay(100);
     }else await delay(100);
   }
   ast.style.display="none";
-  
+
   ST.b=makeBoard(pa);EN.b=makeBoard(ea);
   ST.t++;var ed=EN.b.filter(function(x){return x}).length,pd=ST.b.filter(function(x){return x}).length;
   if(ed>0)ST.hp-=ed;if(pd>0)EN.hp-=pd;
   var ga=Math.min(ST.t+2,10);ST.g+=ga;ST.aig+=ga;
   log("回合"+ST.t+" HP:"+ST.hp+"/"+EN.hp+" +"+ga+"金");
   if(ST.hp<=0||EN.hp<=0){showGO(ST.hp<=0);return}
-  ST.sh=genShop(ST.l);for(var i=0;i<ST.sh.length;i++)ST.sh[i].b=0;
+  ST.sh=genShop(ST.l,ST.fz);if(!ST.fz)for(var i=0;i<ST.sh.length;i++)ST.sh[i].b=0;
   await aiTurn();
 }
+function showArrow(f,t){var e=$("arr");var fr=f.getBoundingClientRect(),tr=t.getBoundingClientRect();var sx=fr.left+fr.width/2,sy=fr.top+5,ex=tr.left+tr.width/2,ey=tr.top+tr.height/2;var dx=ex-sx,dy=ey-sy;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=sx+"px";e.style.top=sy+"px";e.style.width=len+"px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.innerHTML="<div style='width:100%;height:2px;background:linear-gradient(90deg,rgba(253,203,110,.8),rgba(253,203,110,.3));position:relative'><div style='position:absolute;right:-6px;top:-5px;border-left:8px solid #fdcb6e;border-top:5px solid transparent;border-bottom:5px solid transparent'></div></div>"}
+function hideArrow(){$("arr").style.display="none"}
 function showGO(l){$("go").classList.add("show");$("rt").textContent=l?"你被淘汰了":"你赢了!";$("rtt").textContent="存活回合:"+ST.t;$("rtg").textContent="Lv"+ST.l+" 金"+ST.g}
-function startGame(){$("cs").style.display="none";$("app").style.display="flex";$("log").innerHTML="";ID=0;ST={t:1,g:3,hp:30,b:new Array(7).fill(null),l:1,sh:[],aig:3,ail:1};EN={hp:30,b:new Array(7).fill(null)};ST.sh=genShop(1);log("游戏开始!");aiTurn()}
-$("br").onclick=function(){if(ST&&ST.g>=1&&PH==="p"){ST.g-=1;ST.sh=genShop(ST.l);R()}};
-$("bl").onclick=function(){if(ST&&ST.l<7){var c=LC[ST.l];if(ST.g>=c&&PH==="p"){ST.g-=c;ST.l++;ST.sh=genShop(ST.l);R()}}};
+function startGame(){$("cs").style.display="none";$("app").style.display="flex";$("log").innerHTML="";ID=0;ST={t:1,g:3,hp:30,b:new Array(7).fill(null),l:1,sh:[],aig:3,ail:1,h:[],fz:0};EN={hp:30,b:new Array(7).fill(null)};ST.sh=genShop(1);log("游戏开始!");aiTurn()}
+$("br").onclick=function(){if(ST&&ST.g>=1&&PH==="p"&&!ST.fz){ST.g-=1;ST.sh=genShop(ST.l);R()}};
+$("bz").onclick=function(){if(ST&&PH==="p"){ST.fz=ST.fz?0:1;R()}};
+$("bl").onclick=function(){if(ST&&ST.l<7){var c=LC[ST.l];if(ST.g>=c&&PH==="p"){ST.g-=c;ST.l++;ST.sh=genShop(ST.l);ST.fz=0;R()}}};
 $("bf").onclick=fight;
 document.getElementById("btn-start").onclick=startGame;
 </script></body></html>
