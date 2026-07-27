@@ -107,13 +107,16 @@ var rB=function(id,b,isP){var el=$(id);el.innerHTML="";
   if(isP)d.classList.add("pl");if(m.g)d.classList.add("golden");
   var ss=m.s?"<div class=ss>"+"&#x2b50;".repeat(Math.min(m.s,7))+"</div>":"";var hpPct=((m.h/(m.mh||m.h))*100)+"%";
   d.innerHTML=ss+"<div class=nm>"+m.n+"</div><div class=ah><span class=a>&#x2694;"+m.a+"</span>/<span class=h>&#x2764;"+m.h+"</span></div><div class=hpbar style=width:"+hpPct+"></div>";
-  if(isP)(function(idx){d.onclick=function(){
+  if(isP)(function(idx,_m){d.onclick=function(){
     if(PH!=="p")return;
     if(SI!==null){var sp=ST.h[SI];if(sp&&sp.t==="s"){ST.h.splice(SI,1);SI=null;
-      if(sp.e){m.a+=sp.e.a||0;m.h+=sp.e.h||0;if(m.mh)m.mh+=sp.e.h||0;lg(sp.n+"->"+m.n)}
-    }R();return}
+      if(sp.e&&_m){_m.a+=sp.e.a||0;_m.h+=sp.e.h||0;if(_m.mh)_m.mh+=sp.e.h||0;
+        _m.style_outline="";_m.style_borderColor="#55efc4";_m.style_boxShadow="0 0 20px rgba(85,239,196,.8)";
+        lg(sp.n+"->"+_m.n);setTimeout(function(){if(_m){_m.style_borderColor="";_m.style_boxShadow=""}},600)
+      }
+    }hideLine();R();return}
     ST.b[idx]=null;R()
-  }})(i);el.appendChild(d)}};
+  }})(i,m);el.appendChild(d)}};
 
 var rH=function(){var el=$("hc");el.innerHTML="";var h=ST.h||[];$("hcnt").textContent=h.length;
   for(var i=0;i<h.length;i++){var c=h[i];var d=document.createElement("div");d.className="hc";
@@ -122,13 +125,13 @@ var rH=function(){var el=$("hc");el.innerHTML="";var h=ST.h||[];$("hcnt").textCo
     if(PH==="p")(function(idx){d.onclick=function(){
       if(SI===idx){SI=null}else{SI=idx}R()}})(i)}else{
     d.innerHTML="<div>"+c.n+"</div><div class=hds><span class=a>"+c.a+"</span>/<span class=h>"+c.h+"</span></div>";
-    if(PH==="p")(function(idx){d.onclick=function(){
+    if(PH==="p")(function(idx,_c){d.onclick=function(){
       if(SI!==null){var sp=ST.h[SI];if(sp&&sp.t==="s"){ST.h.splice(SI,1);SI=null;
-        if(sp.e){c.a+=sp.e.a||0;c.h+=sp.e.h||0;lg(sp.n+"->"+c.n)}
-      }R();return}
+        if(sp.e&&_c){_c.a+=sp.e.a||0;_c.h+=sp.e.h||0;lg(sp.n+"->"+_c.n);lg("OK")}
+      }hideLine();R();return}
       var ei=ST.b.findIndex(function(x){return!x});
       if(ei>=0){ST.h.splice(idx,1);ST.b[ei]={n:c.n,a:c.a,h:c.h,s:c.s,k:c.k||"",t:"m",mh:c.h,id:ni()};R();cm()}
-    }})(i)}el.appendChild(d)}};
+    }})(i,c)}el.appendChild(d)}};
 
 var rS=function(){var el=$("si");el.innerHTML="";$("fzi").textContent=ST.fz?"[冻结]":"";
   if(!ST.sh)return;
@@ -207,6 +210,15 @@ async function ft(){
 }
 function af(f,t,e){var fr=f.getBoundingClientRect(),tr=t.getBoundingClientRect();var sx=fr.left+fr.width/2,sy=fr.top+5,ex=tr.left+tr.width/2,ey=tr.top+tr.height/2;var dx=ex-sx,dy=ey-sy;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=sx+"px";e.style.top=sy+"px";e.style.width="0px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.innerHTML="<div style='width:100%;height:2px;background:linear-gradient(90deg,rgba(253,203,110,.9),rgba(253,203,110,.3));position:relative'><div style='position:absolute;right:-6px;top:-5px;border-left:8px solid #fdcb6e;border-top:5px solid transparent;border-bottom:5px solid transparent'></div></div>";requestAnimationFrame(function(){requestAnimationFrame(function(){e.style.transition="width .25s ease-out";e.style.width=len+"px"})})}
 function sGO(l){$("go").classList.add("show");$("rt").textContent=l?"你被淘汰了":"你赢了!";$("rtt").textContent="存活回合:"+ST.t;$("rtg").textContent="Lv"+ST.l+" 金"+ST.g}
+
+function hideLine(){var e=$("arr");e.style.display="none"}
+function showLine(fromX,fromY,toX,toY){var e=$("arr");var dx=toX-fromX,dy=toY-fromY;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=fromX+"px";e.style.top=fromY+"px";e.style.width=len+"px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.style.borderTop="1px dashed rgba(253,203,110,.6)";e.innerHTML=""}
+document.addEventListener("mousemove",function(e){
+  var arr=$("arr");if(SI!==null&&SI<=(ST.h||[]).length-1&&ST.h[SI]&&ST.h[SI].t==="s"){
+    var hc=document.querySelector(".hc.sel");if(hc){var r=hc.getBoundingClientRect();showLine(r.left+r.width/2,r.top+5,e.clientX,e.clientY)}
+  }else if(arr&&arr.style.display!=="none"){hideLine()}
+});
+
 function sg(){$("cs").style.display="none";$("app").style.display="flex";$("log").innerHTML="";ID=0;ST={t:1,g:3,hp:30,b:new Array(7).fill(null),l:1,sh:[],aig:3,ail:1,h:[],fz:0};EN={hp:30,b:new Array(7).fill(null)};ST.sh=gs(1);lg("游戏开始!");aT()}
 $("br").onclick=function(){if(ST&&ST.g>=1&&PH==="p"&&!ST.fz){ST.g-=1;ST.sh=gs(ST.l);R()}};
 $("bz").onclick=function(){if(ST&&PH==="p"){ST.fz=ST.fz?0:1;R()}};
