@@ -64,7 +64,7 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 <div id="go"><h1 id="rt"></h1><p id="rtt"></p><p id="rtg" style="color:#fdcb6e"></p><button class="b" onclick="location.reload()">再来一局</button></div>
 <div id="dp"><h3 style="color:#fdcb6e">三连发现!</h3><p style="color:#b2bec3;margin-bottom:10px">选择一张高1星牌</p><div id="di"></div></div>
 <div id="app">
-<div id="bar"><span>HP<span id="bh">30</span></span><span>$<span id="bg">3</span></span><span>Lv<span id="blv">1</span> &#x2b50;<span id="pl-s">1</span></span><span id="gi"></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span style="color:#b2bec3">AI Lv<span id="ail">1</span> $<span id="aig">3</span> &#x2b50;<span id="ai-s">1</span></span></div>
+<div id="bar"><span class=hp>HP<span id="bh">30</span></span><span class=go>$<span id="bg">3</span></span><span class=lv>&#x2b50;<span id="pl-s">1</span></span><span id="gi" style="color:#fdcb6e;font-size:11px"></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span style="color:#b2bec3;margin-left:6px">AI Lv<span id="ail">1</span> $<span id="aig">3</span> &#x2b50;<span id="ai-s">1</span></span></div>
 <div id="brd">
 <div class="side"><div class="hdr">我 <span id="pc">0</span>只</div><div class="hr"><div class="hi phi" id="phi">ME</div>HP:<span id="php">30</span></div><div class="sr" id="pb"></div></div>
 <div class="side"><div class="hdr">AI <span id="ac">0</span>只</div><div class="hr"><div class="hi ahi" id="ahi">AI</div>HP:<span id="ehp">30</span></div><div class="sr" id="eb"></div></div>
@@ -101,7 +101,7 @@ var R=function(){if(!ST)return;
   $("ac").textContent=EN.b.filter(function(x){return x}).length;
   $("pc").textContent=ST.b.filter(function(x){return x}).length;
   // 金币预告:下回合+R.t+2金,总共ST.g+min(ST.t+2,10)金
-  var nxt=Math.min(ST.t+2,10);$("gi").textContent="+"+nxt+"$="+(ST.g+nxt);$("pl-s").textContent=ST.l;
+  var nxt=Math.min(ST.t+2,10);$("gi").textContent=" +"+nxt+"$="+(ST.g+nxt);$("pl-s").textContent=ST.l;
   rB("eb",EN.b,0);rB("pb",ST.b,1);rH();rS();
   var iP=PH==="p";
   $("br").disabled=!iP;$("bz").disabled=!iP;
@@ -313,7 +313,7 @@ $("br").onclick=function(){if(ST&&ST.g>=1&&PH==="p"&&!ST.fz){ST.g-=1;ST.sh=gs(ST
 $("bz").onclick=function(){if(ST&&PH==="p"){ST.fz=ST.fz?0:1;if(ST.fz){$("fzi").textContent="[冻结]"}R()}};
 $("bl").onclick=function(){if(ST&&ST.l<7){var c=LC[ST.l];if(ST.g>=c&&PH==="p"){ST.g-=c;ST.l++;ST.sh=gs(ST.l,ST.fz);if(!ST.fz)for(var i=0;i<ST.sh.length;i++)ST.sh[i].b=0;R()}}};
 $("bf").onclick=ft;
-document.getElementById("diff-e").onclick=function(){AI_DIFF=1;document.querySelectorAll("#cs .cl button").forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
+document.getElementById("diff-e").onclick=function(){AI_DIFF=1;var btns=[$("diff-e"),$("diff-m"),$("diff-h")];btns.forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
 document.getElementById("diff-m").onclick=function(){AI_DIFF=2;document.querySelectorAll("#cs .cl button").forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
 document.getElementById("diff-h").onclick=function(){AI_DIFF=3;document.querySelectorAll("#cs .cl button").forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
 document.getElementById("btn-start").onclick=sg;
