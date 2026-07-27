@@ -66,8 +66,8 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 <div id="app">
 <div id="bar"><span class="hp">HP <span id="bh">30</span></span><span class="go">$ <span id="bg">3</span></span><span class="lv">Lv <span id="blv">1</span></span><span style="color:#b2bec3">AI Lv <span id="ail">1</span> $<span id="aig">3</span> &#x2b50;<span id="ai-s">0</span></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span id="gi"></span></div>
 <div id="brd">
-<div class="side"><div class="hdr">AI <span id="ac">0</span>只</div><div class="hr"><div class="hi ahi" id="ahi">AI</div>HP:<span id="ehp">30</span></div><div class="sr" id="eb"></div></div>
 <div class="side"><div class="hdr">我 <span id="pc">0</span>只</div><div class="hr"><div class="hi phi" id="phi">ME</div>HP:<span id="php">30</span></div><div class="sr" id="pb"></div></div>
+<div class="side"><div class="hdr">AI <span id="ac">0</span>只</div><div class="hr"><div class="hi ahi" id="ahi">AI</div>HP:<span id="ehp">30</span></div><div class="sr" id="eb"></div></div>
 </div>
 <div id="hand"><div class="hdr">手牌 <span id="hcnt">0</span>/10 <span id="htip" style="color:#fdcb6e;font-size:10px"></span></div><div id="hc"></div></div>
 <div id="shop"><div id="shdr"><span>Lv<span id="sl">1</span> -> Lv<span id="nl">2</span> $<span id="lc">5</span></span><span class="fz" id="fzi"></span></div><div id="si"></div></div>
@@ -166,55 +166,78 @@ var sd=function(t){var pool=C[t-1]||C[6],opts=[],used={};
 
 var AI_DIFF=2;
 
-async function aT(){PH="a";R();lg("AI回合(Lv"+AI_DIFF+") 金"+ST.aig+" Lv"+ST.ail);await dl(500);
-  var g=ST.aig,d=AI_DIFF;
+var AI_DIFF=2;
+
+// AI核心逻辑: 所有难度都会基本操作,节奏不同
+async function aT(){PH="a";R();lg("AI回合 金"+ST.aig+" Lv"+ST.ail);await dl(500);
+  var g=ST.aig,d=AI_DIFF,t=ST.t;
   
-  // Phase 1: 卖垃圾腾位置(中等以上)
-  if(d>=2){
-    var bcnt=EN.b.filter(function(x){return x}).length;
-    while(g>=3&&bcnt>=5){
-      var worst={idx:-1,val:999};
-      for(var wi=0;wi<7;wi++){var wm=EN.b[wi];if(wm&&wm.s<worst.val){worst={idx:wi,val:wm.s}}}
-      if(worst.idx>=0&&worst.val<=2){EN.b[worst.idx]=null;g+=1;bcnt--;R();await dl(100)}else break;
-    }
+  // === 卖垃圾: 所有难度都会,频率不同 ===
+  var bcnt=function(){return EN.b.filter(function(x){return x}).length};
+  var shop=gs(ST.ail);
+  var bestInShop=shop?shop.filter(function(x){return x.t==="m"}).sort(function(a,b){return b.s-a.s||(b.a+b.h)-(a.a+a.h)})[0]:null;
+  
+  // 如果场上有低星卡且商店有更好的,卖掉低星
+  var sellCount=0;
+  while(g>=3||sellCount<d){
+    var worst={idx:-1,val:999,sum:0};
+    for(var wi=0;wi<7;wi++){var wm=EN.b[wi];if(wm&&(wm.s<worst.val||(wm.s===worst.val&&wm.a+wm.h<worst.sum))){worst={idx:wi,val:wm.s,sum:wm.a+wm.h}}}
+    if(worst.idx<0)break;
+    // 低星(<=当前酒馆等级-2)才卖
+    var sellThreshold=d>=3?ST.ail-2:d>=2?ST.ail-3:0;
+    if(worst.val<=sellThreshold&&bestInShop&&bestInShop.s>worst.val){
+      EN.b[worst.idx]=null;g+=1;sellCount++;R();await dl(100);
+    }else break;
   }
   
-  // Phase 2: 升级酒馆
-  if(d>=3){// Hard: 有钱就升(至少留3金买一张)
-    while(ST.ail<7&&g-LC[ST.ail]>=3){if(g>=LC[ST.ail]){g-=LC[ST.ail];ST.ail++;R();await dl(200)}else break}
-  }else if(d>=2){// Medium: 场上>=2只且钱够升级就升(不留余钱)
-    var mc=EN.b.filter(function(x){return x}).length;
-    while(mc>=2&&ST.ail<7&&g>=LC[ST.ail]&&g>=5){g-=LC[ST.ail];ST.ail++;mc=EN.b.filter(function(x){return x}).length;R();await dl(200)}
-  }// Easy: 不升级
+  // === 升级酒馆: 节奏控制 ===
+  var lvCost=LC[ST.ail]||999;
+  if(ST.ail<7&&g>=lvCost){
+    var canUp=false;
+    if(d>=3)canUp=g-lvCost>=3&&bcnt()>=2; // Hard: 升完还够买1张且场上有兵
+    else if(d>=2)canUp=t>=ST.ail*2+3&&bcnt()>=2&&g>=lvCost+2; // Medium: 塔回合数节奏,慢1/3
+    else canUp=t>=ST.ail*4+2&&bcnt()>=3; // Easy: 很慢才升
+    if(canUp){g-=lvCost;ST.ail++;R();await dl(200)}
+  }
   
-  // Phase 3: 买牌
+  // === 买牌: 所有难度都会挑高星高属性 ===
   var n=0;
   while(g>=3){
     var ei=EN.b.findIndex(function(x){return!x});
-    if(ei<0||ei>=7)break;
-    var sh=gs(ST.ail);
-    if(!sh||!sh.length)break;
-    var picks=sh.filter(function(x){return x.t==="m"&&!x.b});
-    if(!picks.length)break;
-    var pick;
-    if(d>=3)pick=picks.sort(function(a,b){return b.s-a.s||(b.a+b.h)-(a.a+a.h)})[0];
-    else if(d>=2)pick=picks.sort(function(a,b){return(b.a+b.h)-(a.a+a.h)||b.s-a.s})[0];
-    else pick=picks[Math.floor(Math.random()*picks.length)];
-    if(!pick)break;
+    if(ei<0||ei>=7){
+      // 没空位: 尝试卖最差的
+      if(d>=2){var w2={idx:-1,val:0};for(var wi=0;wi<7;wi++){var wm=EN.b[wi];if(wm&&(wm.s<w2.val||!w2.idx)){w2={idx:wi,val:wm.s}}}
+      if(w2.idx>=0&&w2.val<=ST.ail-2){EN.b[w2.idx]=null;g+=1;R();await dl(100);ei=EN.b.findIndex(function(x){return!x})}
+      else break}
+      else break;
+    }
+    var sh=gs(ST.ail);if(!sh||!sh.length)break;
+    var picks=sh.filter(function(x){return x.t==="m"&&!x.b});if(!picks.length)break;
+    // 选最好的牌
+    var pick=picks.sort(function(a,b){return b.s-a.s||(b.a+b.h)-(a.a+a.h)})[0];
     EN.b[ei]={n:pick.n,a:pick.a,h:pick.h,s:pick.s,k:pick.k||"",t:"m",mh:pick.h,id:ni()};g-=3;n++;R();await dl(200);
-    // Hard: 买法术并施法
-    if(d>=3&&g>=1){
-      var sps=sh.filter(function(x){return x.t==="s"&&!x.b});
-      if(sps.length>0){var sp=sps[0];sp.b=1;var targets=EN.b.filter(function(x){return x});if(targets.length>0){var best=targets.sort(function(a,b){return(b.a+b.h)-(a.a+a.h)})[0];if(sp.e){best.a+=sp.e.a||0;best.h+=sp.e.h||0;if(best.mh)best.mh+=sp.e.h||0;lg("AI使用"+sp.n)}g-=1;R();await dl(200)}}
+    
+    // 用法术buff最强随从(所有难度)
+    var targets=EN.b.filter(function(x){return x});
+    var sps=sh.filter(function(x){return x.t==="s"&&!x.b});
+    if(sps.length>0&&targets.length>0&&g>=1&&(d>=3||Math.random()<0.5)){
+      var best=targets.sort(function(a,b){return(b.a+b.h)-(a.a+a.h)})[0];
+      var sp=sps[0];sp.b=1;
+      if(sp.e){best.a+=sp.e.a||0;best.h+=sp.e.h||0;if(best.mh)best.mh+=sp.e.h||0;lg("AI使用"+sp.n+"->"+best.n)}
+      g-=1;R();await dl(200);
     }
   }
-  if(n>0)lg("AI买"+n+"张 剩"+g+"金 Lv"+ST.ail);
+  if(n>0)lg("AI买"+n+"张剩"+g+"金 Lv"+ST.ail);
   
-  // Phase 4: 部署手牌
-  if(d>=2&&ST.h){
+  // === 部署手牌 ===
+  if(ST.h&&ST.h.length>0){
     for(var hi=ST.h.length-1;hi>=0;hi--){
       var hc=ST.h[hi];if(!hc||hc.t==="s")continue;
       var ei2=EN.b.findIndex(function(x){return!x});
+      if(ei2<0||ei2>=7){if(d>=2){//卖最弱的腾位
+        var w3={idx:-1,val:999};for(var wi=0;wi<7;wi++){var wm=EN.b[wi];if(wm&&wm.s<w3.val){w3={idx:wi,val:wm.s}}}
+        if(w3.idx>=0&&w3.val<=ST.ail-2){EN.b[w3.idx]=null;R();await dl(100);ei2=EN.b.findIndex(function(x){return!x})}else break
+      }else break}
       if(ei2<0||ei2>=7)break;
       EN.b[ei2]={n:hc.n,a:hc.a,h:hc.h,s:hc.s,k:hc.k||"",t:"m",mh:hc.h,id:ni()};
       ST.h.splice(hi,1);R();await dl(150);
