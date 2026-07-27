@@ -64,7 +64,7 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 <div id="go"><h1 id="rt"></h1><p id="rtt"></p><p id="rtg" style="color:#fdcb6e"></p><button class="b" onclick="location.reload()">再来一局</button></div>
 <div id="dp"><h3 style="color:#fdcb6e">三连发现!</h3><p style="color:#b2bec3;margin-bottom:10px">选择一张高1星牌</p><div id="di"></div></div>
 <div id="app">
-<div id="bar"><span class="hp">HP <span id="bh">30</span></span><span class="go">$ <span id="bg">3</span></span><span class="lv">Lv <span id="blv">1</span></span><span id="gi"></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span style="color:#b2bec3;margin-left:8px">AI Lv<span id="ail">1</span> $<span id="aig">3</span> &#x2b50;<span id="ai-s">0</span></span></div>
+<div id="bar"><span>HP<span id="bh">30</span></span><span>$<span id="bg">3</span></span><span>Lv<span id="blv">1</span> &#x2b50;<span id="pl-s">1</span></span><span id="gi"></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span style="color:#b2bec3">AI Lv<span id="ail">1</span> $<span id="aig">3</span> &#x2b50;<span id="ai-s">1</span></span></div>
 <div id="brd">
 <div class="side"><div class="hdr">我 <span id="pc">0</span>只</div><div class="hr"><div class="hi phi" id="phi">ME</div>HP:<span id="php">30</span></div><div class="sr" id="pb"></div></div>
 <div class="side"><div class="hdr">AI <span id="ac">0</span>只</div><div class="hr"><div class="hi ahi" id="ahi">AI</div>HP:<span id="ehp">30</span></div><div class="sr" id="eb"></div></div>
@@ -101,7 +101,7 @@ var R=function(){if(!ST)return;
   $("ac").textContent=EN.b.filter(function(x){return x}).length;
   $("pc").textContent=ST.b.filter(function(x){return x}).length;
   // 金币预告:下回合+R.t+2金,总共ST.g+min(ST.t+2,10)金
-  var nxt=Math.min(ST.t+2,10);$("gi").textContent="+"+nxt+"$="+(ST.g+nxt)+"";
+  var nxt=Math.min(ST.t+2,10);$("gi").textContent="+"+nxt+"$="+(ST.g+nxt);$("pl-s").textContent=ST.l;
   rB("eb",EN.b,0);rB("pb",ST.b,1);rH();rS();
   var iP=PH==="p";
   $("br").disabled=!iP;$("bz").disabled=!iP;
@@ -158,7 +158,7 @@ var cm=function(){for(var i=0;i<7;i++){var m=ST.b[i];if(!m||m.g)continue;
   if(same.length>=3){for(var x=0;x<3;x++)ST.b[same[x]]=null;
   var ei=ST.b.findIndex(function(x){return!x});
   if(ei>=0)ST.b[ei]={n:m.n,a:m.a*2,h:m.h*2,s:Math.min(m.s+1,7),k:m.k,id:ni(),mh:m.h*2,g:1};
-  if(m.s<7)sd(m.s+1);R();return}}};
+  if(m.s<=7)sd(m.s+1);R();return}}};
 var sd=function(t){var pool=(t>7?C[6].concat(T8):C[t-1]||C[6]),opts=[],used={};
   for(var i=0;i<3;i++){var c;do{c=pool[Math.floor(Math.random()*pool.length)]}while(used[c.n]);used[c.n]=1;opts.push({n:c.n,a:c.a,h:c.h,s:c.s,k:c.k||"",t:"m",mh:c.h})}
   var el=$("di");el.innerHTML="";
@@ -243,15 +243,28 @@ async function aT(){PH="a";R();lg("AI回合(Lv"+AI_DIFF+") 金"+ST.aig+" Lv"+ST.
     }
   }
   
-  ST.aig=g;lg("到你!");PH="p";R()}async function ft(){
+  // AI三连检测
+  for(var ai=0;ai<7;ai++){var am=EN.b[ai];if(!am||am.g)continue;
+    var asame=[ai];for(var aj=ai+1;aj<7;aj++)if(EN.b[aj]&&EN.b[aj].n===am.n&&!EN.b[aj].g)asame.push(aj);
+    if(asame.length>=3){for(var ax=0;ax<3;ax++)EN.b[asame[ax]]=null;
+    var aei=EN.b.findIndex(function(x){return!x});
+    if(aei>=0)EN.b[aei]={n:am.n,a:am.a*2,h:am.h*2,s:Math.min(am.s+1,7),k:am.k,id:ni(),mh:am.h*2,g:1};R();}
+  }
+  ST.aig=g;if(ST.fz){ST.fz=0}lg("到你!");PH="p";R()}async function ft(){
   if(PH!=="p")return;PH="c";R();lg("===开打===");
   var seq=[],pa=JSON.parse(JSON.stringify(ST.b)),ea=JSON.parse(JSON.stringify(EN.b)),bt=0;
   while(pa.some(function(x){return x})&&ea.some(function(x){return x})&&bt<50){
-    var pi=pa.findIndex(function(x){return x}),eii=ea.findIndex(function(x){return x});
+    var pList=pa.filter(function(x){return x}),eList=ea.filter(function(x){return x});
+    if(!pList.length||!eList.length)break;
+    var pi=pa.indexOf(pList[Math.floor(Math.random()*pList.length)]);
+    var eii=ea.indexOf(eList[Math.floor(Math.random()*eList.length)]);
     if(pi<0||eii<0)break;var p=pa[pi],e=ea[eii];
     e.h-=p.a;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:p.a});if(e.h<=0){ea[eii]=null;seq.push({d:e.id,nd:e.n})}
-    if(ea.some(function(x){return x})&&p.h>0){var ne=ea.findIndex(function(x){return x});
-      if(ne>=0){var en=ea[ne];p.h-=en.a;seq.push({a:en.id,t:p.id,tp:"m",na:en.n,ne:p.n,pd:en.a});if(p.h<=0){pa[pi]=null;seq.push({d:p.id,nd:p.n})}}}
+    if(ea.some(function(x){return x})&&p.h>0){
+      var eList2=ea.filter(function(x){return x});
+      if(eList2.length>0){var en=eList2[Math.floor(Math.random()*eList2.length)];var ne=ea.indexOf(en);
+      if(ne>=0){p.h-=en.a;seq.push({a:en.id,t:p.id,tp:"m",na:en.n,ne:p.n,pd:en.a});if(p.h<=0){pa[pi]=null;seq.push({d:p.id,nd:p.n})}}}
+    }
     bt++;pa=pa.filter(function(x){return x&&x.h>0});ea=ea.filter(function(x){return x&&x.h>0});
   }
   var pr=pa.filter(function(x){return x}).length,er=ea.filter(function(x){return x}).length;
@@ -297,11 +310,11 @@ document.addEventListener("mousemove",function(e){
 
 function sg(){$("cs").style.display="none";$("app").style.display="flex";$("log").innerHTML="";ID=0;ST={t:1,g:3,hp:30,b:new Array(7).fill(null),l:1,sh:[],aig:3,ail:1,h:[],fz:0};EN={hp:30,b:new Array(7).fill(null)};ST.sh=gs(1);lg("游戏开始!");aT()}
 $("br").onclick=function(){if(ST&&ST.g>=1&&PH==="p"&&!ST.fz){ST.g-=1;ST.sh=gs(ST.l);R()}};
-$("bz").onclick=function(){if(ST&&PH==="p"){ST.fz=ST.fz?0:1;R()}};
+$("bz").onclick=function(){if(ST&&PH==="p"){ST.fz=ST.fz?0:1;if(ST.fz){$("fzi").textContent="[冻结]"}R()}};
 $("bl").onclick=function(){if(ST&&ST.l<7){var c=LC[ST.l];if(ST.g>=c&&PH==="p"){ST.g-=c;ST.l++;ST.sh=gs(ST.l,ST.fz);if(!ST.fz)for(var i=0;i<ST.sh.length;i++)ST.sh[i].b=0;R()}}};
 $("bf").onclick=ft;
-document.getElementById("diff-e").onclick=function(){AI_DIFF=1;sg()};
-document.getElementById("diff-m").onclick=function(){AI_DIFF=2;sg()};
-document.getElementById("diff-h").onclick=function(){AI_DIFF=3;sg()};
+document.getElementById("diff-e").onclick=function(){AI_DIFF=1;document.querySelectorAll("#cs .cl button").forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
+document.getElementById("diff-m").onclick=function(){AI_DIFF=2;document.querySelectorAll("#cs .cl button").forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
+document.getElementById("diff-h").onclick=function(){AI_DIFF=3;document.querySelectorAll("#cs .cl button").forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
 document.getElementById("btn-start").onclick=sg;
 </script></body></html>
