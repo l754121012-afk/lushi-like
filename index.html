@@ -124,7 +124,10 @@ var rB=function(id,b,isP){var el=$(id);el.innerHTML="";
         lg(sp.n+"->"+_m.n);setTimeout(function(){if(_m){_m.style_borderColor="";_m.style_boxShadow=""}},600)
       }
     }hideLine();R();return}
-    ST.b[idx]=null;ST.g+=1;R()
+    if(window._swapIdx===idx){window._swapIdx=null;d.style.outline="";return}
+if(window._swapIdx!==null&&window._swapIdx!==idx){var tmp=ST.b[idx];ST.b[idx]=ST.b[window._swapIdx];ST.b[window._swapIdx]=tmp;window._swapIdx=null;R();return}
+window._swapIdx=idx;d.style.outline="2px solid #fdcb6e";setTimeout(function(){if(window._swapIdx===idx){window._swapIdx=null;d.style.outline=""}},3000)
+
   }})(i,m);el.appendChild(d)}};
 
 var rH=function(){var el=$("hc");el.innerHTML="";var h=ST.h||[];$("hcnt").textContent=h.length;
@@ -254,11 +257,11 @@ async function aT(){PH="a";R();lg("AI回合(Lv"+AI_DIFF+") 金"+ST.aig+" Lv"+ST.
   if(PH!=="p")return;PH="c";R();lg("===开打===");
   var seq=[],pa=JSON.parse(JSON.stringify(ST.b)),ea=JSON.parse(JSON.stringify(EN.b)),bt=0;
   while(pa.some(function(x){return x})&&ea.some(function(x){return x})&&bt<50){
-    var pList=pa.filter(function(x){return x}),eList=ea.filter(function(x){return x});
-    if(!pList.length||!eList.length)break;
-    var pi=pa.indexOf(pList[Math.floor(Math.random()*pList.length)]);
+    var pi=pa.findIndex(function(x){return x});
+    var eList=ea.filter(function(x){return x});
+    if(pi<0||!eList.length)break;
     var eii=ea.indexOf(eList[Math.floor(Math.random()*eList.length)]);
-    if(pi<0||eii<0)break;var p=pa[pi],e=ea[eii];
+    if(eii<0)break;var p=pa[pi],e=ea[eii];
     e.h-=p.a;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:p.a});if(e.h<=0){ea[eii]=null;seq.push({d:e.id,nd:e.n})}
     if(ea.some(function(x){return x})&&p.h>0){
       var eList2=ea.filter(function(x){return x});
