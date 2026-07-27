@@ -64,7 +64,7 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 <div id="go"><h1 id="rt"></h1><p id="rtt"></p><p id="rtg" style="color:#fdcb6e"></p><button class="b" onclick="location.reload()">再来一局</button></div>
 <div id="dp"><h3 style="color:#fdcb6e">三连发现!</h3><p style="color:#b2bec3;margin-bottom:10px">选择一张高1星牌</p><div id="di"></div></div>
 <div id="app">
-<div id="bar"><span class="hp">HP <span id="bh">30</span></span><span class="go">$ <span id="bg">3</span></span><span class="lv">Lv <span id="blv">1</span></span><span style="color:#b2bec3">AI Lv <span id="ail">1</span> $<span id="aig">3</span> &#x2b50;<span id="ai-s">0</span></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span id="gi"></span></div>
+<div id="bar"><span class="hp">HP <span id="bh">30</span></span><span class="go">$ <span id="bg">3</span></span><span class="lv">Lv <span id="blv">1</span></span><span id="gi"></span><span style="margin-left:auto;color:#636e72">R<span id="bt">1</span></span><span style="color:#b2bec3;margin-left:8px">AI Lv<span id="ail">1</span> $<span id="aig">3</span> &#x2b50;<span id="ai-s">0</span></span></div>
 <div id="brd">
 <div class="side"><div class="hdr">我 <span id="pc">0</span>只</div><div class="hr"><div class="hi phi" id="phi">ME</div>HP:<span id="php">30</span></div><div class="sr" id="pb"></div></div>
 <div class="side"><div class="hdr">AI <span id="ac">0</span>只</div><div class="hr"><div class="hi ahi" id="ahi">AI</div>HP:<span id="ehp">30</span></div><div class="sr" id="eb"></div></div>
@@ -80,6 +80,8 @@ var C=[[{n:"护甲学徒",a:1,h:2},{n:"冲锋新兵",a:2,h:1,k:"c"},{n:"精灵�
 var Sp=[{n:"力量祝福",e:{a:2,h:0},x:"+2攻"},{n:"生命赐福",e:{a:0,h:3},x:"+3血"},{n:"全体振奋",e:{a:1,h:1},x:"+1/+1"},{n:"巨力术",e:{a:4,h:0},x:"+4攻"},{n:"坚韧祷言",e:{a:0,h:5},x:"+5血"},{n:"王者祝福",e:{a:3,h:3},x:"+3/+3"},{n:"嗜血",e:{a:2,h:2},x:"+2/+2"}];
 for(var i=0;i<C.length;i++)for(var j=0;j<C[i].length;j++)C[i][j].s=i+1;
 Sp.forEach(function(s){s.s=1});
+var T8=[{n:"光明使者",a:10,h:10,k:"t"},{n:"暗影主宰",a:12,h:8},{n:"生命缚誓者",a:8,h:15,k:"t"},{n:"时光守护者",a:7,h:7},{n:"终极巫妖",a:15,h:5}];
+T8.forEach(function(c){c.s=8;c.t="m";c.mh=c.h});
 var TO=[[],[1],[.67,.33],[.5,.33,.17],[.4,.27,.2,.13],[.33,.23,.18,.14,.12],[.28,.2,.16,.13,.12,.11],[.23,.17,.14,.12,.11,.13,.1]];
 var LC=[0,5,7,8,9,10,12,15];
 var PH="i",ST=null,EN=null,ID=0,SI=null;
@@ -99,7 +101,7 @@ var R=function(){if(!ST)return;
   $("ac").textContent=EN.b.filter(function(x){return x}).length;
   $("pc").textContent=ST.b.filter(function(x){return x}).length;
   // 金币预告:下回合+R.t+2金,总共ST.g+min(ST.t+2,10)金
-  var nxt=Math.min(ST.t+2,10);$("gi").textContent="下回+"+nxt+"金 共"+(ST.g+nxt)+"金";
+  var nxt=Math.min(ST.t+2,10);$("gi").textContent="+"+nxt+"$="+(ST.g+nxt)+"";
   rB("eb",EN.b,0);rB("pb",ST.b,1);rH();rS();
   var iP=PH==="p";
   $("br").disabled=!iP;$("bz").disabled=!iP;
@@ -157,7 +159,7 @@ var cm=function(){for(var i=0;i<7;i++){var m=ST.b[i];if(!m||m.g)continue;
   var ei=ST.b.findIndex(function(x){return!x});
   if(ei>=0)ST.b[ei]={n:m.n,a:m.a*2,h:m.h*2,s:Math.min(m.s+1,7),k:m.k,id:ni(),mh:m.h*2,g:1};
   if(m.s<7)sd(m.s+1);R();return}}};
-var sd=function(t){var pool=C[t-1]||C[6],opts=[],used={};
+var sd=function(t){var pool=(t>7?C[6].concat(T8):C[t-1]||C[6]),opts=[],used={};
   for(var i=0;i<3;i++){var c;do{c=pool[Math.floor(Math.random()*pool.length)]}while(used[c.n]);used[c.n]=1;opts.push({n:c.n,a:c.a,h:c.h,s:c.s,k:c.k||"",t:"m",mh:c.h})}
   var el=$("di");el.innerHTML="";
   for(var i=0;i<opts.length;i++){(function(card){var d=document.createElement("div");d.className="dc";
@@ -296,7 +298,7 @@ document.addEventListener("mousemove",function(e){
 function sg(){$("cs").style.display="none";$("app").style.display="flex";$("log").innerHTML="";ID=0;ST={t:1,g:3,hp:30,b:new Array(7).fill(null),l:1,sh:[],aig:3,ail:1,h:[],fz:0};EN={hp:30,b:new Array(7).fill(null)};ST.sh=gs(1);lg("游戏开始!");aT()}
 $("br").onclick=function(){if(ST&&ST.g>=1&&PH==="p"&&!ST.fz){ST.g-=1;ST.sh=gs(ST.l);R()}};
 $("bz").onclick=function(){if(ST&&PH==="p"){ST.fz=ST.fz?0:1;R()}};
-$("bl").onclick=function(){if(ST&&ST.l<7){var c=LC[ST.l];if(ST.g>=c&&PH==="p"){ST.g-=c;ST.l++;ST.sh=gs(ST.l);ST.fz=0;R()}}};
+$("bl").onclick=function(){if(ST&&ST.l<7){var c=LC[ST.l];if(ST.g>=c&&PH==="p"){ST.g-=c;ST.l++;ST.sh=gs(ST.l,ST.fz);if(!ST.fz)for(var i=0;i<ST.sh.length;i++)ST.sh[i].b=0;R()}}};
 $("bf").onclick=ft;
 document.getElementById("diff-e").onclick=function(){AI_DIFF=1;sg()};
 document.getElementById("diff-m").onclick=function(){AI_DIFF=2;sg()};
