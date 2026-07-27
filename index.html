@@ -92,7 +92,7 @@ var R=function(){if(!ST)return;
   $("ac").textContent=EN.b.filter(function(x){return x}).length;
   $("pc").textContent=ST.b.filter(function(x){return x}).length;
   // 金币预告:下回合+R.t+2金,总共ST.g+min(ST.t+2,10)金
-  var nxt=Math.min(ST.t+2,10);$("gi").textContent="&#x2192;+"+nxt+"$="+(ST.g+nxt);
+  var nxt=Math.min(ST.t+2,10);$("gi").textContent="下回+"+nxt+"金 共"+(ST.g+nxt)+"金";
   rB("eb",EN.b,0);rB("pb",ST.b,1);rH();rS();
   var iP=PH==="p";
   $("br").disabled=!iP;$("bz").disabled=!iP;
@@ -130,7 +130,7 @@ var rH=function(){var el=$("hc");el.innerHTML="";var h=ST.h||[];$("hcnt").textCo
         if(sp.e&&_c){_c.a+=sp.e.a||0;_c.h+=sp.e.h||0;lg(sp.n+"->"+_c.n);lg("OK")}
       }hideLine();R();return}
       var ei=ST.b.findIndex(function(x){return!x});
-      if(ei>=0){ST.h.splice(idx,1);ST.b[ei]={n:c.n,a:c.a,h:c.h,s:c.s,k:c.k||"",t:"m",mh:c.h,id:ni()};R();cm()}
+      if(ei>=0){ST.h.splice(idx,1);ST.b[ei]={n:_c.n,a:_c.a,h:_c.h,s:_c.s,k:_c.k||"",t:"m",mh:_c.h,id:ni()};R();cm()}
     }})(i,c)}el.appendChild(d)}};
 
 var rS=function(){var el=$("si");el.innerHTML="";$("fzi").textContent=ST.fz?"[冻结]":"";
