@@ -103,7 +103,7 @@ async function ft(){
   while(pa.some(function(x){return x})&&ea.some(function(x){return x})&&bt<50){
     var pi=pa.findIndex(function(x){return x});var eList=ea.filter(function(x){return x});
     if(pi<0||!eList.length)break;
-    var tauntLoot=eList.filter(function(x){return x.k&&x.k.indexOf("t")>=0});var targetPool=tauntLoot.length?tauntLoot:eList;var eii=ea.indexOf(targetPool[Math.floor(Math.random()*targetPool.length)]);if(eii<0)break;
+    var tauntLoot=eList.filter(function(x){return x.tauntActive});var targetPool=tauntLoot.length?tauntLoot:eList;var eii=ea.indexOf(targetPool[Math.floor(Math.random()*targetPool.length)]);if(eii<0)break;
     var p=pa[pi],e=ea[eii];
     // 风怒: 打两次
     var atkCount=p.k&&p.k.indexOf("w")>=0?2:1;
@@ -122,7 +122,7 @@ async function ft(){
     if(ea.some(function(x){return x})&&p.h>0){
       var _eList=ea.filter(function(x){return x});var en=_eList[Math.floor(Math.random()*_eList.length)];
       var ne=ea.indexOf(en);if(ne<0)continue;
-      var _pAlive=pa.filter(function(x){return x});var _pTaunt=_pAlive.filter(function(x){return x.k&&x.k.indexOf("t")>=0});
+      var _pAlive=pa.filter(function(x){return x});var _pTaunt=_pAlive.filter(function(x){return x.tauntActive});
       var ct=(_pTaunt.length?_pTaunt[Math.floor(Math.random()*_pTaunt.length)]:p);var dmg2=en.a;
       if(ct.k&&ct.k.indexOf("d")>=0&&ct.shield){ct.shield=false;dmg2=0;seq.push({a:en.id,t:ct.id,tp:"s"})}
       if(ct.tauntActive&&dmg2>0){ct.tauntActive=false;seq.push({a:en.id,t:ct.id,tp:"tb"})}
