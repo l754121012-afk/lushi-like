@@ -49,7 +49,7 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 <div id="app">
 <div id="bar"><span class=hp>&#x2764;<span id="bh">30</span></span><span class=go>&#x1fa99;<span id="bg">3</span></span><span id="gi" style="color:#74b9ff"></span><span style="margin-left:auto;color:#636e72">&#x23f1;<span id="bt">1</span></span><span style="color:#b2bec3">&#x2764;<span id="ehp">30</span> &#x1fa99;<span id="aig">3</span></span></div>
 <div id="brd">
-<div class="side"><div class="hdr">AI</div><div style="display:flex;align-items:center;gap:4px;margin-bottom:2px"><span class="hi ahi" id="ahi">AI</span>HP:<span id="ehp">30</span></div><div class="sr" id="eb"></div></div>
+<div class="side"><div class="hdr">AI</div><div style="display:flex;align-items:center;gap:4px;margin-bottom:2px"><span class="hi ahi" id="ahi">AI</span>HP:<span id="ehp2">30</span></div><div class="sr" id="eb"></div></div>
 <div class="side"><div class="hdr">我</div><div style="display:flex;align-items:center;gap:4px;margin-bottom:2px"><span class="hi phi" id="phi">ME</span>HP:<span id="php">30</span></div><div class="sr" id="pb"></div></div>
 </div>
 <div id="hand"><div class="hdr">手牌</div><div id="hc"></div></div>
@@ -83,7 +83,7 @@ var gs=function(l,fz){if(fz)return S.sh;var o=TO[l],cs=[];for(var i=0;i<5;i++){i
 
 function kwHtml(k){if(!k)return"";var d={t:"嘲讽:每回合开场获得嘲讽盾,持有者被攻击后盾消失,可攻击其他随从",d:"圣盾:抵挡受到的第一次伤害(完全免疫)",p:"剧毒:造成伤害时直接消灭敌方随从(对英雄无效)",w:"风怒:每回战斗合可攻击两次",l:"吸血:造成伤害的50%治疗一个友方随从",b:"战吼:打出时对敌方英雄造成1点伤害"};var r="";if(k.indexOf("t")>=0)r+="<span title=\"嘲讽:每回合获得嘲讽盾,被击后盾消\">\u{1f6e1}</span>";if(k.indexOf("d")>=0)r+="<span title=\"圣盾:抵挡受到的第一次伤害(完全免疫)\">\u{1f6e1}\u2728</span>";if(k.indexOf("p")>=0)r+="<span title=\"剧毒:造成伤害时直接消灭敌方随从(对英雄无效)\">\u2620</span>";if(k.indexOf("w")>=0)r+="<span title=\"风怒:每回战斗合可攻击两次\">\u2694\u2694</span>";if(k.indexOf("l")>=0)r+="<span title=\"吸血:50%伤害治疗友方随从\">\u2764\ufe0f</span>";if(k.indexOf("b")>=0)r+="<span title=\"战吼:打出时对敌方英雄造成1点伤害\">\u{1f3f9}</span>";return r}
 
-var R=function(){if(!S)return;G("bh").textContent=S.hp;G("bg").textContent=S.g;G("bt").textContent=S.t;G("ehp").textContent=E.hp;G("php").textContent=S.hp;G("aig").textContent=S.aig;G("sl").textContent=S.l;G("nl").textContent=Math.min(S.l+1,7);G("lc").textContent=S.l<7?LC[S.l]:"MAX";G("fzi").textContent=S.fz?"[冻结]":"";var nxt=Math.min(S.t+2,10);G("gi").textContent="+"+nxt+"$="+(S.g+nxt);rB("eb",E.b);rB("pb",S.b,1);rS();rH();var iP=PH==="p";G("br").disabled=!iP;G("bz").disabled=!iP;G("bl").disabled=!iP||S.l>=7||S.g<LC[S.l];G("bf").disabled=!iP};
+var R=function(){if(!S)return;G("bh").textContent=S.hp;G("bg").textContent=S.g;G("bt").textContent=S.t;G("ehp").textContent=E.hp;var _ehp2=G("ehp2");if(_ehp2)_ehp2.textContent=E.hp;G("php").textContent=S.hp;G("aig").textContent=S.aig;G("sl").textContent=S.l;G("nl").textContent=Math.min(S.l+1,7);G("lc").textContent=S.l<7?LC[S.l]:"MAX";G("fzi").textContent=S.fz?"[冻结]":"";var nxt=Math.min(S.t+2,10);G("gi").textContent="+"+nxt+"$="+(S.g+nxt);rB("eb",E.b);rB("pb",S.b,1);rS();rH();var iP=PH==="p";G("br").disabled=!iP;G("bz").disabled=!iP;G("bl").disabled=!iP||S.l>=7||S.g<LC[S.l];G("bf").disabled=!iP};
 
 var rB=function(id,b,pl){var el=G(id);el.innerHTML="";for(var i=0;i<7;i++){var m=b[i];var d=document.createElement("div");d.className="sl";if(!m){if(pl&&PH==="p")d.textContent="+";el.appendChild(d);continue}d.classList.add("has");d.dataset.mid=m.id;d.dataset.idx=i;if(pl)d.classList.add("pl");if(m.g)d.classList.add("gld");var kw=kwHtml(m.k);var hpPct=((m.h/(m.mh||m.h||1))*100)+"%";d.innerHTML="<div style=font-size:7px;color:#fdcb6e;line-height:1>"+("\u2b50".repeat(Math.min(m.s||1,7)))+"</div><div class=nm>"+kw+m.n+"</div><div class=ah><span class=a>"+m.a+"</span>/<span class=h>"+m.h+"</span></div><div class=hpbar style=width:"+hpPct+"></div>";if(pl)(function(idx){d.onclick=function(){if(PH!=="p")return;S.b[idx]=null;S.g+=1;R()}})(i);el.appendChild(d)}};
 
@@ -111,7 +111,7 @@ async function ft(){
       if(e.h<=0)break;
       var dmg=p.a;
       // 圣盾:挡一次伤害
-      if(e.k&&e.k.indexOf("d")>=0&&e.shield){e.shield=false;dmg=0;seq.push({a:p.id,t:e.id,tp:"s"})};if(e.k&&e.k.indexOf("t")>=0&&e.tauntActive===true&&dmg>0){e.tauntActive=false}if(e.tauntActive&&dmg>0){e.tauntActive=false}
+      if(e.k&&e.k.indexOf("d")>=0&&e.shield){e.shield=false;dmg=0;seq.push({a:p.id,t:e.id,tp:"s"})}if(e.k&&dmg>0&&e.k.indexOf("t")>=0){e.k=e.k.replace("t","");seq.push({a:p.id,t:e.id,tp:"tb"})};if(e.k&&e.k.indexOf("t")>=0&&e.tauntActive===true&&dmg>0){e.tauntActive=false}if(e.tauntActive&&dmg>0){e.tauntActive=false}
       // 剧毒:直接杀
       if(p.k&&p.k.indexOf("p")>=0&&dmg>0){e.h=0;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:dmg-999});break}
       if(dmg>0){e.h-=dmg;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:dmg})}
@@ -123,7 +123,7 @@ async function ft(){
       var pTaunt=eList.filter(function(x){return x.k&&x.k.indexOf("t")>=0});var en=(pTaunt.length?pTaunt:eList)[Math.floor(Math.random()*(pTaunt.length||eList.length))];
       var ne=ea.indexOf(en);if(ne<0)continue;
       var dmg2=en.a;
-      if(p.k&&p.k.indexOf("d")>=0&&p.shield){p.shield=false;dmg2=0;seq.push({a:en.id,t:p.id,tp:"s"})}if(p.tauntActive&&dmg2>0){p.tauntActive=false;seq.push({a:en.id,t:p.id,tp:"tb"})}
+      if(p.k&&p.k.indexOf("d")>=0&&p.shield){p.shield=false;dmg2=0;seq.push({a:en.id,t:p.id,tp:"s"})}if(p.k&&dmg2>0&&p.k.indexOf("t")>=0){p.k=p.k.replace("t","")}if(p.tauntActive&&dmg2>0){p.tauntActive=false;seq.push({a:en.id,t:p.id,tp:"tb"})}
       if(en.k&&en.k.indexOf("p")>=0&&dmg2>0){p.h=0;seq.push({a:en.id,t:p.id,tp:"m",na:en.n,ne:p.n,pd:dmg2-999})}
       if(dmg2>0){p.h-=dmg2;seq.push({a:en.id,t:p.id,tp:"m",na:en.n,ne:p.n,pd:dmg2})}
       if(en.k&&en.k.indexOf("l")>=0&&dmg2>0){var h2=Math.max(1,Math.floor(dmg2/2));en.h=Math.min(en.h+h2,en.mh||en.h)}
