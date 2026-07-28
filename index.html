@@ -103,7 +103,7 @@ async function ft(){
   while(pa.some(function(x){return x})&&ea.some(function(x){return x})&&bt<50){
     var pi=pa.findIndex(function(x){return x});var eList=ea.filter(function(x){return x});
     if(pi<0||!eList.length)break;
-    var tauntLoot=eList.filter(function(x){return x.k&&x.k.indexOf("t")>=0&&x.tauntActive===true});var targetPool=tauntLoot.length?tauntLoot:eList;var eii=ea.indexOf(targetPool[Math.floor(Math.random()*targetPool.length)]);if(eii<0)break;
+    var tauntLoot=eList.filter(function(x){return x.k&&x.k.indexOf("t")>=0});var targetPool=tauntLoot.length?tauntLoot:eList;var eii=ea.indexOf(targetPool[Math.floor(Math.random()*targetPool.length)]);if(eii<0)break;
     var p=pa[pi],e=ea[eii];
     // 风怒: 打两次
     var atkCount=p.k&&p.k.indexOf("w")>=0?2:1;
@@ -158,7 +158,7 @@ async function ft(){
   for(var i=0;i<S.b.length;i++)if(S.b[i]&&S.b[i].mh)S.b[i].h=S.b[i].mh;for(var i=0;i<E.b.length;i++)if(E.b[i]&&E.b[i].mh)E.b[i].h=E.b[i].mh;
   // 吸血治疗
   
-  S.t++;if(er>0&&pr===0)S.hp-=er;if(pr>0&&er===0)E.hp-=pr;
+  S.t++;if(er>0&&pr===0){var fd=0;for(var fi=0;fi<ea.length;fi++)if(ea[fi])fd+=ea[fi].a;S.hp-=Math.max(1,fd)}if(pr>0&&er===0){var fd=0;for(var fi=0;fi<pa.length;fi++)if(pa[fi])fd+=pa[fi].a;E.hp-=Math.max(1,fd)}
   var ga=Math.min(S.t+2,10);S.g+=ga;S.aig+=ga;
   lg("回合"+S.t+" HP:"+S.hp+"/"+E.hp);
   if(S.hp<=0||E.hp<=0){var e=G("go");e.classList.add("show");G("rt").textContent=S.hp<=0?"你输了":"你赢了!";return}
