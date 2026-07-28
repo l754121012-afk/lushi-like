@@ -251,12 +251,11 @@ async function aT(){PH="a";R();lg("AI回合(Lv"+AI_DIFF+") 金"+ST.aig+" Lv"+ST.
     if(aei>=0)EN.b[aei]={n:am.n,a:am.a*2,h:am.h*2,s:Math.min(am.s+1,7),k:am.k,id:ni(),mh:am.h*2,g:1};R();}
   }
   ST.aig=g;if(ST.fz){ST.fz=0}lg("到你!");PH="p";R()}async function ft(){
-  if(PH!=="p")return;PH="c";R();lg("===开打===");
+  if(PH!=="p")return;_swp=null;PH="c";R();lg("===开打===");
   var seq=[],pa=JSON.parse(JSON.stringify(ST.b)),ea=JSON.parse(JSON.stringify(EN.b)),bt=0;
   while(pa.some(function(x){return x})&&ea.some(function(x){return x})&&bt<50){
-    var pList=pa.filter(function(x){return x}),eList=ea.filter(function(x){return x});
-    if(!pList.length||!eList.length)break;
-    var pi=pa.indexOf(pList[Math.floor(Math.random()*pList.length)]);
+    var pi=pa.findIndex(function(x){return x});var eList=ea.filter(function(x){return x});
+    if(pi<0||!eList.length)break;
     var eii=ea.indexOf(eList[Math.floor(Math.random()*eList.length)]);
     if(pi<0||eii<0)break;var p=pa[pi],e=ea[eii];
     e.h-=p.a;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:p.a});var eid=e.id;if(e.h<=0){ea[eii]=null;seq.push({d:e.id,nd:e.n});eid=null}
@@ -297,7 +296,7 @@ function sGO(l){$("go").classList.add("show");$("rt").textContent=l?"你被淘�
 
 function hideLine(){var e=$("arr");e.style.display="none"}
 function showLine(fromX,fromY,toX,toY){var e=$("arr");var dx=toX-fromX,dy=toY-fromY;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=fromX+"px";e.style.top=fromY+"px";e.style.width=len+"px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.style.borderTop="1px dashed rgba(253,203,110,.6)";e.innerHTML=""}
-document.getElementById("pb").addEventListener("mousedown",function(e){var sl=e.target.closest(".sl.has.pl");if(!sl)return;var idx=parseInt(sl.dataset.idx);if(isNaN(idx))return;_drag={from:idx,el:sl,ox:e.clientX,oy:e.clientY}});document.addEventListener("mousemove",function(e){if(_drag&&_drag.el){var dx=e.clientX-_drag.ox,dy=e.clientY-_drag.oy;if(Math.abs(dx)>5||Math.abs(dy)>5){_drag.el.style.transform="translate("+dx+"px,"+dy+"px) scale(1.08)";_drag.el.style.zIndex="30";_drag.ok=1}}var arr=$("arr");if(SI!==null&&ST&&ST.h&&SI<ST.h.length&&ST.h[SI]&&ST.h[SI].t==="s"){var hc=document.querySelector(".hc.sel");if(hc){var r=hc.getBoundingClientRect();if(typeof showLine==="function")showLine(r.left+r.width/2,r.top+5,e.clientX,e.clientY)}}else if(arr&&arr.style.display!=="none"){hideLine()}});document.addEventListener("mouseup",function(e){if(!_drag||!_drag.ok){_drag=null;return}_drag.el.style.transform="";_drag.el.style.zIndex="";var slots=document.querySelectorAll("#pb .sl.has");for(var di=0;di<slots.length;di++){var r=slots[di].getBoundingClientRect();var idx2=parseInt(slots[di].dataset.idx);if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom&&!isNaN(idx2)&&idx2!==_drag.from){var tmp=ST.b[idx2];ST.b[idx2]=ST.b[_drag.from];ST.b[_drag.from]=tmp;R();break}}_drag=null});
+document.addEventListener("mousemove",function(e){if(_drag&&_drag.el){var dx=e.clientX-_drag.ox,dy=e.clientY-_drag.oy;if(Math.abs(dx)>5||Math.abs(dy)>5){_drag.el.style.transform="translate("+dx+"px,"+dy+"px) scale(1.08)";_drag.el.style.zIndex="30";_drag.ok=1}}var arr=$("arr");if(SI!==null&&ST&&ST.h&&SI<ST.h.length&&ST.h[SI]&&ST.h[SI].t==="s"){var hc=document.querySelector(".hc.sel");if(hc){var r=hc.getBoundingClientRect();if(typeof showLine==="function")showLine(r.left+r.width/2,r.top+5,e.clientX,e.clientY)}}else if(arr&&arr.style.display!=="none"){hideLine()}});document.addEventListener("mouseup",function(e){if(!_drag||!_drag.ok){console.log("MUP cancel ok="+(_drag?_drag.ok:"-"));_drag=null;return}console.log("SWAP!");_drag.el.style.transform="";_drag.el.style.zIndex="";var slots=document.querySelectorAll("#pb .sl.has");for(var di=0;di<slots.length;di++){var r=slots[di].getBoundingClientRect();var idx2=parseInt(slots[di].dataset.idx);if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom&&!isNaN(idx2)&&idx2!==_drag.from){var tmp=ST.b[idx2];ST.b[idx2]=ST.b[_drag.from];ST.b[_drag.from]=tmp;R();break}}_drag=null});
 document.addEventListener("mousemove",function(e){
   var arr=$("arr");if(SI!==null&&SI<=(ST.h||[]).length-1&&ST.h[SI]&&ST.h[SI].t==="s"){
     var hc=document.querySelector(".hc.sel");if(hc){var r=hc.getBoundingClientRect();showLine(r.left+r.width/2,r.top+5,e.clientX,e.clientY)}
