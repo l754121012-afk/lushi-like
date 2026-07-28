@@ -116,7 +116,7 @@ var rB=function(id,b,isP){var el=$(id);el.innerHTML="";
   if(isP)d.classList.add("pl");if(m.g)d.classList.add("golden");
   var ss=m.s?"<div class=ss>"+"&#x2b50;".repeat(Math.min(m.s,7))+" <b>"+m.s+"</b></div>":"";var hpPct=((m.h/(m.mh||m.h))*100)+"%";
   d.innerHTML=ss+"<div class=nm>"+m.n+"</div><div class=ah><span class=a>&#x2694;"+m.a+"</span>/<span class=h>&#x2764;"+m.h+"</span></div><div class=hpbar style=width:"+hpPct+"></div>";
-  if(isP)(function(idx,_m){d.onclick=function(){
+  if(isP)(function(idx,_m){d.onmousedown=function(e){_drag={from:idx,el:d,ox:e.clientX,oy:e.clientY}};d.onclick=function(){
     if(PH!=="p")return;
     if(SI!==null){var sp=ST.h[SI];if(sp&&sp.t==="s"){ST.h.splice(SI,1);SI=null;
       if(sp.e&&_m){_m.a+=sp.e.a||0;_m.h+=sp.e.h||0;if(_m.mh)_m.mh+=sp.e.h||0;
@@ -276,7 +276,7 @@ async function aT(){PH="a";R();lg("AI回合(Lv"+AI_DIFF+") 金"+ST.aig+" Lv"+ST.
     if(s.tp==="m"||s.tp==="h"){
       var ae=document.querySelector('[data-mid="'+s.a+'"]'),te=s.tp==="h"?document.getElementById(s.t):document.querySelector('[data-mid="'+s.t+'"]');
       if(ae&&te){af(ae,te,ar);await dl(300)}
-      if(ae){ae.classList.add("atk");setTimeout(function(){if(ae)ae.classList.remove("atk")},250)}if(te){te.classList.add("hit");setTimeout(function(){if(te)te.classList.remove("hit")},400)}
+      if(ae){ae.classList.add("atk");setTimeout(function(){if(ae)ae.classList.remove("atk")},250)}if(te){te.classList.add("hit");setTimeout(function(){if(te)te.classList.remove("hit")},400)}try{var m2=s.tp==="h"?null:(ST.b.find(function(x){return x&&x.id===s.t})||EN.b.find(function(x){return x&&x.id===s.t}));if(m2&&s.pd){m2.h-=s.pd;if(m2.h<0)m2.h=0;if(m2.mh){var hpPct=(m2.h/m2.mh*100)+"%";te.style.background="linear-gradient(to top,#55efc4 "+hpPct+",transparent 0)";setTimeout(function(){te.style.background=""},1000)}}R()}catch(e){}
       await dl(450);ar.style.display="none";
     }else if(s.d){var de=document.querySelector('[data-mid="'+s.d+'"]');if(de){de.style.opacity="0.2";await dl(300);de.style.opacity="1"}else await dl(100)
     }else await dl(100);
