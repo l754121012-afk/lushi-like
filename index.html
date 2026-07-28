@@ -103,7 +103,7 @@ async function ft(){
   while(pa.some(function(x){return x})&&ea.some(function(x){return x})&&bt<50){
     var pi=pa.findIndex(function(x){return x});var eList=ea.filter(function(x){return x});
     if(pi<0||!eList.length)break;
-    var eii=ea.indexOf(eList[Math.floor(Math.random()*eList.length)]);if(eii<0)break;
+    var tauntLoot=eList.filter(function(x){return x.k&&x.k.indexOf("t")>=0&&x.tauntActive===true});var targetPool=tauntLoot.length?tauntLoot:eList;var eii=ea.indexOf(targetPool[Math.floor(Math.random()*targetPool.length)]);if(eii<0)break;
     var p=pa[pi],e=ea[eii];
     // 风怒: 打两次
     var atkCount=p.k&&p.k.indexOf("w")>=0?2:1;
