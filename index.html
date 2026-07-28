@@ -120,7 +120,7 @@ async function ft(){
       if(e.h<=0){ea[eii]=null;seq.push({d:e.id,nd:e.n})}
     }
     if(ea.some(function(x){return x})&&p.h>0){
-      var en=eList[Math.floor(Math.random()*eList.length)];
+      var pTaunt=eList.filter(function(x){return x.k&&x.k.indexOf("t")>=0});var en=(pTaunt.length?pTaunt:eList)[Math.floor(Math.random()*(pTaunt.length||eList.length))];
       var ne=ea.indexOf(en);if(ne<0)continue;
       var dmg2=en.a;
       if(p.k&&p.k.indexOf("d")>=0&&p.shield){p.shield=false;dmg2=0;seq.push({a:en.id,t:p.id,tp:"s"})}if(p.tauntActive&&dmg2>0){p.tauntActive=false;seq.push({a:en.id,t:p.id,tp:"tb"})}
@@ -160,7 +160,7 @@ async function ft(){
   
   S.t++;if(er>0&&pr===0){var _sd=0;for(var _si=0;_si<ea.length;_si++)if(ea[_si])_sd+=(ea[_si].s||1);S.hp-=_sd}if(pr>0&&er===0){var _sd=0;for(var _si=0;_si<pa.length;_si++)if(pa[_si])_sd+=(pa[_si].s||1);E.hp-=_sd}
   var ga=Math.min(S.t+2,10);S.g+=ga;S.aig+=ga;
-  lg("回合"+S.t+" HP:"+S.hp+"/"+E.hp);
+  console.log("战后HP 玩家:"+S.hp+" AI:"+E.hp+" pr:"+pr+" er:"+er);lg("回合"+S.t+" HP:"+S.hp+"/"+E.hp);
   if(S.hp<=0||E.hp<=0){var e=G("go");e.classList.add("show");G("rt").textContent=S.hp<=0?"你输了":"你赢了!";return}
   if(!S.fz){S.sh=gs(S.l,0);for(var i=0;i<S.sh.length;i++)S.sh[i].b=0}await aT();
 }
