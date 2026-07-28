@@ -116,7 +116,7 @@ async function ft(){
       if(p.k&&p.k.indexOf("p")>=0&&dmg>0){e.h=0;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:dmg-999});break}
       if(dmg>0){e.h-=dmg;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:dmg})}
       // 吸血
-      if(p.k&&p.k.indexOf("l")>=0&&dmg>0){seq.push({a:p.id,t:PH==="c"?"player":"ai",tp:"l",pd:dmg})}
+      if(p.k&&p.k.indexOf("l")>=0&&dmg>0){var h=Math.max(1,Math.floor(dmg/2));p.h=Math.min(p.h+h,p.mh||p.h)}
       if(e.h<=0){ea[eii]=null;seq.push({d:e.id,nd:e.n})}
     }
     if(ea.some(function(x){return x})&&p.h>0){
@@ -126,7 +126,7 @@ async function ft(){
       if(p.k&&p.k.indexOf("d")>=0&&p.shield){p.shield=false;dmg2=0;seq.push({a:en.id,t:p.id,tp:"s"})}if(p.tauntActive&&dmg2>0){p.tauntActive=false;seq.push({a:en.id,t:p.id,tp:"tb"})}
       if(en.k&&en.k.indexOf("p")>=0&&dmg2>0){p.h=0;seq.push({a:en.id,t:p.id,tp:"m",na:en.n,ne:p.n,pd:dmg2-999})}
       if(dmg2>0){p.h-=dmg2;seq.push({a:en.id,t:p.id,tp:"m",na:en.n,ne:p.n,pd:dmg2})}
-      if(en.k&&en.k.indexOf("l")>=0&&dmg2>0){seq.push({a:en.id,t:PH==="c"?"ai":"player",tp:"l",pd:dmg2})}
+      if(en.k&&en.k.indexOf("l")>=0&&dmg2>0){var h2=Math.max(1,Math.floor(dmg2/2));en.h=Math.min(en.h+h2,en.mh||en.h)}
       if(p.h<=0){pa[pi]=null;seq.push({d:p.id,nd:p.n})}
     }
     bt++;pa=pa.filter(function(x){return x&&x.h>0});ea=ea.filter(function(x){return x&&x.h>0});
@@ -157,7 +157,7 @@ async function ft(){
   ast.style.display="none";
   for(var i=0;i<S.b.length;i++)if(S.b[i]&&S.b[i].mh)S.b[i].h=S.b[i].mh;for(var i=0;i<E.b.length;i++)if(E.b[i]&&E.b[i].mh)E.b[i].h=E.b[i].mh;
   // 吸血治疗
-  for(var si=0;si<seq.length;si++){var s2=seq[si];if(s2.tp==="l"){var healAmt=Math.max(1,Math.floor(s2.pd/2));var healTargets=(s2.t==="player"?ST.b:EN.b).filter(function(x){return x&&x.h<x.mh});if(healTargets.length>0){var ht=healTargets[Math.floor(Math.random()*healTargets.length)];ht.h=Math.min(ht.h+healAmt,ht.mh||ht.h);seq.push({a:"",t:ht.id,tp:"heal",pd:healAmt})}}}
+  
   S.t++;if(er>0&&pr===0)S.hp-=er;if(pr>0&&er===0)E.hp-=pr;
   var ga=Math.min(S.t+2,10);S.g+=ga;S.aig+=ga;
   lg("回合"+S.t+" HP:"+S.hp+"/"+E.hp);
