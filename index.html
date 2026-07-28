@@ -65,7 +65,7 @@ function lg(m){var e=G("log");e.innerHTML+="<div>"+m+"</div>";e.scrollTop=e.scro
 function pb(a){if(!a)return new Array(7).fill(null);var s=a.filter(function(x){return x});var b=new Array(7).fill(null);for(var i=0;i<s.length&&i<7;i++)b[i]=s[i];return b}
 // Keywords: t=taunt d=divine p=poison w=windfury l=lifesteal b=battlecry:deal1 c=rush
 var C=[
-[{n:"护甲学徒",a:1,h:2},{n:"冲锋新兵",a:2,h:1,k:"c"},{n:"精灵射手",a:1,h:1,k:"b"},{n:"渔人猎潮者",a:2,h:1},{n:"石牙野猪",a:1,h:1}],
+[{n:"护甲学徒",a:1,h:2},{n:"冲锋新兵",a:2,h:1},{n:"精灵射手",a:1,h:1,k:"b"},{n:"渔人猎潮者",a:2,h:1},{n:"石牙野猪",a:1,h:1}],
 [{n:"铁甲卫士",a:1,h:4,k:"t"},{n:"战地老兵",a:3,h:2},{n:"狗头人",a:2,h:2},{n:"血帆袭击者",a:2,h:3},{n:"虚空行者",a:1,h:3,k:"t"}],
 [{n:"暴怒斗士",a:3,h:4},{n:"武器锻造师",a:2,h:3},{n:"森金卫士",a:2,h:5,k:"t"},{n:"苦痛侍僧",a:1,h:3},{n:"眼镜蛇",a:1,h:3,k:"p"}],
 [{n:"重装步兵",a:3,h:5,k:"t"},{n:"战歌指挥官",a:4,h:5},{n:"冰风雪人",a:4,h:5},{n:"风怒鹰身人",a:3,h:4,k:"w"},{n:"吸血蚊",a:3,h:3,k:"l"}],
@@ -76,12 +76,12 @@ var Sp=[{n:"力祝",e:{a:2,h:0},x:"+2攻"},{n:"命祝",e:{a:0,h:3},x:"+3血"},{n
 for(var i=0;i<C.length;i++)for(var j=0;j<C[i].length;j++)C[i][j].s=i+1;
 var TO=[[],[1],[.67,.33],[.5,.33,.17],[.4,.27,.2,.13],[.33,.23,.18,.14,.12],[.28,.2,.16,.13,.12,.11],[.23,.17,.14,.12,.11,.13,.1]];
 var LC=[0,5,7,8,9,10,12,15];
-var KW_ICONS={t:"\u{1f6e1}",d:"\u{1f6e1}\u2728",p:"\u2620",w:"\u2694\u2694",l:"\u2764\ufe0f",c:"\u26a1",b:"\u{1f3f9}"};
-var KW_NAMES={t:"嘲讽",d:"圣盾",p:"剧毒",w:"风怒",l:"吸血",c:"突袭",b:"战吼"};
+var KW_ICONS={t:"\u{1f6e1}",d:"\u{1f6e1}\u2728",p:"\u2620",w:"\u2694\u2694",l:"\u2764\ufe0f",b:"\u{1f3f9}"};
+var KW_NAMES={t:"嘲讽",d:"圣盾",p:"剧毒",w:"风怒",l:"吸血",b:"战吼"};
 
 var gs=function(l,fz){if(fz)return S.sh;var o=TO[l],cs=[];for(var i=0;i<5;i++){if(Math.random()<0.2&&Sp.length){var s=Sp[Math.floor(Math.random()*Sp.length)];cs.push({n:s.n,t:"s",e:s.e,x:s.x})}else{var a=0,t=1,r=Math.random();for(var j=0;j<o.length;j++){a+=o[j];if(r<a){t=j+1;break}}var src=C[t-1][Math.floor(Math.random()*C[t-1].length)];cs.push({n:src.n,a:src.a,h:src.h,s:src.s,k:src.k||"",t:"m",mh:src.h})}}return cs};
 
-function kwHtml(k){if(!k)return"";var d={t:"嘲讽:敌方必须优先攻击此随从",d:"圣盾:抵挡受到的第一次伤害(完全免疫)",p:"剧毒:造成伤害时直接消灭敌方随从(对英雄无效)",w:"风怒:每回战斗合可攻击两次",l:"吸血:造成伤害等量治疗己方英雄",c:"突袭:上阵当回合即可攻击",b:"战吼:打出时对敌方英雄造成1点伤害"};var r="";if(k.indexOf("t")>=0)r+="<span title=\"嘲讽:敌方必须优先攻击此随从\">\u{1f6e1}</span>";if(k.indexOf("d")>=0)r+="<span title=\"圣盾:抵挡受到的第一次伤害(完全免疫)\">\u{1f6e1}\u2728</span>";if(k.indexOf("p")>=0)r+="<span title=\"剧毒:造成伤害时直接消灭敌方随从(对英雄无效)\">\u2620</span>";if(k.indexOf("w")>=0)r+="<span title=\"风怒:每回战斗合可攻击两次\">\u2694\u2694</span>";if(k.indexOf("l")>=0)r+="<span title=\"吸血:造成伤害等量治疗己方英雄\">\u2764\ufe0f</span>";if(k.indexOf("c")>=0)r+="<span title=\"突袭:上阵当回合即可攻击\">\u26a1</span>";if(k.indexOf("b")>=0)r+="<span title=\"战吼:打出时对敌方英雄造成1点伤害\">\u{1f3f9}</span>";return r}
+function kwHtml(k){if(!k)return"";var d={t:"嘲讽:每回合开场获得嘲讽盾,持有者被攻击后盾消失,可攻击其他随从",d:"圣盾:抵挡受到的第一次伤害(完全免疫)",p:"剧毒:造成伤害时直接消灭敌方随从(对英雄无效)",w:"风怒:每回战斗合可攻击两次",l:"吸血:造成伤害等量治疗己方英雄",b:"战吼:打出时对敌方英雄造成1点伤害"};var r="";if(k.indexOf("t")>=0)r+="<span title=\"嘲讽:每回合获得嘲讽盾,被击后盾消\">\u{1f6e1}</span>";if(k.indexOf("d")>=0)r+="<span title=\"圣盾:抵挡受到的第一次伤害(完全免疫)\">\u{1f6e1}\u2728</span>";if(k.indexOf("p")>=0)r+="<span title=\"剧毒:造成伤害时直接消灭敌方随从(对英雄无效)\">\u2620</span>";if(k.indexOf("w")>=0)r+="<span title=\"风怒:每回战斗合可攻击两次\">\u2694\u2694</span>";if(k.indexOf("l")>=0)r+="<span title=\"吸血:造成伤害等量治疗己方英雄\">\u2764\ufe0f</span>";if(k.indexOf("b")>=0)r+="<span title=\"战吼:打出时对敌方英雄造成1点伤害\">\u{1f3f9}</span>";return r}
 
 var R=function(){if(!S)return;G("bh").textContent=S.hp;G("bg").textContent=S.g;G("bt").textContent=S.t;G("ehp").textContent=E.hp;G("php").textContent=S.hp;G("aig").textContent=S.aig;G("sl").textContent=S.l;G("nl").textContent=Math.min(S.l+1,7);G("lc").textContent=S.l<7?LC[S.l]:"MAX";G("fzi").textContent=S.fz?"[冻结]":"";var nxt=Math.min(S.t+2,10);G("gi").textContent="+"+nxt+"$="+(S.g+nxt);rB("eb",E.b);rB("pb",S.b,1);rS();rH();var iP=PH==="p";G("br").disabled=!iP;G("bz").disabled=!iP;G("bl").disabled=!iP||S.l>=7||S.g<LC[S.l];G("bf").disabled=!iP};
 
@@ -111,7 +111,7 @@ async function ft(){
       if(e.h<=0)break;
       var dmg=p.a;
       // 圣盾:挡一次伤害
-      if(e.k&&e.k.indexOf("d")>=0&&e.shield!==false){e.shield=false;dmg=0;seq.push({a:p.id,t:e.id,tp:"s"})}
+      if(e.k&&e.k.indexOf("d")>=0&&e.shield){e.shield=false;dmg=0;seq.push({a:p.id,t:e.id,tp:"s"})}if(e.tauntActive&&dmg>0){e.tauntActive=false;seq.push({a:p.id,t:e.id,tp:"tb"})}
       // 剧毒:直接杀
       if(p.k&&p.k.indexOf("p")>=0&&dmg>0){e.h=0;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:dmg-999});break}
       if(dmg>0){e.h-=dmg;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:dmg})}
@@ -123,7 +123,7 @@ async function ft(){
       var en=eList[Math.floor(Math.random()*eList.length)];
       var ne=ea.indexOf(en);if(ne<0)continue;
       var dmg2=en.a;
-      if(p.k&&p.k.indexOf("d")>=0&&p.shield!==false){p.shield=false;dmg2=0;seq.push({a:en.id,t:p.id,tp:"s"})}
+      if(p.k&&p.k.indexOf("d")>=0&&p.shield){p.shield=false;dmg2=0;seq.push({a:en.id,t:p.id,tp:"s"})}if(p.tauntActive&&dmg2>0){p.tauntActive=false;seq.push({a:en.id,t:p.id,tp:"tb"})}
       if(en.k&&en.k.indexOf("p")>=0&&dmg2>0){p.h=0;seq.push({a:en.id,t:p.id,tp:"m",na:en.n,ne:p.n,pd:dmg2-999})}
       if(dmg2>0){p.h-=dmg2;seq.push({a:en.id,t:p.id,tp:"m",na:en.n,ne:p.n,pd:dmg2})}
       if(en.k&&en.k.indexOf("l")>=0&&dmg2>0){seq.push({a:en.id,t:PH==="c"?"ai":"player",tp:"l",pd:dmg2})}
@@ -141,7 +141,7 @@ async function ft(){
     var s=seq[si];ast.textContent=(si+1)+"/"+seq.length+"步";
     if(s.tp==="s"){// 圣盾碎
       var se=document.querySelector('[data-mid="'+s.t+'"]');if(se){se.style.borderColor="#74b9ff";se.style.boxShadow="0 0 12px rgba(116,185,255,.7)";setTimeout(function(){se.style.borderColor="";se.style.boxShadow=""},300)}await dl(300)
-    }else if(s.tp==="l"){// 吸血
+    }else if(s.tp==="tb"){var tbe=document.querySelector('[data-mid="'+s.t+'"]');if(tbe){tbe.style.borderColor="#e17055";tbe.style.boxShadow="0 0 12px rgba(225,112,85,.7)";setTimeout(function(){tbe.style.borderColor="";tbe.style.boxShadow=""},300)}await dl(250)}else if(s.tp==="l"){// 吸血
       var le=s.t==="player"?G("phi"):G("ahi");if(le){le.style.borderColor="#55efc4";le.style.boxShadow="0 0 16px rgba(85,239,196,.7)";setTimeout(function(){le.style.borderColor="";le.style.boxShadow=""},300)}
     }else if(s.tp==="m"||s.tp==="h"){
       var ae=document.querySelector('[data-mid="'+s.a+'"]'),te=s.tp==="h"?G(s.t):document.querySelector('[data-mid="'+s.t+'"]');
