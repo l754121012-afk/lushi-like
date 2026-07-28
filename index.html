@@ -277,7 +277,7 @@ async function aT(){PH="a";R();lg("AI回合(Lv"+AI_DIFF+") 金"+ST.aig+" Lv"+ST.
     if(s.tp==="m"||s.tp==="h"){
       var ae=document.querySelector('[data-mid="'+s.a+'"]'),te=s.tp==="h"?document.getElementById(s.t):document.querySelector('[data-mid="'+s.t+'"]');
       if(ae&&te){af(ae,te,ar);await dl(300)}
-      if(ae){ae.classList.add("atk");setTimeout(function(){if(ae)ae.classList.remove("atk")},250)}if(te){te.classList.add("hit");setTimeout(function(){if(te)te.classList.remove("hit")},400)}try{var m2=s.tp==="h"?null:(ST.b.find(function(x){return x&&x.id===s.t})||EN.b.find(function(x){return x&&x.id===s.t}));if(m2&&s.pd){m2.h-=s.pd;if(m2.h<0)m2.h=0;if(m2.mh){var hpPct=(m2.h/m2.mh*100)+"%";te.style.background="linear-gradient(to top,#55efc4 "+hpPct+",transparent 0)";setTimeout(function(){te.style.background=""},1000)}}R()}catch(e){}
+      if(ae){var at=ae;at.style.transform="translateY(-12px) scale(1.15)";at.style.transition="transform .15s";setTimeout(function(){at.style.transform="";at.style.transition=""},250)}if(te){var tt=te;tt.style.borderColor="#ff3333";tt.style.boxShadow="0 0 25px rgba(255,0,0,.9)";tt.style.transform="translateX(8px)";tt.style.transition="transform .08s";setTimeout(function(){tt.style.transform="translateX(-6px)";setTimeout(function(){tt.style.transform="";tt.style.transition="";tt.style.borderColor="";tt.style.boxShadow=""},80)},80)}try{var m2=s.tp==="h"?null:(ST.b.find(function(x){return x&&x.id===s.t})||EN.b.find(function(x){return x&&x.id===s.t}));if(m2&&s.pd){m2.h-=s.pd;if(m2.h<0)m2.h=0;if(m2.mh){var hpPct=(m2.h/m2.mh*100)+"%";te.style.background="linear-gradient(to top,#55efc4 "+hpPct+",transparent 0)";setTimeout(function(){te.style.background=""},1000)}}R()}catch(e){}
       await dl(600);ar.style.display="none";
     }else if(s.d){var de=document.querySelector('[data-mid="'+s.d+'"]');if(de){de.style.opacity="0";await dl(300)}else await dl(100)
     }else await dl(100);
@@ -290,7 +290,7 @@ async function aT(){PH="a";R();lg("AI回合(Lv"+AI_DIFF+") 金"+ST.aig+" Lv"+ST.
   lg("回合"+ST.t+" HP:"+ST.hp+"/"+EN.hp+" +"+ga+"金");
   if(ST.hp<=0||EN.hp<=0){sGO(ST.hp<=0);return}
   ST.sh=gs(ST.l,ST.fz);if(!ST.fz)for(var i=0;i<ST.sh.length;i++)ST.sh[i].b=0;
-  R();await aT();
+  await aT();
 }
 function af(f,t,e){var fr=f.getBoundingClientRect(),tr=t.getBoundingClientRect();var sx=fr.left+fr.width/2,sy=fr.top+5,ex=tr.left+tr.width/2,ey=tr.top+tr.height/2;var dx=ex-sx,dy=ey-sy;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=sx+"px";e.style.top=sy+"px";e.style.width="0px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.innerHTML="<div style='width:100%;height:2px;background:linear-gradient(90deg,rgba(253,203,110,.9),rgba(253,203,110,.3));position:relative'><div style='position:absolute;right:-6px;top:-5px;border-left:8px solid #fdcb6e;border-top:5px solid transparent;border-bottom:5px solid transparent'></div></div>";requestAnimationFrame(function(){requestAnimationFrame(function(){e.style.transition="width .25s ease-out";e.style.width=len+"px"})})}
 function sGO(l){$("go").classList.add("show");$("rt").textContent=l?"你被淘汰了":"你赢了!";$("rtt").textContent="存活回合:"+ST.t;$("rtg").textContent="Lv"+ST.l+" 金"+ST.g}
