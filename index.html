@@ -133,7 +133,7 @@ var rH=function(){var el=$("hc");el.innerHTML="";var h=ST.h||[];$("hcnt").textCo
   if(c.t==="s"){d.innerHTML="<div class=hdt>&#x2728;"+c.n+"</div><div>"+c.x+"</div>";
     if(PH==="p")(function(idx){d.onclick=function(){
       if(SI===idx){SI=null}else{SI=idx}R()}})(i)}else{
-    d.innerHTML="<div>"+c.n+"</div><div class=hds><span class=a>"+c.a+"</span>/<span class=h>"+c.h+"</span></div>";
+    d.innerHTML="<div>"+c.n+"</div><div class=hds><span class=a>"+c.a+"</span>/<span class=h>"+c.h+"</span></div><div style=font-size:9px;color:#fdcb6e>"+"&#x2b50;".repeat(Math.min(c.s||1,7))+"</div>";
     if(PH==="p")(function(idx,_c){d.onclick=function(){
       if(SI!==null){var sp=ST.h[SI];if(sp&&sp.t==="s"){ST.h.splice(SI,1);SI=null;
         if(sp.e&&_c){_c.a+=sp.e.a||0;_c.h+=sp.e.h||0;lg(sp.n+"->"+_c.n);lg("OK")}
@@ -277,12 +277,7 @@ async function aT(){PH="a";R();lg("AI回合(Lv"+AI_DIFF+") 金"+ST.aig+" Lv"+ST.
     if(s.tp==="m"||s.tp==="h"){
       var ae=document.querySelector('[data-mid="'+s.a+'"]'),te=s.tp==="h"?document.getElementById(s.t):document.querySelector('[data-mid="'+s.t+'"]');
       if(ae&&te){af(ae,te,ar);await dl(300)}
-      if(ae){ae.style.background="#666";var _ae=ae;setTimeout(function(){_ae.style.background=""},200)}
-      if(te){te.style.background="#6b2020";te.style.borderColor="#f00";var _te=te;
-        // 实时更新血量显示
-        var m=ST.b.find(function(x){return x&&x.id===s.t})||EN.b.find(function(x){return x&&x.id===s.t});
-        if(m&&s.pd){m.h-=s.pd;if(m.h<0)m.h=0}R();
-        setTimeout(function(){_te.style.background="";_te.style.borderColor=""},400)}
+      if(ae){ae.classList.add("atk");setTimeout(function(){if(ae)ae.classList.remove("atk")},250)}if(te){te.classList.add("hit");setTimeout(function(){if(te)te.classList.remove("hit")},400)}
       await dl(450);ar.style.display="none";
     }else if(s.d){var de=document.querySelector('[data-mid="'+s.d+'"]');if(de){de.style.opacity="0.2";await dl(300);de.style.opacity="1"}else await dl(100)
     }else await dl(100);
