@@ -52,7 +52,7 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 .dc:hover{transform:scale(1.08);border-color:#ffeaa7}
 #gi{color:#74b9ff;font-size:10px;margin-left:auto}
 </style></head><body>
-<div id="ast"></div><div id="arr"></div>
+<div id="ast"></div><div id="arr" style="position:fixed;pointer-events:none;z-index:55;overflow:hidden;display:none"></div><div id="arr"></div>
 <div id="cs"><h1>炉石旅人</h1><div style="color:#636e72">酒馆战棋 &#xb7; 养大哥</div>
   <div style="color:#b2bec3;font-size:14px;margin:12px 0 8px">AI难度</div>
   <div style="display:flex;gap:8px">
@@ -292,7 +292,7 @@ async function aT(){PH="a";R();lg("AI回合(Lv"+AI_DIFF+") 金"+ST.aig+" Lv"+ST.
   ST.sh=gs(ST.l,ST.fz);if(!ST.fz)for(var i=0;i<ST.sh.length;i++)ST.sh[i].b=0;
   await aT();
 }
-function af(f,t,e){var fr=f.getBoundingClientRect(),tr=t.getBoundingClientRect();var sx=fr.left+fr.width/2,sy=fr.top+5,ex=tr.left+tr.width/2,ey=tr.top+tr.height/2;var dx=ex-sx,dy=ey-sy;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=sx+"px";e.style.top=sy+"px";e.style.width="0px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.innerHTML="<div style='width:100%;height:2px;background:linear-gradient(90deg,rgba(253,203,110,.9),rgba(253,203,110,.3));position:relative'><div style='position:absolute;right:-6px;top:-5px;border-left:8px solid #fdcb6e;border-top:5px solid transparent;border-bottom:5px solid transparent'></div></div>";requestAnimationFrame(function(){requestAnimationFrame(function(){e.style.transition="width .25s ease-out";e.style.width=len+"px"})})}
+function af(f,t,e){if(!e||!f||!t)return;var fr=f.getBoundingClientRect(),tr=t.getBoundingClientRect();var sx=fr.left+fr.width/2,sy=fr.top+5,ex=tr.left+tr.width/2,ey=tr.top+tr.height/2;var dx=ex-sx,dy=ey-sy;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=sx+"px";e.style.top=sy+"px";e.style.width="0px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.innerHTML="<div style='width:100%;height:2px;background:linear-gradient(90deg,rgba(253,203,110,.9),rgba(253,203,110,.3));position:relative'><div style='position:absolute;right:-6px;top:-5px;border-left:8px solid #fdcb6e;border-top:5px solid transparent;border-bottom:5px solid transparent'></div></div>";requestAnimationFrame(function(){requestAnimationFrame(function(){e.style.transition="width .25s ease-out";e.style.width=len+"px"})})}
 function sGO(l){$("go").classList.add("show");$("rt").textContent=l?"你被淘汰了":"你赢了!";$("rtt").textContent="存活回合:"+ST.t;$("rtg").textContent="Lv"+ST.l+" 金"+ST.g}
 
 function hideLine(){var e=$("arr");e.style.display="none"}
