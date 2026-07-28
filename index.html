@@ -158,7 +158,7 @@ async function ft(){
   for(var i=0;i<S.b.length;i++)if(S.b[i]&&S.b[i].mh)S.b[i].h=S.b[i].mh;for(var i=0;i<E.b.length;i++)if(E.b[i]&&E.b[i].mh)E.b[i].h=E.b[i].mh;
   // 吸血治疗
   
-  S.t++;if(er>0&&pr===0){var _sd=0;for(var _si=0;_si<ea.length;_si++)if(ea[_si])_sd+=(ea[_si].s||1);S.hp-=_sd}if(pr>0&&er===0){var _sd=0;for(var _si=0;_si<pa.length;_si++)if(pa[_si])_sd+=(pa[_si].s||1);E.hp-=_sd}
+  S.t++;if(er>0&&pr===0){var _sd=0;for(var _si=0;_si<ea.length;_si++)if(ea[_si]){_sd+=(ea[_si].s||1)}console.log("DMG ea.len="+ea.length+" _sd="+_sd);S.hp-=_sd}if(pr>0&&er===0){var _sd=0;for(var _si=0;_si<pa.length;_si++)if(pa[_si]){_sd+=(pa[_si].s||1)}console.log("DMG pa.len="+pa.length+" _sd="+_sd);E.hp-=_sd}
   var ga=Math.min(S.t+2,10);S.g+=ga;S.aig+=ga;
   console.log("战后HP 玩家:"+S.hp+" AI:"+E.hp+" pr:"+pr+" er:"+er);lg("回合"+S.t+" HP:"+S.hp+"/"+E.hp);
   if(S.hp<=0||E.hp<=0){var e=G("go");e.classList.add("show");G("rt").textContent=S.hp<=0?"你输了":"你赢了!";return}
