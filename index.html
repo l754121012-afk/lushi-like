@@ -113,11 +113,12 @@ var rB=function(id,b,isP){var el=$(id);el.innerHTML="";
   for(var i=0;i<7;i++){var m=b[i];var d=document.createElement("div");d.className="sl";
   if(!m){if(isP&&PH==="p")d.textContent="+";el.appendChild(d);continue}
   d.classList.add("has");d.dataset.mid=m.id;d.dataset.mhp=m.mh||m.h;d.dataset.chp=m.h;
-  if(isP)d.classList.add("pl");if(m.g)d.classList.add("golden");
+  if(isP)d.classList.add("pl");if(m.g)d.classList.add("golden");if(isP)(function(idx){d.onmousedown=function(e){_drag={from:idx,el:d,ox:e.clientX,oy:e.clientY}}})(i);
   var ss=m.s?"<div class=ss>"+"&#x2b50;".repeat(Math.min(m.s,7))+" <b>"+m.s+"</b></div>":"";var hpPct=((m.h/(m.mh||m.h))*100)+"%";
   d.innerHTML=ss+"<div class=nm>"+m.n+"</div><div class=ah><span class=a>&#x2694;"+m.a+"</span>/<span class=h>&#x2764;"+m.h+"</span></div><div class=hpbar style=width:"+hpPct+"></div>";
-  if(isP)(function(idx,_m){d.onmousedown=function(e){_drag={from:idx,el:d,ox:e.clientX,oy:e.clientY}};d.onclick=function(){
+  if(isP)(function(idx,_m){d.onclick=function(){
     if(PH!=="p")return;
+    if(_drag&&_drag.done){_drag=null;return}
     if(SI!==null){var sp=ST.h[SI];if(sp&&sp.t==="s"){ST.h.splice(SI,1);SI=null;
       if(sp.e&&_m){_m.a+=sp.e.a||0;_m.h+=sp.e.h||0;if(_m.mh)_m.mh+=sp.e.h||0;
         _m.style_outline="";_m.style_borderColor="#55efc4";_m.style_boxShadow="0 0 20px rgba(85,239,196,.8)";
@@ -296,7 +297,7 @@ function sGO(l){$("go").classList.add("show");$("rt").textContent=l?"你被淘�
 
 function hideLine(){var e=$("arr");e.style.display="none"}
 function showLine(fromX,fromY,toX,toY){var e=$("arr");var dx=toX-fromX,dy=toY-fromY;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=fromX+"px";e.style.top=fromY+"px";e.style.width=len+"px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.style.borderTop="1px dashed rgba(253,203,110,.6)";e.innerHTML=""}
-document.addEventListener("mousemove",function(e){if(_drag&&_drag.el){var dx=e.clientX-_drag.ox,dy=e.clientY-_drag.oy;if(Math.abs(dx)>5||Math.abs(dy)>5){_drag.el.style.transform="translate("+dx+"px,"+dy+"px) scale(1.08)";_drag.el.style.zIndex="30";_drag.ok=1}}var arr=$("arr");if(SI!==null&&ST&&ST.h&&SI<ST.h.length&&ST.h[SI]&&ST.h[SI].t==="s"){var hc=document.querySelector(".hc.sel");if(hc){var r=hc.getBoundingClientRect();if(typeof showLine==="function")showLine(r.left+r.width/2,r.top+5,e.clientX,e.clientY)}}else if(arr&&arr.style.display!=="none"){hideLine()}});document.addEventListener("mouseup",function(e){if(!_drag||!_drag.ok){console.log("MUP cancel ok="+(_drag?_drag.ok:"-"));_drag=null;return}console.log("SWAP!");_drag.el.style.transform="";_drag.el.style.zIndex="";var slots=document.querySelectorAll("#pb .sl.has");for(var di=0;di<slots.length;di++){var r=slots[di].getBoundingClientRect();var idx2=parseInt(slots[di].dataset.idx);if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom&&!isNaN(idx2)&&idx2!==_drag.from){var tmp=ST.b[idx2];ST.b[idx2]=ST.b[_drag.from];ST.b[_drag.from]=tmp;R();break}}_drag=null});
+document.addEventListener("mousemove",function(e){if(_drag&&_drag.el){var dx=e.clientX-_drag.ox,dy=e.clientY-_drag.oy;if(Math.abs(dx)>5||Math.abs(dy)>5){_drag.el.style.transform="translate("+dx+"px,"+dy+"px) scale(1.08)";_drag.el.style.zIndex="30";_drag.ok=1}}var arr=$("arr");if(SI!==null&&ST&&ST.h&&SI<ST.h.length&&ST.h[SI]&&ST.h[SI].t==="s"){var hc=document.querySelector(".hc.sel");if(hc){var r=hc.getBoundingClientRect();if(typeof showLine==="function")showLine(r.left+r.width/2,r.top+5,e.clientX,e.clientY)}}else if(arr&&arr.style.display!=="none"){hideLine()}});document.addEventListener("mouseup",function(e){if(!_drag||!_drag.ok){_drag=null;return}_drag.el.style.transform="";_drag.el.style.zIndex="";var slots=document.querySelectorAll("#pb .sl.has");for(var di=0;di<slots.length;di++){var r=slots[di].getBoundingClientRect();var idx2=parseInt(slots[di].dataset.idx);if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom&&!isNaN(idx2)&&idx2!==_drag.from){var tmp=ST.b[idx2];ST.b[idx2]=ST.b[_drag.from];ST.b[_drag.from]=tmp;_drag.done=1;R();break}}_drag=null});
 document.addEventListener("mousemove",function(e){
   var arr=$("arr");if(SI!==null&&SI<=(ST.h||[]).length-1&&ST.h[SI]&&ST.h[SI].t==="s"){
     var hc=document.querySelector(".hc.sel");if(hc){var r=hc.getBoundingClientRect();showLine(r.left+r.width/2,r.top+5,e.clientX,e.clientY)}
