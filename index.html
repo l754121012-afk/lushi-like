@@ -43,7 +43,7 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 #arr{position:fixed;pointer-events:none;z-index:55;overflow:hidden}#go{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:90}#go.show{display:flex}#go h1{font-size:32px}#go .b{background:#fdcb6e;color:#1a1a2e;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;margin-top:10px}#dp{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:80}#dp.show{display:flex}.sc.frozen{opacity:.7;border-color:#0984e3!important;background:#1a2a4e!important}
 
 </style></head><body>
-<div id="ast"></div><div id="arr"></div><div id="go"><h1 id="rt"></h1><p id="rtt"></p><button class="b" onclick="location.reload()">再来</button></div><div id="dp"><h3 style="color:#fdcb6e">三连发现!</h3><p style="color:#b2bec3;margin-bottom:10px">选一张</p><div id="di" style="display:flex;gap:10px"></div></div>
+<div id="ast"></div><div id="arr"></div><div id="spl" style="position:fixed;pointer-events:none;z-index:56;display:none;border-top:2px dashed #fdcb6e;transform-origin:0 0"></div><div id="go"><h1 id="rt"></h1><p id="rtt"></p><button class="b" onclick="location.reload()">再来</button></div><div id="dp"><h3 style="color:#fdcb6e">三连发现!</h3><p style="color:#b2bec3;margin-bottom:10px">选一张</p><div id="di" style="display:flex;gap:10px"></div></div>
 <div id="cs"><h1>炉石旅人</h1><div style="color:#636e72">酒馆战棋</div><div style="color:#b2bec3;margin-top:8px">AI难度</div>
 <div class="db"><button id="diff-e" style="background:#636e72">简单</button><button id="diff-m" style="background:#b8860b">中等</button><button id="diff-h" style="background:#8b0000">困难</button></div>
 <button id="btn-start">开始游戏</button></div>
@@ -159,8 +159,8 @@ async function ft(){
     bt++;pa=pa.filter(function(x){return x&&x.h>0});ea=ea.filter(function(x){return x&&x.h>0});
   }
   var pr=pa.filter(function(x){return x}).length,er=ea.filter(function(x){return x}).length;
-  if(pr>0&&er===0)for(var i=0;i<pa.length;i++)if(pa[i])seq.push({a:pa[i].id,t:"ahi",tp:"h",pd:pa[i].a});
-  if(er>0&&pr===0)for(var i=0;i<ea.length;i++)if(ea[i])seq.push({a:ea[i].id,t:"phi",tp:"h",pd:ea[i].a});
+  if(pr>0&&er===0)for(var i=0;i<pa.length;i++)if(pa[i])seq.push({a:pa[i].id,t:"ahi",tp:"h",pd:pa[i].s});
+  if(er>0&&pr===0)for(var i=0;i<ea.length;i++)if(ea[i])seq.push({a:ea[i].id,t:"phi",tp:"h",pd:ea[i].s});
   // 动画播放
   var ast=G("ast"),ar=G("arr");
   if(seq.length>0){ast.style.display="block";ast.textContent="战"+seq.length+"步";await dl(200)}
@@ -203,4 +203,5 @@ G("br").onclick=function(){if(S&&PH==="p"&&!S.fz){if(S.freeR>0){S.freeR--;S.sh=g
 G("bz").onclick=function(){if(S&&PH==="p"){S.fz=S.fz?0:1;console.log("冻结:",S.fz?"ON":"OFF");R()}};
 G("bl").onclick=function(){if(S&&S.l<7){var c=LC[S.l];if(S.g>=c&&PH==="p"){S.g-=c;S.l++;S.sh=gs(S.l,S.fz);R()}}};
 G("bf").onclick=ft;
+document.onmousemove=function(e){var sp=G("spl");if(SI!==null&&S.h[SI]&&S.h[SI].t==="s"){var hc=G("hc");var hr=hc.getBoundingClientRect();var sx=hr.left+hr.width/2,sy=hr.top-5;var dx=e.clientX-sx,dy=e.clientY-sy;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;sp.style.display="block";sp.style.left=sx+"px";sp.style.top=sy+"px";sp.style.width=len+"px";sp.style.transform="rotate("+ang+"deg)"}else{sp.style.display="none"}};
 </script></body></html>
