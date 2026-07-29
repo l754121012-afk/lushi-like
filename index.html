@@ -134,7 +134,7 @@ async function ft(){
       if(e.h<=0)break;
       var dmg=p.a;
       // 圣盾:挡一次伤害
-      if(e.k&&e.k.indexOf("d")>=0&&e.shield){e.shield=false;dmg=0;seq.push({a:p.id,t:e.id,tp:"s"})}if(e.tauntActive&&dmg>0){e.tauntActive=false;seq.push({a:p.id,t:e.id,tp:"tb"})};if(e.tauntActive&&dmg>0){e.tauntActive=false}
+      if(e.k&&e.k.indexOf("d")>=0&&e.shield){e.shield=false;dmg=0;seq.push({a:p.id,t:e.id,tp:"s"});seq.push({a:p.id,t:e.id,tp:"m",pd:0})}if(e.tauntActive&&dmg>0){e.tauntActive=false;seq.push({a:p.id,t:e.id,tp:"tb"})};if(e.tauntActive&&dmg>0){e.tauntActive=false}
       // 剧毒:直接杀
       if(p.k&&p.k.indexOf("p")>=0&&dmg>0){e.h=0;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:dmg});ea[eii]=null;seq.push({d:e.id,nd:e.n});break}
       if(dmg>0){e.h-=dmg;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:dmg});if(e.sk&&e.sk.t==="on-dmg"){e.a+=e.sk.a||0;e.h+=e.sk.h||0;e.mh=(e.mh||e.h)+(e.sk.h||0);seq.push({tp:"buff",id:e.id,a:e.sk.a||0,h:e.sk.h||0});lg("受击成长:+"+(e.sk.a||0)+"/+"+(e.sk.h||0))}}
@@ -146,7 +146,7 @@ async function ft(){
       var ne=ea.indexOf(en);if(ne<0)continue;
       var _pAlive=pa.filter(function(x){return x});var _pTaunt=_pAlive.filter(function(x){return x.tauntActive});
       var ct=(_pTaunt.length?_pTaunt[Math.floor(Math.random()*_pTaunt.length)]:p);var dmg2=en.a;
-      if(ct.k&&ct.k.indexOf("d")>=0&&ct.shield){ct.shield=false;dmg2=0;seq.push({a:en.id,t:ct.id,tp:"s"})}
+      if(ct.k&&ct.k.indexOf("d")>=0&&ct.shield){ct.shield=false;dmg2=0;seq.push({a:en.id,t:ct.id,tp:"s"});seq.push({a:en.id,t:ct.id,tp:"m",pd:0})}
       if(ct.tauntActive&&dmg2>0){ct.tauntActive=false;seq.push({a:en.id,t:ct.id,tp:"tb"})}
       if(en.k&&en.k.indexOf("p")>=0&&dmg2>0){ct.h=0;seq.push({a:en.id,t:ct.id,tp:"m",na:en.n,ne:ct.n,pd:dmg2});var _dti=pa.indexOf(ct);if(_dti>=0){pa[_dti]=null;seq.push({d:ct.id,nd:ct.n})}}
       if(dmg2>0){ct.h-=dmg2;seq.push({a:en.id,t:ct.id,tp:"m",na:en.n,ne:ct.n,pd:dmg2});if(ct.sk&&ct.sk.t==="on-dmg"){ct.a+=ct.sk.a||0;ct.h+=ct.sk.h||0;ct.mh=(ct.mh||ct.h)+(ct.sk.h||0);seq.push({tp:"buff",id:ct.id,a:ct.sk.a||0,h:ct.sk.h||0});lg("受击成长:+"+(ct.sk.a||0)+"/+"+(ct.sk.h||0))}}
