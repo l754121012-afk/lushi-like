@@ -93,11 +93,27 @@ function execBC(card,bc){
   }
 }
 async function execStartSkills(p){
+
   for(var i=0;i<7;i++){
     var m=p.b[i];if(!m||!m.sk||m.sk.t!=="start")continue;
     if(m.sk.e==="dmg-allies"){
       var _tm=m.sk.times||1;
-      for(var _ti=0;_ti<_tm;_ti++){if(_ti>0){R();await dl(350)}var dd=m.sk.d||1;lg("回合开始:受"+dd+"伤("+(_ti+1)+"/"+_tm+")");for(var j=0;j<7;j++){var a=p.b[j];if(a&&a!==m&&a.h>0){a.h-=dd;if(a.h<0)a.h=0;if(a.h<=0){var ai2=p.b.indexOf(a);if(ai2>=0)p.b[ai2]=null;lg(a.n+"被技能击杀")}else if(a.sk&&a.sk.t==="on-dmg")execDmgSkill(a)}}}
+      for(var _ti=0;_ti<_tm;_ti++){
+        var dd=m.sk.d||1;
+        lg("回合开始:受"+dd+"伤("+(_ti+1)+"/"+_tm+")");
+        for(var j=0;j<7;j++){
+          var a=p.b[j];if(a&&a!==m&&a.h>0){
+            var _se=document.querySelector('[data-mid="'+m.id+'"]');
+            var _te=document.querySelector('[data-mid="'+a.id+'"]');
+            if(_se&&_te){af(_se,_te,G("arr"));await dl(250);G("arr").style.display="none"}
+            a.h-=dd;if(a.h<0)a.h=0;
+            if(_te){var _dn=document.createElement("div");_dn.textContent="-"+dd;_dn.style.cssText="position:fixed;z-index:70;color:#ff6b6b;font-size:20px;font-weight:700;pointer-events:none;text-shadow:0 0 6px rgba(255,0,0,.8)";var _dr=_te.getBoundingClientRect();_dn.style.left=(_dr.left+_dr.width/2-10)+"px";_dn.style.top=(_dr.top-10)+"px";_dn.style.transition="all .5s ease-out";document.body.appendChild(_dn);requestAnimationFrame(function(){requestAnimationFrame(function(){_dn.style.top=(_dr.top-50)+"px";_dn.style.opacity="0";setTimeout(function(){_dn.remove()},600)})})}
+            if(_te){_te.style.backgroundColor="#ff7675";_te.style.borderColor="#d63031";_te.style.transform="translateX(3px)";_te.style.transition="all .05s";setTimeout(function(){_te.style.transform="";_te.style.backgroundColor="";_te.style.borderColor="";_te.style.transition=""},100)}
+            if(a.h<=0){var ai2=p.b.indexOf(a);if(ai2>=0)p.b[ai2]=null;lg(a.n+"被技能击杀")}else if(a.sk&&a.sk.t==="on-dmg")execDmgSkill(a)
+          }
+        }
+        if(_tm>1){R();await dl(350)}
+      }
     }
   }
 }
@@ -186,7 +202,7 @@ async function ft(){
   var ga=Math.min(S.t+2,10);S.g+=ga;S.aig+=ga;
   console.log("战后HP 玩家:"+S.hp+" AI:"+E.hp+" pr:"+pr+" er:"+er);lg("回合"+S.t+" HP:"+S.hp+"/"+E.hp);
   if(S.hp<=0||E.hp<=0){var e=G("go");e.classList.add("show");G("rt").textContent=S.hp<=0?"你输了":"你赢了!";return}
-  if(S._deadE&&S._deadE.length){for(var _di=0;_di<S._deadE.length;_di++){var _de=S._deadE[_di];_de.h=_de.mh||_de.h;var _ei=E.b.indexOf(null);if(_ei>=0)E.b[_ei]=_de}}S._deadE=[];if(S.fz){S.fz=0}else{S.sh=gs(S.l,0)}for(var i=0;i<S.sh.length;i++)S.sh[i].b=0;await aT();
+  if(S._deadE&&S._deadE.length){for(var _di=0;_di<S._deadE.length;_di++){var _de=S._deadE[_di];_de.h=_de.mh||_de.h;var _ei=E.b.indexOf(null);if(_ei>=0)E.b[_ei]=_de}}S._deadE=[];if(S._deadE&&S._deadE.length){for(var _di=0;_di<S._deadE.length;_di++){var _de=S._deadE[_di];_de.h=_de.mh||_de.h;var _ei=E.b.indexOf(null);if(_ei>=0)E.b[_ei]=_de}}S._deadE=[];if(S.fz){S.fz=0}else{S.sh=gs(S.l,0)}for(var i=0;i<S.sh.length;i++)S.sh[i].b=0;await aT();
 }
 function af(f,t,e){if(!e||!f||!t)return;var fr=f.getBoundingClientRect(),tr=t.getBoundingClientRect();var sx=fr.left+fr.width/2,sy=fr.top+5,ex=tr.left+tr.width/2,ey=tr.top+tr.height/2;var dx=ex-sx,dy=ey-sy;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=sx+"px";e.style.top=sy+"px";e.style.width="0px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.innerHTML="<div style='width:100%;height:2px;background:linear-gradient(90deg,rgba(253,203,110,.9),rgba(253,203,110,.3));position:relative'><div style='position:absolute;right:-6px;top:-5px;border-left:8px solid #fdcb6e;border-top:5px solid transparent;border-bottom:5px solid transparent'></div></div>";requestAnimationFrame(function(){requestAnimationFrame(function(){e.style.transition="width .2s ease-out";e.style.width=len+"px"})})}
 
