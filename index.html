@@ -186,7 +186,7 @@ async function ft(){
   var ga=Math.min(S.t+2,10);S.g+=ga;S.aig+=ga;
   console.log("战后HP 玩家:"+S.hp+" AI:"+E.hp+" pr:"+pr+" er:"+er);lg("回合"+S.t+" HP:"+S.hp+"/"+E.hp);
   if(S.hp<=0||E.hp<=0){var e=G("go");e.classList.add("show");G("rt").textContent=S.hp<=0?"你输了":"你赢了!";return}
-  if(S.fz){S.fz=0}S.sh=gs(S.l,0);for(var i=0;i<S.sh.length;i++)S.sh[i].b=0;await aT();
+  if(S.fz){S.fz=0}else{S.sh=gs(S.l,0)}for(var i=0;i<S.sh.length;i++)S.sh[i].b=0;await aT();
 }
 function af(f,t,e){if(!e||!f||!t)return;var fr=f.getBoundingClientRect(),tr=t.getBoundingClientRect();var sx=fr.left+fr.width/2,sy=fr.top+5,ex=tr.left+tr.width/2,ey=tr.top+tr.height/2;var dx=ex-sx,dy=ey-sy;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=sx+"px";e.style.top=sy+"px";e.style.width="0px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.innerHTML="<div style='width:100%;height:2px;background:linear-gradient(90deg,rgba(253,203,110,.9),rgba(253,203,110,.3));position:relative'><div style='position:absolute;right:-6px;top:-5px;border-left:8px solid #fdcb6e;border-top:5px solid transparent;border-bottom:5px solid transparent'></div></div>";requestAnimationFrame(function(){requestAnimationFrame(function(){e.style.transition="width .2s ease-out";e.style.width=len+"px"})})}
 
