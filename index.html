@@ -65,7 +65,7 @@ function lg(m){var e=G("log");e.innerHTML+="<div>"+m+"</div>";e.scrollTop=e.scro
 function pb(a){if(!a)return new Array(7).fill(null);var s=a.filter(function(x){return x});var b=new Array(7).fill(null);for(var i=0;i<s.length&&i<7;i++)b[i]=s[i];return b}
 // Keywords: t=taunt d=divine p=poison w=windfury l=lifesteal b=battlecry:deal1 c=rush
 var C=[
-[{n:"护甲学徒",a:1,h:2},{n:"冲锋新兵",a:2,h:1},{n:"精灵射手",a:1,h:1,k:"b",bc:{e:"self",a:1,h:1}},{n:"渔人猎潮者",a:2,h:1,k:"b",bc:{e:"refresh"}},{n:"石牙野猪",a:1,h:1}],
+[{n:"护甲学徒",a:1,h:2},{n:"冲锋新兵",a:2,h:1},{n:"精灵射手",a:1,h:1,k:"b",bc:{e:"ally-atk",a:1}},{n:"渔人猎潮者",a:2,h:1,k:"b",bc:{e:"free-refresh"}},{n:"石牙野猪",a:1,h:1}],
 [{n:"铁甲卫士",a:1,h:4,k:"t"},{n:"战地老兵",a:3,h:2,k:"b",bc:{e:"ally-rnd",a:1,h:1}},{n:"狗头人",a:2,h:2,k:"b",bc:{e:"gold"}},{n:"血帆袭击者",a:2,h:3,k:"b",bc:{e:"dmg-rnd",d:1}},{n:"虚空行者",a:1,h:3,k:"t"}],
 [{n:"暴怒斗士",a:3,h:4,k:"b",bc:{e:"dmg-rnd",d:2}},{n:"武器锻造师",a:2,h:3},{n:"森金卫士",a:2,h:5,k:"t"},{n:"苦痛侍僧",a:1,h:3,sk:{t:"start",e:"dmg-allies",d:1}},{n:"眼镜蛇",a:1,h:3,k:"p"}],
 [{n:"重装步兵",a:3,h:5,k:"t"},{n:"战歌指挥官",a:4,h:5},{n:"冰风雪人",a:4,h:5},{n:"风怒鹰身人",a:3,h:4,k:"w"},{n:"吸血蚊",a:3,h:3,k:"l"}],
@@ -81,14 +81,14 @@ var KW_NAMES={t:"嘲讽",d:"圣盾",p:"剧毒",w:"风怒",l:"吸血",b:"战吼"}
 
 var gs=function(l,fz){if(fz)return S.sh;var o=TO[l],cs=[];for(var i=0;i<5;i++){if(Math.random()<0.2&&Sp.length){var s=Sp[Math.floor(Math.random()*Sp.length)];cs.push({n:s.n,t:"s",e:s.e,x:s.x})}else{var a=0,t=1,r=Math.random();for(var j=0;j<o.length;j++){a+=o[j];if(r<a){t=j+1;break}}var src=C[t-1][Math.floor(Math.random()*C[t-1].length)];cs.push({n:src.n,a:src.a,h:src.h,s:src.s,k:src.k||"",t:"m",mh:src.h,bc:src.bc,sk:src.sk})}}return cs};
 
-function kwHtml(m){if(!m)return"";var k=m.k||"";var r="";if(k.indexOf("t")>=0)r+="<span title=\"嘲讽:每回合获得嘲讽盾,被击后盾消\">\u{1f6e1}</span>";if(k.indexOf("d")>=0)r+="<span title=\"圣盾:抵挡受到的第一次伤害(完全免疫)\">\u{1f6e1}\u2728</span>";if(k.indexOf("p")>=0)r+="<span title=\"剧毒:造成伤害时直接消灭敌方随从(对英雄无效)\">\u2620</span>";if(k.indexOf("w")>=0)r+="<span title=\"风怒:每回合可攻击两次\">\u2694\u2694</span>";if(k.indexOf("l")>=0)r+="<span title=\"吸血:造成伤害的50%治疗自身\">\u2764\ufe0f</span>";if(k.indexOf("b")>=0&&m.bc){var bd={self:"自身+"+m.bc.a+"/+"+m.bc.h,"ally-rnd":"随机友方+"+m.bc.a+"/+"+m.bc.h,gold:"获得"+(m.bc.g||1)+"金币",refresh:"免费刷新商店","dmg-rnd":"对随机敌方造成"+m.bc.d+"伤害"};r+="<span title=\"战吼·打出:"+(bd[m.bc.e]||"")+"\">\u{1f3f9}</span>"}else if(k.indexOf("b")>=0)r+="<span title=\"战吼·打出\">\u{1f3f9}</span>";if(m.sk){var sd={start:"回合开始","on-dmg":"受击时"};var ed={"dmg-allies":"对全体友方造成"+m.sk.d+"伤害","self-buff":"自身+"+(m.sk.a||0)+"/+"+(m.sk.h||0)};r+="<span title=\"技能·"+(sd[m.sk.t]||"")+":"+(ed[m.sk.e]||"")+"\">\u26a1</span>"}return r}
+function kwHtml(m){if(!m)return"";var k=m.k||"";var r="";if(k.indexOf("t")>=0)r+="<span title=\"嘲讽:每回合获得嘲讽盾,被击后盾消\">\u{1f6e1}</span>";if(k.indexOf("d")>=0)r+="<span title=\"圣盾:抵挡受到的第一次伤害(完全免疫)\">\u{1f6e1}\u2728</span>";if(k.indexOf("p")>=0)r+="<span title=\"剧毒:造成伤害时直接消灭敌方随从(对英雄无效)\">\u2620</span>";if(k.indexOf("w")>=0)r+="<span title=\"风怒:每回合可攻击两次\">\u2694\u2694</span>";if(k.indexOf("l")>=0)r+="<span title=\"吸血:造成伤害的50%治疗自身\">\u2764\ufe0f</span>";if(k.indexOf("b")>=0&&m.bc){var bd={self:"自身+"+m.bc.a+"/+"+m.bc.h,"ally-rnd":"随机友方+"+m.bc.a+"/+"+m.bc.h,"ally-atk":"友方+"+(m.bc.a||0)+"攻",gold:"获得"+(m.bc.g||1)+"金币","free-refresh":"获得免费刷新次数","dmg-rnd":"对随机敌方造成"+m.bc.d+"伤害"};r+="<span title=\"战吼·打出:"+(bd[m.bc.e]||"")+"\">\u{1f3f9}</span>"}else if(k.indexOf("b")>=0)r+="<span title=\"战吼·打出\">\u{1f3f9}</span>";if(m.sk){var sd={start:"回合开始","on-dmg":"受击时"};var ed={"dmg-allies":"对全体友方造成"+m.sk.d+"伤害","self-buff":"自身+"+(m.sk.a||0)+"/+"+(m.sk.h||0)};r+="<span title=\"技能·"+(sd[m.sk.t]||"")+":"+(ed[m.sk.e]||"")+"\">\u26a1</span>"}return r}
 function execBC(card,bc){
   switch(bc.e){
     case"self":card.a+=bc.a||0;card.h+=bc.h||0;card.mh=(card.mh||card.h);break;
     case"ally-rnd":var al=S.b.filter(function(x){return x&&!x.g});if(al.length>0){var ta=al[Math.floor(Math.random()*al.length)];ta.a+=bc.a||0;ta.h+=bc.h||0;ta.mh=(ta.mh||ta.h)}break;
     case"gold":S.g+=bc.g||1;break;
-    case"refresh":S.sh=gs(S.l);for(var i=0;i<S.sh.length;i++)S.sh[i].b=0;break;
-    case"dmg-rnd":var en=E.b.filter(function(x){return x});if(en.length>0){var te=en[Math.floor(Math.random()*en.length)];te.h-=bc.d||1;if(te.h<0)te.h=0;if(te.h<=0){var ti=E.b.indexOf(te);if(ti>=0){E.b[ti]=null;lg("战吼:消灭→"+te.n)}}else{lg("战吼:"+bc.d+"伤→"+te.n+"("+te.h+")")}}break
+    case"ally-atk":var al=S.b.filter(function(x){return x&&!x.g});if(al.length>0){var ta=al[Math.floor(Math.random()*al.length)];ta.a+=bc.a||0;lg("战吼:友方+"+bc.a+"攻→"+ta.n)}break;
+    case"free-refresh":S.freeR=(S.freeR||0)+1;lg("战吼:获得免费刷新");break;    case"dmg-rnd":var en=E.b.filter(function(x){return x});if(en.length>0){var te=en[Math.floor(Math.random()*en.length)];te.h-=bc.d||1;if(te.h<0)te.h=0;if(te.h<=0){var ti=E.b.indexOf(te);if(ti>=0){E.b[ti]=null;lg("战吼:消灭→"+te.n)}}else{lg("战吼:"+bc.d+"伤→"+te.n+"("+te.h+")")}}break
   }
 }
 function execStartSkills(p){
@@ -104,7 +104,7 @@ function execDmgSkill(m){
   if(m.sk.e==="self-buff"){m.a+=m.sk.a||0;m.h+=m.sk.h||0;m.mh=(m.mh||m.h)+(m.sk.h||0);lg("受击成长:+"+(m.sk.a||0)+"/+"+(m.sk.h||0))}
 }
 
-var R=function(){if(!S)return;G("bh").textContent=S.hp;G("bg").textContent=S.g;G("bt").textContent=S.t;G("ehp").textContent=E.hp;var _ehp2=G("ehp2");if(_ehp2)_ehp2.textContent=E.hp;G("php").textContent=S.hp;G("aig").textContent=S.aig;G("sl").textContent=S.l;G("nl").textContent=Math.min(S.l+1,7);G("lc").textContent=S.l<7?LC[S.l]:"MAX";G("fzi").textContent=S.fz?"[冻结]":"";var nxt=Math.min(S.t+2,10);G("gi").textContent="+"+nxt+"$="+(S.g+nxt);rB("eb",E.b);rB("pb",S.b,1);rS();rH();var iP=PH==="p";G("br").disabled=!iP;G("bz").disabled=!iP;G("bl").disabled=!iP||S.l>=7||S.g<LC[S.l];G("bf").disabled=!iP};
+var R=function(){if(!S)return;G("bh").textContent=S.hp;G("bg").textContent=S.g;G("bt").textContent=S.t;G("ehp").textContent=E.hp;var _ehp2=G("ehp2");if(_ehp2)_ehp2.textContent=E.hp;G("php").textContent=S.hp;G("aig").textContent=S.aig;G("sl").textContent=S.l;G("nl").textContent=Math.min(S.l+1,7);G("lc").textContent=S.l<7?LC[S.l]:"MAX";G("fzi").textContent=S.fz?"[冻结]":"";var nxt=Math.min(S.t+2,10);G("gi").textContent="+"+nxt+"$="+(S.g+nxt);G("br").textContent=S.freeR>0?"🔄刷新("+S.freeR+"次免费)":"🔄刷新";rB("eb",E.b);rB("pb",S.b,1);rS();rH();var iP=PH==="p";G("br").disabled=!iP;G("bz").disabled=!iP;G("bl").disabled=!iP||S.l>=7||S.g<LC[S.l];G("bf").disabled=!iP};
 
 var rB=function(id,b,pl){var el=G(id);el.innerHTML="";for(var i=0;i<7;i++){var m=b[i];var d=document.createElement("div");d.className="sl";if(!m){if(pl&&PH==="p")d.textContent="+";el.appendChild(d);continue}d.classList.add("has");d.dataset.mid=m.id;d.dataset.idx=i;if(pl)d.classList.add("pl");if(m.g)d.classList.add("gld");var kw=kwHtml(m);var hpPct=((m.h/(m.mh||m.h||1))*100)+"%";d.innerHTML="<div style=font-size:7px;color:#fdcb6e;line-height:1>"+("\u2b50".repeat(Math.min(m.s||1,7)))+"</div><div class=nm>"+kw+m.n+"</div><div class=ah><span class=a>"+m.a+"</span>/<span class=h>"+m.h+"</span></div><div class=hpbar style=width:"+hpPct+"></div>";if(pl)(function(idx){d.onclick=function(){if(PH!=="p")return;S.b[idx]=null;S.g+=1;R()}})(i);el.appendChild(d)}};
 
@@ -189,13 +189,13 @@ async function ft(){
 }
 function af(f,t,e){if(!e||!f||!t)return;var fr=f.getBoundingClientRect(),tr=t.getBoundingClientRect();var sx=fr.left+fr.width/2,sy=fr.top+5,ex=tr.left+tr.width/2,ey=tr.top+tr.height/2;var dx=ex-sx,dy=ey-sy;var len=Math.sqrt(dx*dx+dy*dy);var ang=Math.atan2(dy,dx)*180/Math.PI;e.style.display="block";e.style.left=sx+"px";e.style.top=sy+"px";e.style.width="0px";e.style.transform="rotate("+ang+"deg)";e.style.transformOrigin="0 0";e.innerHTML="<div style='width:100%;height:2px;background:linear-gradient(90deg,rgba(253,203,110,.9),rgba(253,203,110,.3));position:relative'><div style='position:absolute;right:-6px;top:-5px;border-left:8px solid #fdcb6e;border-top:5px solid transparent;border-bottom:5px solid transparent'></div></div>";requestAnimationFrame(function(){requestAnimationFrame(function(){e.style.transition="width .2s ease-out";e.style.width=len+"px"})})}
 
-function sg(){G("cs").style.display="none";G("app").style.display="flex";G("log").innerHTML="";NID=0;S={t:1,g:3,hp:30,b:new Array(7).fill(null),l:1,sh:[],aig:3,ail:1,h:[],fz:0};E={hp:30,b:new Array(7).fill(null)};S.sh=gs(1);lg("开始");aT()}
+function sg(){G("cs").style.display="none";G("app").style.display="flex";G("log").innerHTML="";NID=0;S={t:1,g:3,hp:30,b:new Array(7).fill(null),l:1,sh:[],aig:3,ail:1,h:[],fz:0,freeR:0};E={hp:30,b:new Array(7).fill(null)};S.sh=gs(1);lg("开始");aT()}
 var DE=G("diff-e"),DM=G("diff-m"),DH=G("diff-h"),AB=[DE,DM,DH];
 DE.onclick=function(){AI_DIFF=1;AB.forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
 DM.onclick=function(){AI_DIFF=2;AB.forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
 DH.onclick=function(){AI_DIFF=3;AB.forEach(function(b){b.style.borderColor="#4a4d6b"});this.style.borderColor="#fdcb6e"};
 G("btn-start").onclick=sg;
-G("br").onclick=function(){if(S&&S.g>=1&&PH==="p"&&!S.fz){S.g-=1;S.sh=gs(S.l);R()}};
+G("br").onclick=function(){if(S&&PH==="p"&&!S.fz){if(S.freeR>0){S.freeR--;S.sh=gs(S.l);R();return}if(S.g>=1){S.g-=1;S.sh=gs(S.l);R()}}};
 G("bz").onclick=function(){if(S&&PH==="p"){S.fz=S.fz?0:1;R()}};
 G("bl").onclick=function(){if(S&&S.l<7){var c=LC[S.l];if(S.g>=c&&PH==="p"){S.g-=c;S.l++;S.sh=gs(S.l,S.fz);R()}}};
 G("bf").onclick=ft;
