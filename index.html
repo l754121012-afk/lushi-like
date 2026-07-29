@@ -148,7 +148,7 @@ async function ft(){
       var _eList=ea.filter(function(x){return x});var en=_eList[Math.floor(Math.random()*_eList.length)];
       var ne=ea.indexOf(en);if(ne<0)continue;
       var _pAlive=pa.filter(function(x){return x});var _pTaunt=_pAlive.filter(function(x){return x.tauntActive});
-      var ct=(_pTaunt.length?_pTaunt[Math.floor(Math.random()*_pTaunt.length)]:p);var dmg2=en.a;
+      var ct=(_pTaunt.length?_pTaunt[Math.floor(Math.random()*_pTaunt.length)]:p);if(_pTaunt.length>1)lg("反击嘲讽目标:"+ct.n+"(共"+_pTaunt.length+"个)");var dmg2=en.a;
       if(ct.k&&ct.k.indexOf("d")>=0&&ct.shield){ct.shield=false;dmg2=0;seq.push({a:en.id,t:ct.id,tp:"s"});seq.push({a:en.id,t:ct.id,tp:"m",pd:0})}
       if(ct.tauntActive&&dmg2>0){ct.tauntActive=false;seq.push({a:en.id,t:ct.id,tp:"tb"})}
       if(en.k&&en.k.indexOf("p")>=0&&dmg2>0){ct.h=0;seq.push({a:en.id,t:ct.id,tp:"m",na:en.n,ne:ct.n,pd:dmg2});var _dti=pa.indexOf(ct);if(_dti>=0){pa[_dti]=null;seq.push({d:ct.id,nd:ct.n})}}
