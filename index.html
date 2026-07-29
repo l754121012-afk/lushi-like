@@ -130,16 +130,16 @@ async function ft(){
     // 风怒: 打两次
     var atkCount=p.k&&p.k.indexOf("w")>=0?2:1;
     for(var at=0;at<atkCount;at++){
+      if(at>0&&e.h<=0){var _a2=ea.filter(function(x){return x});if(_a2.length){var _t2=_a2.filter(function(x){return x.tauntActive});var _p2=_t2.length?_t2:_a2;eii=ea.indexOf(_p2[Math.floor(Math.random()*_p2.length)]);if(eii>=0)e=ea[eii]}else break}
       if(e.h<=0)break;
-      var dmg=p.a;
+      var dmg=p.a;var dmg=p.a;
       // 圣盾:挡一次伤害
       if(e.k&&e.k.indexOf("d")>=0&&e.shield){e.shield=false;dmg=0;seq.push({a:p.id,t:e.id,tp:"s"})}if(e.tauntActive&&dmg>0){e.tauntActive=false;seq.push({a:p.id,t:e.id,tp:"tb"})};if(e.tauntActive&&dmg>0){e.tauntActive=false}
       // 剧毒:直接杀
       if(p.k&&p.k.indexOf("p")>=0&&dmg>0){e.h=0;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:dmg-999});break}
       if(dmg>0){e.h-=dmg;seq.push({a:p.id,t:e.id,tp:"m",na:p.n,ne:e.n,pd:dmg});if(e.sk&&e.sk.t==="on-dmg"){e.a+=e.sk.a||0;e.h+=e.sk.h||0;e.mh=(e.mh||e.h)+(e.sk.h||0);seq.push({tp:"buff",id:e.id,a:e.sk.a||0,h:e.sk.h||0});lg("受击成长:+"+(e.sk.a||0)+"/+"+(e.sk.h||0))}}
       // 吸血
-      if(p.k&&p.k.indexOf("l")>=0&&dmg>0){var h=Math.max(1,Math.floor(dmg/2));var _ph=p.h;p.h=Math.min(_ph+h,p.mh||p.h);if(p.h>_ph)seq.push({tp:"heal",id:p.id,val:p.h-_ph})}|p.h)}
-      if(e.h<=0){ea[eii]=null;seq.push({d:e.id,nd:e.n})}
+      if(p.k&&p.k.indexOf("l")>=0&&dmg>0){var h=Math.max(1,Math.floor(dmg/2));var _ph=p.h;p.h=Math.min(_ph+h,p.mh||p.h);seq.push({tp:"heal",id:p.id,val:p.h-_ph})}if(e.h<=0){ea[eii]=null;seq.push({d:e.id,nd:e.n})}
     }
     if(ea.some(function(x){return x})&&p.h>0){
       var _eList=ea.filter(function(x){return x});var en=_eList[Math.floor(Math.random()*_eList.length)];
@@ -150,7 +150,7 @@ async function ft(){
       if(ct.tauntActive&&dmg2>0){ct.tauntActive=false;seq.push({a:en.id,t:ct.id,tp:"tb"})}
       if(en.k&&en.k.indexOf("p")>=0&&dmg2>0){ct.h=0;seq.push({a:en.id,t:ct.id,tp:"m",na:en.n,ne:ct.n,pd:dmg2-999})}
       if(dmg2>0){ct.h-=dmg2;seq.push({a:en.id,t:ct.id,tp:"m",na:en.n,ne:ct.n,pd:dmg2});if(ct.sk&&ct.sk.t==="on-dmg"){ct.a+=ct.sk.a||0;ct.h+=ct.sk.h||0;ct.mh=(ct.mh||ct.h)+(ct.sk.h||0);seq.push({tp:"buff",id:ct.id,a:ct.sk.a||0,h:ct.sk.h||0});lg("受击成长:+"+(ct.sk.a||0)+"/+"+(ct.sk.h||0))}}
-      if(en.k&&en.k.indexOf("l")>=0&&dmg2>0){var h2=Math.max(1,Math.floor(dmg2/2));var _eh=en.h;en.h=Math.min(_eh+h2,en.mh||en.h);if(en.h>_eh)seq.push({tp:"heal",id:en.id,val:en.h-_eh})}n.mh||en.h)}
+      if(en.k&&en.k.indexOf("l")>=0&&dmg2>0){var h2=Math.max(1,Math.floor(dmg2/2));var _eh=en.h;en.h=Math.min(_eh+h2,en.mh||en.h);seq.push({tp:"heal",id:en.id,val:en.h-_eh})}
       if(ct.h<=0){var cti=pa.indexOf(ct);if(cti>=0){pa[cti]=null;seq.push({d:ct.id,nd:ct.n})}}
     }
     bt++;pa=pa.filter(function(x){return x&&x.h>0});ea=ea.filter(function(x){return x&&x.h>0});
@@ -165,7 +165,7 @@ async function ft(){
     var s=seq[si];ast.textContent=(si+1)+"/"+seq.length+"步";
     if(s.tp==="s"){// 圣盾碎
       var se=document.querySelector('[data-mid="'+s.t+'"]');if(se){se.style.borderColor="#74b9ff";se.style.boxShadow="0 0 12px rgba(116,185,255,.7)";setTimeout(function(){se.style.borderColor="";se.style.boxShadow=""},300)}await dl(300)
-    }else if(s.tp==="heal"){var he=document.querySelector("[data-mid=\""+s.id+"\"]");if(he){he.style.borderColor="#55efc4";he.style.boxShadow="0 0 12px rgba(85,239,196,.7)";setTimeout(function(){he.style.borderColor="";he.style.boxShadow=""},300)};var _hc=S.b.find(function(x){return x&&x.id===s.id})||E.b.find(function(x){return x&&x.id===s.id});if(_hc&&s.val){_hc.h=Math.min(_hc.h+s.val,_hc.mh||_hc.h);var _hpE=document.querySelector("[data-mid=\""+s.id+"\"] .ah .h");if(_hpE)_hpE.textContent=_hc.h};lg("吸血+:"+s.val);await dl(250)}lse if(s.tp==="tb"){var tbe=document.querySelector('[data-mid="'+s.t+'"]');if(tbe){tbe.style.borderColor="#b2bec3";tbe.style.boxShadow="0 0 12px rgba(178,190,195,.7)";setTimeout(function(){tbe.style.borderColor="";tbe.style.boxShadow=""},300)}await dl(250)}else if(s.tp==="l"){// 吸血
+    }else if(s.tp==="heal"){var he=document.querySelector("[data-mid=\""+s.id+"\"]");if(he){he.style.borderColor="#55efc4";he.style.boxShadow="0 0 12px rgba(85,239,196,.7)";setTimeout(function(){he.style.borderColor="";he.style.boxShadow=""},300)};var _hc=S.b.find(function(x){return x&&x.id===s.id})||E.b.find(function(x){return x&&x.id===s.id});if(_hc&&s.val){_hc.h=Math.min(_hc.h+s.val,_hc.mh||_hc.h);var _hpE=document.querySelector("[data-mid=\""+s.id+"\"] .ah .h");if(_hpE)_hpE.textContent=_hc.h};lg("吸血+:"+s.val);await dl(250)}else if(s.tp==="tb"){var tbe=document.querySelector('[data-mid="'+s.t+'"]');if(tbe){tbe.style.borderColor="#b2bec3";tbe.style.boxShadow="0 0 12px rgba(178,190,195,.7)";setTimeout(function(){tbe.style.borderColor="";tbe.style.boxShadow=""},300)}await dl(250)}else if(s.tp==="l"){// 吸血
       var le=s.t==="player"?G("phi"):G("ahi");if(le){le.style.borderColor="#55efc4";le.style.boxShadow="0 0 16px rgba(85,239,196,.7)";setTimeout(function(){le.style.borderColor="";le.style.boxShadow=""},300)}
     }else if(s.tp==="m"||s.tp==="h"){
       var ae=document.querySelector('[data-mid="'+s.a+'"]'),te=s.tp==="h"?G(s.t):document.querySelector('[data-mid="'+s.t+'"]');
