@@ -7,12 +7,12 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 #bar{display:flex;gap:8px;background:#16213e;padding:4px 10px;border-radius:4px;margin-bottom:2px;font-size:12px;align-items:center}
 .hp{color:#ff6b6b;font-weight:700}.go{color:#fdcb6e;font-weight:700}
 #brd{display:flex;flex-direction:column;gap:2px;flex:1;min-height:0}
-.side{flex-shrink:0;background:#16213e;border-radius:4px;padding:4px}
+.side{flex-shrink:0;min-height:0;background:#16213e;border-radius:4px;padding:4px}
 .side .hdr{font-size:11px;color:#636e72;margin-bottom:2px}
 .hr{display:flex;align-items:center;gap:6px;padding:2px 4px;font-size:11px}
 .hi{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;border:2px solid}
 .ahi{background:#5c2e2e;border-color:#8b4513}.phi{background:#2d4a2d;border-color:#4caf50}
-.sr{display:flex;gap:3px;flex-wrap:wrap;padding:2px;flex:1;align-content:flex-start}
+.sr{display:flex;gap:3px;flex-wrap:wrap;padding:2px;flex:1;min-height:0;overflow:auto;align-content:flex-start}
 .sl{width:80px;height:88px;background:#0f0f1a;border:1px dashed #2d3047;border-radius:4px;display:flex;flex-direction:column;align-items:center;font-size:9px;position:relative;padding-top:12px}
 .sl.has{background:#2d3047;border:1px solid #4a4d6b}.sl.pl{cursor:pointer}.sl.gld{border-color:#fdcb6e!important}
 .sl .kw{display:inline;font-size:9px;margin-right:2px}
@@ -42,6 +42,8 @@ body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidd
 #ast{position:fixed;top:6px;left:50%;transform:translateX(-50%);background:#fdcb6e;color:#1a1a2e;padding:4px 16px;border-radius:4px;font-size:13px;font-weight:700;z-index:60;display:none}
 #arr{position:fixed;pointer-events:none;z-index:55;overflow:hidden}#go{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:90}#go.show{display:flex}#go h1{font-size:32px}#go .b{background:#fdcb6e;color:#1a1a2e;border:none;padding:10px 24px;border-radius:6px;font-size:14px;cursor:pointer;margin-top:10px}#dp{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:80}#dp.show{display:flex}.sc.frozen{opacity:.7;border-color:#0984e3!important;background:#1a2a4e!important}
 
+
+@media (max-height:700px),(max-width:520px){.sl{width:52px;height:60px;padding-top:6px;font-size:8px}.sl .nm{font-size:8px;max-width:48px}.sl .ah{font-size:10px}.hi{width:22px;height:22px;font-size:10px}.hc{width:60px;min-height:46px}.sc{width:74px;min-height:64px;font-size:9px}#bar{font-size:10px}.sr{flex-wrap:nowrap;overflow-x:auto}.side{overflow:hidden}#hand{min-height:38px}#hc{gap:3px}}
 </style></head><body>
 <div id="ast"></div><div id="arr"></div><div id="rcs" style="position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:95;cursor:pointer"><h2 style="color:#fdcb6e;font-size:28px;margin-bottom:16px">本局种族</h2><div id="rcsL" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:600px;font-size:18px;color:#eee"></div><p style="color:#636e72;margin-top:20px;font-size:13px">点击或等待自动开始</p></div><div id="spl" style="position:fixed;pointer-events:none;z-index:56;display:none;border-top:2px dashed #fdcb6e;transform-origin:0 0"></div><div id="go"><h1 id="rt"></h1><p id="rtt"></p><button class="b" onclick="location.reload()">再来</button></div><div id="dp"><h3 style="color:#fdcb6e">三连发现!</h3><p style="color:#b2bec3;margin-bottom:10px">选一张</p><div id="di" style="display:flex;gap:10px"></div></div>
 <div id="cs"><h1>炉石旅人</h1><div style="color:#636e72">酒馆战棋</div><div style="color:#b2bec3;margin-top:8px">AI难度</div>
