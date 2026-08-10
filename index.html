@@ -254,9 +254,7 @@ async function ft(){
   }
   ast.style.display="none";
   var _els=document.querySelectorAll(".sl,.sc,.hc");for(var _ei3=0;_ei3<_els.length;_ei3++){_els[_ei3].style.borderColor="";_els[_ei3].style.boxShadow="";_els[_ei3].style.transform="";_els[_ei3].style.opacity="";_els[_ei3].style.background=""}
-  if(_fSeq&&_fSeq.length){for(var _si=0;_si<_fSeq.length;_si++){var _bs=_fSeq[_si];var _bc=S.b.find(function(x){return x&&x.id===_bs.id})||E.b.find(function(x){return x&&x.id===_bs.id});if(_bc){_bc.a+=_bs.a||0;_bc.h+=_bs.h||0;if(_bc.mh)_bc.mh+=_bs.h||0}}}
-  S.b=pb(pa.filter(function(x){return x&&!x._summoned}));E.b=pb(ea.filter(function(x){return x&&!x._summoned}));
-  for(var i=0;i<S.b.length;i++)if(S.b[i]){S.b[i]._atkDone=false;S.b[i].shield=false;S.b[i].tauntActive=false}for(var i=0;i<E.b.length;i++)if(E.b[i]){E.b[i]._atkDone=false;E.b[i].shield=false;E.b[i].tauntActive=false}R();
+  if(_fSeq&&_fSeq.length){for(var _si=0;_si<_fSeq.length;_si++){var _bs=_fSeq[_si];var _bc=S.b.find(function(x){return x&&x.id===_bs.id})||E.b.find(function(x){return x&&x.id===_bs.id});if(_bc){_bc.a+=_bs.a||0;_bc.h+=_bs.h||0;if(_bc.mh)_bc.mh+=_bs.h||0}}}R();
   for(var i=0;i<S.b.length;i++)if(S.b[i]&&S.b[i].mh)S.b[i].h=S.b[i].mh;for(var i=0;i<E.b.length;i++)if(E.b[i]&&E.b[i].mh)E.b[i].h=E.b[i].mh;
   // 吸血治疗
   
