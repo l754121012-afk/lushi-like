@@ -254,7 +254,7 @@ async function ft(){
       }
     onAttack(ea,en,seq,E.b);
     }
-    bt++;pa=pa.filter(function(x){return x&&x.h>0});ea=ea.filter(function(x){return x&&x.h>0});
+    bt++;pa=pa.map(function(x){return x&&x.h>0?x:null});ea=ea.map(function(x){return x&&x.h>0?x:null});
   }
   var pr=pa.filter(function(x){return x}).length,er=ea.filter(function(x){return x}).length;
   if(pr>0&&er===0)for(var i=0;i<pa.length;i++)if(pa[i])seq.push({a:pa[i].id,t:"ahi",tp:"h",pd:pa[i].s});
