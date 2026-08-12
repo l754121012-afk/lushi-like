@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><title>炉石旅人</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box;user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none!important;-webkit-tap-highlight-color:transparent}html{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 body{background:#1a1a2e;color:#eee;font-family:Segoe UI,sans-serif;overflow:hidden;height:100vh;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 #app{display:none;flex-direction:column;height:100vh;max-width:1000px;margin:auto;padding:4px}
 #bar{display:flex;gap:8px;background:#16213e;padding:4px 10px;border-radius:4px;margin-bottom:2px;font-size:12px;align-items:center}
@@ -72,6 +72,8 @@ function playHitSound(){if(!_actx||!_hitBuf)return;try{var s=_actx.createBufferS
 
 var AI_DIFF=2,S={},E={},PH="i",NID=0,SI=null,_dragIdx=-1,_selIdx=-1,_touchDrag=-1,_touchTimer=null,_touchDragged=false;
 var G=function(i){return document.getElementById(i)};
+document.addEventListener("selectstart",function(e){e.preventDefault()});
+document.addEventListener("contextmenu",function(e){e.preventDefault()});
 var _bgmVol=parseFloat(localStorage.getItem("lushi_bgm")||"0.77");var _hitVol=parseFloat(localStorage.getItem("lushi_hit")||"0.7");if(!(_bgmVol>0))_bgmVol=0.77;if(!(_hitVol>0))_hitVol=0.7;
 function openSet(){var p=G("setp");if(!p)return;p.style.display="flex";var b=G("bgmVol"),h=G("hitVol");if(b)b.value=Math.round(_bgmVol*100);if(h)h.value=Math.round(_hitVol*100)}
 function closeSet(){var p=G("setp");if(p)p.style.display="none"}
