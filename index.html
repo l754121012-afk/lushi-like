@@ -352,6 +352,7 @@ async function ft(){
     }
     bt++;pa=pa.map(function(x){return x&&x.h>0?x:null});ea=ea.map(function(x){return x&&x.h>0?x:null});_drainPending(pa,seq,"p");_drainPending(ea,seq,"e");
   }
+  try{var _evPairs=[[pa,S.b],[ea,E.b]];for(var _ep=0;_ep<_evPairs.length;_ep++){var _evSrc=_evPairs[_ep][0],_evDst=_evPairs[_ep][1];for(var _ei3=0;_ei3<7;_ei3++){var _evC=_evSrc[_ei3];if(!_evC)continue;var _evR=null;for(var _ej=0;_ej<7;_ej++){var _evD=_evDst[_ej];if(_evD&&_evD.id===_evC.id){_evR=_evD;break}}if(!_evR)continue;_evR._evo=_evC._evo||0;_evR._vd=_evC._vd||0;_evR._vc=_evC._vc||0;_evR._phA=0;_evR._phH=0}}}catch(e){lg("进化进度同步错误:"+(e&&e.message||e))}
   var pr=pa.filter(function(x){return x}).length,er=ea.filter(function(x){return x}).length,_qP=(S.b.some(function(x){return x&&x.race==="evolve"}))?evalEvoQuest("p",seq,pa):null,_qE=(E.b.some(function(x){return x&&x.race==="evolve"}))?evalEvoQuest("e",seq,ea):null;
   if(pr>0&&er===0)for(var i=0;i<pa.length;i++)if(pa[i])seq.push({a:pa[i].id,t:"ahi",tp:"h",pd:pa[i].s});
   if(er>0&&pr===0)for(var i=0;i<ea.length;i++)if(ea[i])seq.push({a:ea[i].id,t:"phi",tp:"h",pd:ea[i].s});
