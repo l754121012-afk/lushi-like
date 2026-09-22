@@ -71,7 +71,7 @@ function loopBGM(){if(!_bgmOn||!_actx||!_bgmBuf)return;var dur=_bgmBuf.duration,
 function stopBGM(){_bgmOn=false;_bgmWant=false;if(_bgmTimer)clearTimeout(_bgmTimer);try{if(_bgmSrc)_bgmSrc.stop()}catch(e){};try{if(_bgmGain)_bgmGain.disconnect()}catch(e){}}
 function playHitSound(){if(!_actx||!_hitBuf)return;try{var s=_actx.createBufferSource();s.buffer=_hitBuf;var g=_actx.createGain();g.gain.value=_hitVol;s.connect(g);g.connect(_actx.destination);s.start()}catch(e){}}
 
-var AI_DIFF=2,S={},E={},PH="i",NID=0,SI=null,_dragIdx=-1,_dragHand=-1,_magHand=-1,_selIdx=-1,_touchDrag=-1,_touchTimer=null,_touchDragged=false,_pendingSum={p:[],e:[]},_devourBoost=0,_battleDeathA=0,_battleDeathH=0;
+window.HEADLESS=/headless=1/.test(location.href);var AI_DIFF=2,S={},E={},PH="i",NID=0,SI=null,_dragIdx=-1,_dragHand=-1,_magHand=-1,_selIdx=-1,_touchDrag=-1,_touchTimer=null,_touchDragged=false,_pendingSum={p:[],e:[]},_devourBoost=0,_battleDeathA=0,_battleDeathH=0;
 var G=function(i){return document.getElementById(i)};
 document.addEventListener("selectstart",function(e){e.preventDefault()});
 document.addEventListener("contextmenu",function(e){e.preventDefault()});
@@ -101,7 +101,7 @@ if(_si)_si.onclick=openInfo;if(_ss)_ss.onclick=sellSel;if(_sc2)_sc2.onclick=hide
 
 
 var ni=function(){return"m"+(NID++)};
-var dl=function(ms){return new Promise(function(r){setTimeout(r,ms)})};
+var dl=function(ms){if(window.HEADLESS)return Promise.resolve();if(window.HEADLESS)return Promise.resolve();if(window.HEADLESS)return Promise.resolve();return new Promise(function(r){setTimeout(r,ms)})};
 function lg(m){var e=G("log");e.innerHTML+="<div>"+m+"</div>";e.scrollTop=e.scrollHeight}
 function pb(a){if(!a)return new Array(7).fill(null);var s=a.filter(function(x){return x});var b=new Array(7).fill(null);for(var i=0;i<s.length&&i<7;i++)b[i]=s[i];return b}
 function clearMagnetTargets(){var es=document.querySelectorAll(".magnet-target,.devour-target");for(var ei=0;ei<es.length;ei++){es[ei].classList.remove("magnet-target");es[ei].classList.remove("devour-target")}}
